@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="hr_recycler" xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+<robot name="hr_recycler" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="hr_recycler" params="prefix publish_bf hq">
 
@@ -18,10 +18,13 @@
   <xacro:property name="fork_height" value="0.05" />
   <xacro:property name="fork_separation" value="0.116" />
 
+  <xacro:property name="separation_wheel_box" value="0.08" />
+
+
   <xacro:macro name="box_inertia" params="m x y z">
     <inertia  ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
               iyy="${m*(x*x+z*z)/12}" iyz = "0"
-              izz="${m*(x*x+z*z)/12}" /> 
+              izz="${m*(x*x+z*z)/12}" />
   </xacro:macro>
 
   <!-- BASE FOOTPRINT -->
@@ -39,7 +42,7 @@
       <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
       <parent link="${prefix}base_footprint"/>
       <child link="${prefix}base_link" />
-    </joint>    
+    </joint>
   </xacro:if>
 
   <!-- BASE_LINK -->
@@ -50,7 +53,7 @@
       <box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
     </inertial>
     <visual>
-       <origin xyz="0 0 ${base_height/2.0}" rpy="0 0 0" />
+       <origin xyz="0 0 ${wheel_radius+base_height/2.0+separation_wheel_box}" rpy="0 0 0" />
        <xacro:if value="${hq}">
          <geometry>
 		   <!--<mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base.stl"/>-->
@@ -66,9 +69,8 @@
        <material name="darkgrey">
          <color rgba="0.1 0.1 0.1 1"/>
        </material>
-    </visual>  
+    </visual>
   </link>
 
   </xacro:macro>
 </robot>
-

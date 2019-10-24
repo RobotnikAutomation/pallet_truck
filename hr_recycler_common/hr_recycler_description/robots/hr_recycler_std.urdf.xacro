@@ -1,36 +1,42 @@
 <?xml version="1.0"?>
-<robot name="hr_recycler" xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+<robot name="hr_recycler" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 
 	<!-- ***************** -->
 	<!-- Imported elements -->
 	<!-- ***************** -->
-	
+
 	<!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
 
 	<!-- Import HR-RECYCLER base elements -->
-    <xacro:include filename="$(find hr_recycler_description)/urdf/bases/hr_recycler.urdf.xacro" />
-	
+  <xacro:include filename="$(find hr_recycler_description)/urdf/bases/hr_recycler.urdf.xacro" />
+
+
 	<!-- Import HR-RECYCLER wheels -->
-	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/rubber_wheel.urdf.xacro" />	
+	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/rubber_wheel.urdf.xacro" />
 	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/omni_wheel.urdf.xacro" />
-    
+	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/motor_wheel.urdf.xacro" />
+
+  <!-- Import HR-RECYCLER elevator -->
+	<xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.urdf.xacro" />
+
+
 	<!-- Import all available sensors -->
 	<xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
-  
+
     <!-- Import Gazebo Stuff -->
-    <xacro:include filename="$(find hr_recycler_description)/urdf/common.gazebo.xacro" />
-    	
+  <xacro:include filename="$(find hr_recycler_description)/urdf/common.gazebo.xacro" />
+
 	<!-- ***************** -->
 	<!-- Global parameters -->
-	<!-- ***************** -->  
+	<!-- ***************** -->
 	<xacro:property name="PI" value="3.1415926535897931"/>
-  
+
 	<!-- Wheel parameters -->
-	<xacro:property name="wheel_offset_x" value="0.0"/>    <!-- x,y,z in translation from base_link to the center of the wheel -->
-	<xacro:property name="wheel_offset_y" value="0.26"/>    
-	<xacro:property name="wheel_offset_z" value="0.025"/>
-	
+	<xacro:property name="wheel_offset_x" value="0.5"/>    <!-- x,y,z in translation from base_link to the center of the wheel -->
+	<xacro:property name="wheel_offset_y" value="0.0"/>
+	<xacro:property name="wheel_offset_z" value="0.0"/>
+
 	<!-- Castor paramters -->
 	<xacro:property name="omni_x" value="0.296"/>
 	<xacro:property name="omni_y" value="0.249"/>
@@ -42,25 +48,36 @@
 	<!-- ******************* -->
 	<!-- ELEVATOR PARAMETERS -->
 	<!-- ******************* -->
-	
-	<xacro:property name="elevator_x" value="0.0" />
-	<xacro:property name="elevator_y" value="0.0" />
-	<xacro:property name="elevator_z" value="0.285" />
+
+	<xacro:property name="elevator_x" value="1.4" />
+	<xacro:property name="elevator_y" value="0.195" />
+	<xacro:property name="elevator_z" value="0.0" />
 
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
 
 	<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
-	
+
 	<!-- HR-RECYCLER base -->
-	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" />
-  	
 	<xacro:arg name="prefix" default="hr_recycler_"/>
+
+	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" />
+
+	<xacro:motor_wheel prefix="$(arg prefix)back" parent="$(arg prefix)base_link" hq="${hq}">
+			<origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+	</xacro:motor_wheel>
+
+	<xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="$(arg prefix)base_link" hq="${hq}">
+			<origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
+	</xacro:elevator_platform>
+
+  <xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="$(arg prefix)base_link" hq="${hq}">
+			<origin xyz="${elevator_x} -${elevator_y} ${elevator_z}" rpy="0 0 0"/>
+	</xacro:elevator_platform>
 
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>
-	
+
 
 </robot>
-
