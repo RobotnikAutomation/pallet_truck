@@ -80,7 +80,7 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 			<geometry>
-				<cylinder radius="${wheel_radius/2.0}" length="${wheel_height}"/>
+				<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
 			</geometry>
 		</collision>
 		<inertial>
