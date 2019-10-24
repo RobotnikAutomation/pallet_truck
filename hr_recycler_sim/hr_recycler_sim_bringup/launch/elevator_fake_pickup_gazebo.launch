@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+	<arg name="config_yaml" default="$(find hr_recycler_sim_bringup)/config/elevator_fake_pickup_gazebo.yaml"/>
+	
+	<node pkg="robotnik_base_hw_sim" type="elevator_fake_pickup_gazebo.py" name="elevator_fake_pickup_gazebo">
+		<rosparam command="load" file="$(arg config_yaml)" />
+	</node>
+	
+</launch>

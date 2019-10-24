@@ -1,0 +1,250 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='hr_recycler_simple_cart'>
+    <link name='link_0'>
+      <pose frame=''>0 0 0.0 0 -0 0.0</pose>
+      <inertial>
+         <mass>0.1</mass>
+        <inertia>
+          <ixx>0.166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.166667</izz>
+        </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+      </inertial>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      
+      <visual name='visual0'>
+        <pose frame=''>0 0 -0.025 0 -0 0</pose>
+        <geometry>
+          <mesh>
+		<uri>model://hr_recycler_simple_cart/meshes/cart_structure.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+      </visual>
+      <collision name='collision0'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame=''>0.0 -0.0 0.424 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.85 0.80 0.05</size>
+          </box>
+        </geometry>
+      </collision>
+
+     
+      <collision name='collision1'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>-0.1 0.35 0.2145 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.4</size>
+          </box>
+        </geometry>
+      </collision>
+
+       
+      <collision name='collision2'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>0.1 0.35 0.2145 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.419</size>
+          </box>
+        </geometry>
+      </collision>
+
+     
+      <collision name='collision3'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>0.1 -0.35 0.2145 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.419</size>
+          </box>
+        </geometry>
+      </collision>
+
+     <collision name='collision4'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>-0.1 -0.35 0.2145 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.419</size>
+          </box>
+        </geometry>
+      </collision>
+      
+      <collision name='collision5'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>0 0.35 0.025 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.82 0.03 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='collision6'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame='link_0'>0 -0.35 0.025 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.82 0.03 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name='link_qr_structure'>
+      <pose frame='link_0'>0 0 0.443333 0 -0 0</pose>
+      <inertial>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.166667</izz>
+        </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+      </inertial>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      <visual name='visual'>
+        <pose frame=''>0 0 -0.45 0 -0 0</pose>
+        <geometry>
+          <mesh>
+			<uri>model://hr_recyclercart/meshes/qr_structure.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material.dae</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+      </visual>
+    </link>
+    <link name='link_qr_code'>
+      <pose frame=''>0 0 0.198333 0 -0 0</pose>
+      <inertial>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.166667</izz>
+        </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+      </inertial>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      <visual name='visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.021 0.12 0.12</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+		<uri>model://hr_recyclercart/material/scripts</uri>
+		<uri>model://hr_recyclercart/material/textures</uri>
+            <name>ARtrack/marker0_12cm</name>
+          </script>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+      </visual>
+    </link>
+
+
+
+
+    <joint name='link_0_JOINT_qr_structure' type='fixed'>
+      <parent>link_0</parent>
+      <child>link_qr_structure</child>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='link_qr_structure_JOINT_qr_code' type='fixed'>
+      <parent>link_qr_structure</parent>
+      <child>link_qr_code</child>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+
+
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>

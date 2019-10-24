@@ -1,0 +1,28 @@
+steer_controller:
+  type: position_controllers/JointPositionController
+  joint: hr_recycler_backwheel_steer_joint
+  pid:
+    p: 100
+    i: 0.01
+    d: 0.0
+    antiwindup: false
+    publish_state: true
+    
+traction_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: hr_recycler_backwheel_traction_joint
+  pid:
+    p: 100
+    i: 0.01
+    d: 0.0
+    antiwindup: false
+    publish_state: true
+
+joint_read_state_controller:
+  type: joint_state_controller/JointStateController 
+  publish_rate: 100.0
+
+gazebo_ros_control:
+  pid_gains:
+      hr_recycler_backwheel_steer_joint: {p: 100.0, i: 0.01, d: 10.0}
+      hr_recycler_backwheel_traction_joint: {p: 100.0, i: 0.01, d: 10.0}
