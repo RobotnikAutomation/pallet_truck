@@ -51,9 +51,9 @@
 			</material>
 		</visual>
 		<collision>
-			<origin xyz="0 0 -0.0" rpy="0 0 0 " />
+			<origin xyz="-${fork_length/2} 0 0" rpy="0 0 0" />
 			<geometry>
-				<box size="0.65 0.5 0.025" />
+				<box size="${fork_length} ${fork_width} ${fork_height}"/>
 			</geometry>
 			<!--geometry>
 					<mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/>
@@ -78,7 +78,7 @@
 				</geometry>
 		</visual>
 		<collision>
-			<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+			<origin xyz="-0.2 0 0" rpy="${M_PI/2} 0 0" />
 			<geometry>
 				<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
 			</geometry>
