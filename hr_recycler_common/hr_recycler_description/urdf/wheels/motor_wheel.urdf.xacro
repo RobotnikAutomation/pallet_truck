@@ -17,7 +17,7 @@
 
   <xacro:property name="traction_joint_damping" value="1000.0" />
   <xacro:property name="traction_joint_friction" value="1000.0" />
-  <xacro:property name="traction_joint_effort_limit" value="1000.0" />
+  <xacro:property name="traction_joint_effort_limit" value="100000.0" />
   <xacro:property name="traction_joint_velocity_limit" value="6.28" />
   <xacro:property name="traction_mechanical_reduction" value="1.0" />
   <xacro:property name="traction_joint_position_limit" value="1000.0" />
@@ -42,7 +42,7 @@
     </joint>
 
 
-    <!--transmission name="${prefix}wheel_steer_trans">
+    <transmission name="${prefix}wheel_steer_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_steer_joint">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
@@ -51,7 +51,7 @@
         <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
         <mechanicalReduction>${steer_mechanical_reduction}</mechanicalReduction>
       </actuator>
-    </transmission-->
+    </transmission>
 
     <link name="${prefix}wheel_steer_link">
       <!--visual>
@@ -94,7 +94,7 @@
       <dynamics damping="${traction_joint_damping}" friction="${traction_joint_friction}"/>
     </joint>
 
-    <!--transmission name="${prefix}wheel_traction">
+    <transmission name="${prefix}wheel_traction">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_traction_joint">
         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
@@ -103,7 +103,7 @@
         <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
       </actuator>
-    </transmission-->
+    </transmission>
 
     <link name="${prefix}wheel_traction_link">
       <visual>

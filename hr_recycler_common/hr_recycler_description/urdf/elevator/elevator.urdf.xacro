@@ -65,20 +65,20 @@
 			<solid_cuboid_inertia m="0.005" h="0.05" d="0.05" w="0.05"/>
 		</inertial>
 	</link>
-	<joint name="${prefix}_support_wheel_joint" type="fixed">
-			<origin xyz="0 0 -${wheel_radius/2.0+fork_height/2.0}" rpy="0 0 0"/>
+	<joint name="${prefix}_support_wheel_joint" type="continuous">
+			<origin xyz="-0.2 0 -${wheel_radius/2.0+fork_height/2.0}" rpy="0 0 0"/>
 			<parent link="${prefix}_platform_link"/>
 			<child link="${prefix}_support_wheel_link" />
 	</joint>
 	<link name="${prefix}_support_wheel_link">
 		<visual>
-				<origin xyz="-0.2 0 0" rpy="${M_PI/2} 0 0" />
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
 					<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
 				</geometry>
 		</visual>
 		<collision>
-			<origin xyz="-0.2 0 0" rpy="${M_PI/2} 0 0" />
+			<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 			<geometry>
 				<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
 			</geometry>
@@ -89,6 +89,17 @@
 			<cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_height}" />
 		</inertial>
 	</link>
+    
+        <transmission name="${prefix}_support_wheel_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_support_wheel_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_support_wheel_motor">
+        <hardwareInterface>hardware_interface/EffortActuatorInterface</hardwareInterface>
+        <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+      </actuator>
+    </transmission>
 
 	<!--xacro:elevator_transmission prefix="${prefix}" /-->
 	<!--xacro:elevator_gazebo prefix="${prefix}" /-->
