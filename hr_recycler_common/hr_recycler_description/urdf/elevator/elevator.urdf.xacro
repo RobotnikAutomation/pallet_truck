@@ -11,6 +11,10 @@
 	<xacro:property name="fork_width" value="0.11" />
 	<xacro:property name="fork_height" value="0.05" />
 	<xacro:property name="fork_separation" value="0.116" />
+
+	<xacro:property name="support_wheel_radius" value="${wheel_radius/2.0-fork_height/2.0}" />
+	<xacro:property name="support_wheel_height" value="${wheel_height/2.0}" />
+
 	<!-- PARAMS: -->
 	<!-- name : name of the link: -->
 	<!-- hq: selects model in high quality (.dae) -->
@@ -65,6 +69,7 @@
 			<solid_cuboid_inertia m="1" h="0.05" d="0.05" w="0.05"/>
 		</inertial>
 	</link>
+
 	<joint name="${prefix}_support_wheel_joint" type="fixed">
 			<origin xyz="-0.2 0 -${wheel_radius/2.0+fork_height/2.0}" rpy="0 0 0"/>
 			<parent link="${prefix}_platform_link"/>
@@ -74,13 +79,13 @@
 		<visual>
 				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
-					<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
+					<cylinder radius="${support_wheel_radius}" length="${wheel_height}"/>
 				</geometry>
 		</visual>
 		<collision>
 			<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 			<geometry>
-				<cylinder radius="${wheel_radius/2.0-fork_height/2.0}" length="${wheel_height}"/>
+				<cylinder radius="${support_wheel_radius}" length="${wheel_height}"/>
 			</geometry>
 		</collision>
 		<inertial>
