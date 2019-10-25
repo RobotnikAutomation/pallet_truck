@@ -65,7 +65,7 @@
 			<solid_cuboid_inertia m="0.005" h="0.05" d="0.05" w="0.05"/>
 		</inertial>
 	</link>
-	<joint name="${prefix}_support_wheel_joint" type="continuous">
+	<joint name="${prefix}_support_wheel_joint" type="fixed">
 			<origin xyz="-0.2 0 -${wheel_radius/2.0+fork_height/2.0}" rpy="0 0 0"/>
 			<parent link="${prefix}_platform_link"/>
 			<child link="${prefix}_support_wheel_link" />
@@ -89,8 +89,8 @@
 			<cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_height}" />
 		</inertial>
 	</link>
-    
-        <transmission name="${prefix}_support_wheel_transmission">
+
+        <!--transmission name="${prefix}_support_wheel_transmission">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}_support_wheel_joint">
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -99,7 +99,7 @@
         <hardwareInterface>hardware_interface/EffortActuatorInterface</hardwareInterface>
         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
       </actuator>
-    </transmission>
+    </transmission-->
 
 	<!--xacro:elevator_transmission prefix="${prefix}" /-->
 	<!--xacro:elevator_gazebo prefix="${prefix}" /-->

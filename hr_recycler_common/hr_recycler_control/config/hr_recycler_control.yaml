@@ -1,5 +1,5 @@
 steer_controller:
-  type: position_controllers/JointPositionController
+  type: effort_controllers/JointEffortController
   joint: hr_recycler_backwheel_steer_joint
   pid:
     p: 100
@@ -11,12 +11,6 @@ steer_controller:
 traction_controller:
   type: velocity_controllers/JointVelocityController
   joint: hr_recycler_backwheel_traction_joint
-  pid:
-    p: 100
-    i: 0.01
-    d: 0.0
-    antiwindup: false
-    publish_state: true
 
 joint_read_state_controller:
   type: joint_state_controller/JointStateController 
