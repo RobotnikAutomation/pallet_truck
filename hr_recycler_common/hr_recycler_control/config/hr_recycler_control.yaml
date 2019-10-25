@@ -1,5 +1,5 @@
 steer_controller:
-  type: effort_controllers/JointEffortController
+  type: velocity_controllers/JointVelocityController
   joint: hr_recycler_backwheel_steer_joint
   pid:
     p: 100
@@ -7,13 +7,13 @@ steer_controller:
     d: 0.0
     antiwindup: false
     publish_state: true
-    
+
 traction_controller:
   type: velocity_controllers/JointVelocityController
   joint: hr_recycler_backwheel_traction_joint
 
 joint_read_state_controller:
-  type: joint_state_controller/JointStateController 
+  type: joint_state_controller/JointStateController
   publish_rate: 100.0
 
 gazebo_ros_control:

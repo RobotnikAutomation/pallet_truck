@@ -32,7 +32,7 @@
   <xacro:macro name="motor_wheel" params="prefix parent *origin hq">
 
     <!--MOTOR WHEEL -->
-    <joint name="${prefix}wheel_steer_joint" type="fixed">
+    <joint name="${prefix}wheel_steer_joint" type="revolute">
       <parent link="${parent}"/>
       <child link="${prefix}wheel_steer_link"/>
       <xacro:insert_block name="origin" />
@@ -42,16 +42,16 @@
     </joint>
 
 
-    <!--transmission name="${prefix}wheel_steer_trans">
+    <transmission name="${prefix}wheel_steer_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_steer_joint">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       </joint>
       <actuator name="${prefix}wheel_steer_motor">
-        <hardwareInterface>hardware_interface/EffortActuatorInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
         <mechanicalReduction>${steer_mechanical_reduction}</mechanicalReduction>
       </actuator>
-    </transmission-->
+    </transmission>
 
     <link name="${prefix}wheel_steer_link">
       <!--visual>

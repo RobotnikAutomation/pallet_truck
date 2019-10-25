@@ -60,9 +60,9 @@
 				</geometry-->
 		</collision>
 		<inertial>
-			<mass value="0.005" />
+			<mass value="1" />
 			<origin xyz="0 0 -0.27" />
-			<solid_cuboid_inertia m="0.005" h="0.05" d="0.05" w="0.05"/>
+			<solid_cuboid_inertia m="1" h="0.05" d="0.05" w="0.05"/>
 		</inertial>
 	</link>
 	<joint name="${prefix}_support_wheel_joint" type="fixed">
@@ -84,9 +84,9 @@
 			</geometry>
 		</collision>
 		<inertial>
-			<mass value="${wheel_mass}" />
+			<mass value="0.1" />
 			<origin xyz="0 0 0" />
-			<cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_height}" />
+			<cylinder_inertia m="0.1" r="${wheel_radius}" h="${wheel_height}" />
 		</inertial>
 	</link>
 
