@@ -58,7 +58,6 @@
         <xacro:if value="${hq}">
           <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
           <geometry>
-            <cylinder radius="1" length="1"/>
           </geometry>
         </xacro:if>
 
@@ -73,7 +72,6 @@
       <!--collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-             <mesh filename="package://vulcano_base_description/meshes/wheels/steer_wheel.stl" />
         </geometry>
       </collision-->
       <inertial>

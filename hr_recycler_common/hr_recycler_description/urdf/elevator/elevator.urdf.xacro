@@ -10,10 +10,17 @@
 	<xacro:property name="fork_length" value="1.176" />
 	<xacro:property name="fork_width" value="0.11" />
 	<xacro:property name="fork_height" value="0.05" />
+	<xacro:property name="fork_mass" value="25.0" />
+
 	<xacro:property name="fork_separation" value="0.116" />
 
-	<xacro:property name="support_wheel_radius" value="${wheel_radius/2.0-fork_height/2.0}" />
-	<xacro:property name="support_wheel_height" value="${wheel_height/2.0}" />
+	<xacro:property name="support_wheel_radius" value="${wheel_radius/2.0-fork_height/4.0}" />
+	<xacro:property name="support_wheel_length" value="${fork_width}" />
+  <xacro:property name="support_wheel_mass" value="5.0" />
+
+	<xacro:property name="support_wheel_joint_x" value="${0.16-fork_length}" />
+	<xacro:property name="support_wheel_joint_y" value="0.0" />
+	<xacro:property name="support_wheel_joint_z" value="-${wheel_radius/2.0+fork_height/4.0}" />
 
 	<!-- PARAMS: -->
 	<!-- name : name of the link: -->
@@ -28,12 +35,12 @@
   </xacro:macro>
 
 	<!-- ELEVATOR PLATFORM -->
-	<joint name="${prefix}_platform_joint" type="fixed">
+	<joint name="${prefix}_platform_joint" type="prismatic">
 			<xacro:insert_block name="origin" />
 			<parent link="${parent}"/>
 			<child link="${prefix}_platform_link" />
 			<axis xyz="0 0 1"/>
-			<limit effort="1000.0" lower="0.0" upper="0.05" velocity="0.01"/>
+			<limit effort="1000.0" lower="0.0" upper="1.0" velocity="0.01"/>
 	</joint>
 	<link name="${prefix}_platform_link">
 		<visual>
@@ -64,34 +71,37 @@
 				</geometry-->
 		</collision>
 		<inertial>
-			<mass value="1" />
+			<mass value="${fork_mass}" />
 			<origin xyz="0 0 -0.27" />
-			<solid_cuboid_inertia m="1" h="0.05" d="0.05" w="0.05"/>
+			<solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
 		</inertial>
 	</link>
 
-	<joint name="${prefix}_support_wheel_joint" type="fixed">
-			<origin xyz="-0.2 0 -${wheel_radius/2.0+fork_height/2.0}" rpy="0 0 0"/>
+	<joint name="${prefix}_support_wheel_joint" type="continuous">
+			<origin xyz="${support_wheel_joint_x} ${support_wheel_joint_y} ${support_wheel_joint_z}" rpy="0 0 0"/>
 			<parent link="${prefix}_platform_link"/>
 			<child link="${prefix}_support_wheel_link" />
+			<axis xyz="0 1 0" rpy="0 0 0" />
 	</joint>
 	<link name="${prefix}_support_wheel_link">
 		<visual>
 				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
-					<cylinder radius="${support_wheel_radius}" length="${wheel_height}"/>
+					<cylinder radius="${support_wheel_radius}" length="${support_wheel_length}"/>
+					<!--sphere radius="${support_wheel_radius}"/-->
 				</geometry>
 		</visual>
 		<collision>
 			<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 			<geometry>
-				<cylinder radius="${support_wheel_radius}" length="${wheel_height}"/>
+				<cylinder radius="${support_wheel_radius}" length="${support_wheel_length}"/>
+				<!--sphere radius="${support_wheel_radius}" /-->
 			</geometry>
 		</collision>
 		<inertial>
-			<mass value="0.1" />
+			<mass value="${support_wheel_mass}" />
 			<origin xyz="0 0 0" />
-			<cylinder_inertia m="0.1" r="${wheel_radius}" h="${wheel_height}" />
+			<cylinder_inertia m="${support_wheel_mass}" r="${support_wheel_length}" h="${support_wheel_length}" />
 		</inertial>
 	</link>
 

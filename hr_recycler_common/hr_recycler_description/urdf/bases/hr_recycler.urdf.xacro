@@ -12,6 +12,7 @@
   <xacro:property name="base_width" value="0.754" />
   <xacro:property name="base_height" value="0.533" />
   <xacro:property name="base_mass" value="100.0"/>
+  <xacro:property name="visual_base_link_z" value="${wheel_radius+base_height/2.0+separation_wheel_box}" />
 
   <xacro:property name="fork_length" value="1.176" />
   <xacro:property name="fork_width" value="0.11" />
@@ -19,7 +20,6 @@
   <xacro:property name="fork_separation" value="0.116" />
 
   <xacro:property name="separation_wheel_box" value="0.08" />
-
 
   <xacro:macro name="box_inertia" params="m x y z">
     <inertia  ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
@@ -53,7 +53,7 @@
       <box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
     </inertial>
     <visual>
-      <origin xyz="0 0 ${wheel_radius+base_height/2.0+separation_wheel_box}" rpy="0 0 0" />
+      <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
       <geometry>
 	       <box size="${base_length} ${base_width} ${base_height}"/>
       </geometry>
@@ -62,7 +62,7 @@
        </material>
     </visual>
     <collision>
-      <origin xyz="0 0 ${wheel_radius+base_height/2.0+separation_wheel_box}" rpy="0 0 0" />
+      <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
       <geometry>
 	       <box size="${base_length} ${base_width} ${base_height}"/>
       </geometry>

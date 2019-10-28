@@ -33,25 +33,47 @@
 	<xacro:property name="PI" value="3.1415926535897931"/>
 
 	<!-- Wheel parameters -->
-	<xacro:property name="wheel_offset_x" value="0.5"/>    <!-- x,y,z in translation from base_link to the center of the wheel -->
+	<xacro:property name="wheel_offset_x" value="0.0"/>    <!-- x,y,z in translation from base_link to the center of the wheel -->
 	<xacro:property name="wheel_offset_y" value="0.0"/>
-	<xacro:property name="wheel_offset_z" value="0.0"/>
+	<xacro:property name="wheel_offset_z" value="${wheel_radius}"/>
+  <xacro:property name="separation_wheel_box" value="0.08" />
+
+  <!-- Base parameters -->
+  <xacro:property name="base_length" value="0.679" />
+  <xacro:property name="base_height" value="0.533" />
+  <xacro:property name="base_width" value="0.754" />
 
 	<!-- Castor paramters -->
-	<xacro:property name="omni_x" value="0.296"/>
+	<!--xacro:property name="omni_x" value="0.296"/>
 	<xacro:property name="omni_y" value="0.249"/>
-	<xacro:property name="omni_z" value="0.010"/>
+	<xacro:property name="omni_z" value="0.010"/-->
 
 	<!-- Flag to select the high or low quality model -->
 	<xacro:property name="hq" value="true" />
 
+  <!-- ******************* -->
+	<!--  SENSOR PARAMETERS  -->
+	<!-- ******************* -->
+  <xacro:property name="sensor_x" value="${base_length/2.0+sensor_length}" />
+  <xacro:property name="sensor_y" value="0.0" />
+  <xacro:property name="sensor_z" value="${wheel_radius+separation_wheel_box}" />
+  <xacro:property name="sensor_length" value="0.055" />
+
+  <!-- ******************* -->
+	<!--  CAMERA PARAMETERS  -->
+	<!-- ******************* -->
+  <xacro:property name="camera_x" value="-${fork_length}" />
+  <xacro:property name="camera_y" value="0" />
+  <xacro:property name="camera_z" value="0" />
+
+
 	<!-- ******************* -->
 	<!-- ELEVATOR PARAMETERS -->
 	<!-- ******************* -->
-
-	<xacro:property name="elevator_x" value="1.4" />
+	<xacro:property name="elevator_x" value="-${base_length/2.0}" />
 	<xacro:property name="elevator_y" value="0.195" />
 	<xacro:property name="elevator_z" value="0.0" />
+  <xacro:property name="fork_length" value="1.176" />
 
 	<!-- *************** -->
 	<!-- Robots Elements -->
@@ -65,7 +87,7 @@
 	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" />
 
 	<xacro:motor_wheel prefix="$(arg prefix)back" parent="$(arg prefix)base_link" hq="${hq}">
-			<origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+			<origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
 	<xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="$(arg prefix)base_link" hq="${hq}">
@@ -75,6 +97,18 @@
   <xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="$(arg prefix)base_link" hq="${hq}">
 			<origin xyz="${elevator_x} -${elevator_y} ${elevator_z}" rpy="0 0 0"/>
 	</xacro:elevator_platform>
+
+  <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link">
+      <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="0 0 0"/>
+  </xacro:sensor_sick_s300>
+
+  <xacro:sensor_r430 prefix="$(arg prefix)right_fork_camera" parent="$(arg prefix)right_fork_platform_link">
+      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 0"/>
+  </xacro:sensor_r430>
+
+  <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_fork_platform_link">
+      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 0"/>
+  </xacro:sensor_r430>
 
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>
