@@ -19,6 +19,7 @@
 
   <!-- Import HR-RECYCLER elevator -->
 	<xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.urdf.xacro" />
+  <xacro:include filename="$(find hr_recycler_description)/urdf/elevator/both_elevator.urdf.xacro" />
 
 
 	<!-- Import all available sensors -->
@@ -90,13 +91,17 @@
 			<origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
-	<xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="$(arg prefix)base_link" hq="${hq}">
-			<origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-	</xacro:elevator_platform>
+  <xacro:both_elevator prefix="$(arg prefix)both_forks" parent="$(arg prefix)base_link" hq="${hq}">
+      <origin xyz="${elevator_x} 0 ${elevator_z}" rpy="0 0 0"/>
+  </xacro:both_elevator>
 
-  <xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="$(arg prefix)base_link" hq="${hq}">
+	<!--xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="$(arg prefix)base_link" hq="${hq}">
+			<origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
+	</xacro:elevator_platform-->
+
+  <!--xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="$(arg prefix)base_link" hq="${hq}">
 			<origin xyz="${elevator_x} -${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-	</xacro:elevator_platform>
+	</xacro:elevator_platform-->
 
   <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link">
       <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="0 0 0"/>

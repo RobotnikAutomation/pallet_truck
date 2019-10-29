@@ -10,13 +10,13 @@
 	<xacro:property name="fork_length" value="1.176" />
 	<xacro:property name="fork_width" value="0.11" />
 	<xacro:property name="fork_height" value="0.05" />
-	<xacro:property name="fork_mass" value="25.0" />
+	<xacro:property name="fork_mass" value="1.0" />
 
 	<xacro:property name="fork_separation" value="0.116" />
 
 	<xacro:property name="support_wheel_radius" value="${wheel_radius/2.0-fork_height/4.0}" />
 	<xacro:property name="support_wheel_length" value="${fork_width}" />
-  <xacro:property name="support_wheel_mass" value="5.0" />
+  <xacro:property name="support_wheel_mass" value="1.0" />
 
 	<xacro:property name="support_wheel_joint_x" value="${0.16-fork_length}" />
 	<xacro:property name="support_wheel_joint_y" value="0.0" />
@@ -35,7 +35,7 @@
   </xacro:macro>
 
 	<!-- ELEVATOR PLATFORM -->
-	<joint name="${prefix}_platform_joint" type="prismatic">
+	<joint name="${prefix}_platform_joint" type="fixed">
 			<xacro:insert_block name="origin" />
 			<parent link="${parent}"/>
 			<child link="${prefix}_platform_link" />

@@ -16,6 +16,7 @@
 		output="screen" args="
 		                    steer_controller
 		                    traction_controller
+                        elevator_controller
 						            joint_read_state_controller
 						  --shutdown-timeout 1
 						  ">

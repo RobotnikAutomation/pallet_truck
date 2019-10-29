@@ -12,6 +12,16 @@ traction_controller:
   type: velocity_controllers/JointVelocityController
   joint: hr_recycler_backwheel_traction_joint
 
+elevator_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: hr_recycler_both_forks_both_elevator_joint
+  pid:
+    p: 100
+    i: 0.01
+    d: 0.0
+    antiwindup: false
+    publish_state: true
+
 joint_read_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 100.0

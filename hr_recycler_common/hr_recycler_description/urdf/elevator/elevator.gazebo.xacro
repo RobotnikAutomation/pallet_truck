@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 	<xacro:macro name="elevator_gazebo" params="prefix">
-		<gazebo reference="${prefix}_platform_link">
+		<gazebo reference="${prefix}platform_link">
 			<mu1 value="5.0"/>
 			<mu2 value="0.5"/>
 			<kp value="10000000.0" />
@@ -25,7 +25,7 @@
 			<material>Gazebo/Yellow</material>
 			<turnGravityOff>false</turnGravityOff-->
 		</gazebo>
-		
+
 		<!--gazebo reference="${name}_wheel_link">
 			<kp>500000.0</kp>
 			<kd>10.0</kd>
