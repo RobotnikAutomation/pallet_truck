@@ -57,7 +57,7 @@
 	<!-- ******************* -->
   <xacro:property name="sensor_x" value="${base_length/2.0+sensor_length}" />
   <xacro:property name="sensor_y" value="0.0" />
-  <xacro:property name="sensor_z" value="${wheel_radius+separation_wheel_box}" />
+  <xacro:property name="sensor_z" value="${wheel_radius+separation_wheel_box+0.087}" />
   <xacro:property name="sensor_length" value="0.055" />
 
   <!-- ******************* -->
@@ -104,15 +104,15 @@
 	</xacro:elevator_platform-->
 
   <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link">
-      <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="0 0 0"/>
+      <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
-  <xacro:sensor_r430 prefix="$(arg prefix)right_fork_camera" parent="$(arg prefix)right_fork_platform_link">
-      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 0"/>
+  <xacro:sensor_r430 prefix="$(arg prefix)right_fork_camera" parent="$(arg prefix)right_fork_platform_link" prefix_topic="front_right_rgbd_camera">
+      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
   </xacro:sensor_r430>
 
-  <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_fork_platform_link">
-      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 0"/>
+  <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_fork_platform_link" prefix_topic="front_left_rgbd_camera">
+      <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
   </xacro:sensor_r430>
 
 	<!-- Gazebo ros control pluggins -->
