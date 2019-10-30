@@ -63,7 +63,7 @@
   <!-- ******************* -->
 	<!--  CAMERA PARAMETERS  -->
 	<!-- ******************* -->
-  <xacro:property name="camera_x" value="-${fork_length}" />
+  <xacro:property name="camera_x" value="-${fork_length+0.025}" />
   <xacro:property name="camera_y" value="0" />
   <xacro:property name="camera_z" value="0" />
 
@@ -72,7 +72,7 @@
 	<!-- ELEVATOR PARAMETERS -->
 	<!-- ******************* -->
 	<xacro:property name="elevator_x" value="-${base_length/2.0}" />
-	<xacro:property name="elevator_y" value="0.195" />
+	<xacro:property name="elevator_y" value="0.0" />
 	<xacro:property name="elevator_z" value="0.0" />
   <xacro:property name="fork_length" value="1.176" />
 
@@ -92,16 +92,8 @@
 	</xacro:motor_wheel>
 
   <xacro:both_elevator prefix="$(arg prefix)both_forks" parent="$(arg prefix)base_link" hq="${hq}">
-      <origin xyz="${elevator_x} 0 ${elevator_z}" rpy="0 0 0"/>
+      <origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
   </xacro:both_elevator>
-
-	<!--xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="$(arg prefix)base_link" hq="${hq}">
-			<origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-	</xacro:elevator_platform-->
-
-  <!--xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="$(arg prefix)base_link" hq="${hq}">
-			<origin xyz="${elevator_x} -${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-	</xacro:elevator_platform-->
 
   <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link">
       <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="${PI} 0 0"/>
@@ -114,6 +106,12 @@
   <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_fork_platform_link" prefix_topic="front_left_rgbd_camera">
       <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
   </xacro:sensor_r430>
+
+  <!--gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
+    </plugin>
+  </gazebo-->
 
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>

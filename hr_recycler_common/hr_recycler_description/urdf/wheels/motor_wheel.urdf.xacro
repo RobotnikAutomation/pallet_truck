@@ -45,35 +45,15 @@
     <transmission name="${prefix}wheel_steer_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_steer_joint">
-        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
       <actuator name="${prefix}wheel_steer_motor">
-        <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
         <mechanicalReduction>${steer_mechanical_reduction}</mechanicalReduction>
       </actuator>
     </transmission>
 
     <link name="${prefix}wheel_steer_link">
-      <!--visual>
-        <xacro:if value="${hq}">
-          <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
-          <geometry>
-          </geometry>
-        </xacro:if>
-
-        <xacro:unless value="${hq}">
-          <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
-          <geometry>
-            <cylinder radius="1" length="1"/>
-          </geometry>
-        </xacro:unless>
-      </visual-->
-
-      <!--collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-        </geometry>
-      </collision-->
       <inertial>
         <mass value="${wheel_mass}" />
         <origin xyz="0 0 0" />
@@ -130,25 +110,6 @@
         <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_height}" />
       </inertial>
     </link>
-    <!--<gazebo reference="${prefix}wheel_tracion_link">-->
-    <!--<mu1 value="1.0"/>-->
-    <!--<mu2 value="1.0"/>-->
-    <!--[><kp value="10000000.0" /><]-->
-    <!--[><kd value="1.0" /><]-->
-    <!--[><fdir1 value="1 0 0"/><]-->
-    <!--[><turnGravityOff>false</turnGravityOff><]-->
-    <!--</gazebo>-->
-
-
-    <!-- gazebo reference="${prefix}motor_wheel_link">
-        <mu1 value="1.0"/>
-        <mu2 value="1.0"/>
-        <kp value="10000000.0" />
-        <kd value="1.0" />
-        <fdir1 value="1 0 0"/>
-        <turnGravityOff>false</turnGravityOff>
-   </gazebo -->
-
   </xacro:macro>
 
 </robot>

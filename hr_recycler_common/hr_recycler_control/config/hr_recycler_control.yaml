@@ -1,5 +1,5 @@
 steer_controller:
-  type: velocity_controllers/JointPositionController
+  type: position_controllers/JointPositionController
   joint: hr_recycler_backwheel_steer_joint
   pid:
     p: 100
@@ -11,9 +11,15 @@ steer_controller:
 traction_controller:
   type: velocity_controllers/JointVelocityController
   joint: hr_recycler_backwheel_traction_joint
+  pid:
+    p: 100
+    i: 0.01
+    d: 0.0
+    antiwindup: false
+    publish_state: true
 
 elevator_controller:
-  type: velocity_controllers/JointVelocityController
+  type: position_controllers/JointPositionController
   joint: hr_recycler_both_forks_both_elevator_joint
   pid:
     p: 100
@@ -22,11 +28,7 @@ elevator_controller:
     antiwindup: false
     publish_state: true
 
+
 joint_read_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 100.0
-
-#gazebo_ros_control:
-#  pid_gains:
-#      hr_recycler_backwheel_steer_joint: {p: 1000.0, i: 100, d: 0.0}
-#      hr_recycler_backwheel_traction_joint: {p: 10.0, i: 0.01, d: 0.0}
