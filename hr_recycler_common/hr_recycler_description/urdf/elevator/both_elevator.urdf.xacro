@@ -11,29 +11,23 @@
   	<xacro:property name="elevator_z" value="0.0" />
   	<xacro:property name="fork_width" value="0.11" />
   	<xacro:property name="fork_height" value="0.05" />
-  	<xacro:property name="fork_mass" value="1.0" />
-
-
-    <!--xacro:macro name="cylinder_inertia" params="m r h">
-      <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0" iyy="${m*(3*r*r+h*h)/12}" iyz = "0" izz="${m*r*r/2}" />
-    </xacro:macro-->
-
+  	<xacro:property name="fork_mass" value="10.0" />
 
     <joint name="${prefix}_both_elevator_joint" type="prismatic">
         <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
         <child link="${prefix}_platform_link" />
         <axis xyz="0 0 1"/>
-        <limit effort="1000.0" lower="0.0" upper="0.25" velocity="0.01"/>
+        <limit effort="1000.0" lower="0.0" upper="0.25" velocity="1.0"/>
     </joint>
 
     <transmission name="${prefix}both_elevator_transmission">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}_both_elevator_joint">
-        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
       <actuator name="${prefix}_both_elevator_motor">
-        <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
       </actuator>
     </transmission>
@@ -47,11 +41,11 @@
     </link>
 
     <xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="${prefix}_platform_link" hq="${hq}">
-        <origin xyz="0 ${elevator_y} 0" rpy="0 0 0"/>
+        <origin xyz="0 ${elevator_y} -0.02" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
     <xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="${prefix}_platform_link" hq="${hq}">
-        <origin xyz="0 -${elevator_y} 0" rpy="0 0 0"/>
+        <origin xyz="0 -${elevator_y} -0.02" rpy="0 0 0"/>
     </xacro:elevator_platform>
   </xacro:macro>
 </robot>
