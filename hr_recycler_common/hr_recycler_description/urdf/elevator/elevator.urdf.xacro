@@ -1,27 +1,22 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-
-	<xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.transmission.xacro"/>
-	<xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.gazebo.xacro"/>
-
 	<xacro:macro name="elevator_platform" params="prefix parent hq *origin">
-
 
 	<xacro:property name="fork_length" value="1.176" />
 	<xacro:property name="fork_width" value="0.11" />
-	<xacro:property name="fork_height" value="0.03" />
-	<xacro:property name="fork_mass" value="25.0" />
+	<xacro:property name="fork_height" value="0.015" />
+	<xacro:property name="fork_mass" value="10.0" />
 
 	<xacro:property name="fork_separation" value="0.116" />
 
-	<xacro:property name="support_wheel_radius" value="${wheel_radius/2.0-fork_height/2.0}" />
+	<xacro:property name="support_wheel_radius" value="${wheel_radius/4.0}" />
 	<xacro:property name="support_wheel_length" value="${fork_width}" />
-  <xacro:property name="support_wheel_mass" value="5.0" />
+  <xacro:property name="support_wheel_mass" value="10.0" />
 
 	<xacro:property name="support_wheel_joint_x" value="${0.16-fork_length}" />
 	<xacro:property name="support_wheel_joint_y" value="0.0" />
-	<xacro:property name="support_wheel_joint_z" value="-${wheel_radius/2.0+fork_height/4.0}" />
+	<xacro:property name="support_wheel_joint_z" value="-${fork_height/2.0+support_wheel_radius}" />
 
 	<!-- PARAMS: -->
 	<!-- name : name of the link: -->
@@ -67,25 +62,32 @@
 			<geometry>
 				<box size="${fork_length} ${fork_width} ${fork_height}"/>
 			</geometry>
-			<!--geometry>
-					<mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/>
-				</geometry-->
 		</collision>
 		<inertial>
 			<mass value="${fork_mass}" />
-			<origin xyz="0 0 -0.27" />
+			<origin xyz="-${fork_length} 0 0" />
 			<solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
 		</inertial>
 	</link>
 
 	<joint name="${prefix}_support_wheel_joint" type="continuous">
-			<origin xyz="${support_wheel_joint_x} ${support_wheel_joint_y} ${support_wheel_joint_z}" rpy="0 0 0"/>
+ 			<origin xyz="${support_wheel_joint_x} ${support_wheel_joint_y} ${support_wheel_joint_z-0.05}" rpy="0 0 0"/>
 			<parent link="${prefix}_platform_link"/>
 			<child link="${prefix}_support_wheel_link" />
-			<limit effort="1000.0" velocity="1.0"/>
+			<limit effort="1000.0" velocity="100.0"/>
 			<axis xyz="0 1 0" rpy="0 0 0" />
 	</joint>
 
+	<!--transmission name="${prefix}_support_wheel_joint_transmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="${prefix}_support_wheel_joint">
+			<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="${prefix}_both_elevator_motor">
+			<hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+			<mechanicalReduction>$1</mechanicalReduction>
+		</actuator>
+	</transmission-->
 
 	<link name="${prefix}_support_wheel_link">
 		<visual>

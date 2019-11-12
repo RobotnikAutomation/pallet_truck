@@ -10,20 +10,15 @@
 
 	<!-- Load joint controller configurations from YAML file to parameter server -->
 	<rosparam file="$(find hr_recycler_control)/config/hr_recycler_control.yaml" command="load"/>
-
+  <!--rosparam file="$(find hr_recycler_control)/config/hr_recycler_pid.yaml" command="load"/-->
 	<!-- load the controllers -->
 	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
 		output="screen" args="
-		                    steer_controller
-		                    traction_controller
+		                    mobile_controller
                         elevator_controller
 						            joint_read_state_controller
 						  --shutdown-timeout 1
 						  ">
 	</node>
-  <!--node pkg="twist_mux" type="twist_mux" name="twist_mux">
-    <rosparam command="load" file="$(find rbcar_control)/config/twist_mux.yaml" />
-    <remap from="cmd_vel_out" to="/cmd_vel_out" />
-  </node-->
 
 </launch>

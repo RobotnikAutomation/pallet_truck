@@ -50,7 +50,7 @@
     <inertial>
       <mass value="${base_mass}" />
       <origin xyz="0 0 0" />
-      <box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
+      <box_inertia  m="${base_mass/6.0}" x="${base_length}" y="${base_width}" z="${base_height}"/>
     </inertial>
     <visual>
       <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
@@ -68,58 +68,6 @@
       </geometry>
     </collision>
   </link>
-
-  <!-- BASE HELPER! -->
-  <!-- Two small boxes that help the to not tip over -->
-
-  <joint name="${prefix}base_helper_joint" type="continuous">
-    <origin xyz="-${base_length/2.0+0.3} ${base_width/2.0-wheel_radius/2.0} -${wheel_radius/2.0}" rpy="0 0 0" />
-    <parent link="${prefix}base_link"/>
-    <child link="${prefix}base_helper_link" />
-  </joint>
-
-  <link name="${prefix}base_helper_link">
-    <!--visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-         <sphere radius="${wheel_radius/2.0}"/>
-      </geometry>
-       <material name="darkgrey">
-         <color rgba="0.1 0.1 0.1 1"/>
-       </material>
-    </visual-->
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <sphere radius="${wheel_radius/2.0}"/>
-      </geometry>
-    </collision>
-    </link>
-
-    <joint name="${prefix}base_helper_2_joint" type="continuous">
-      <origin xyz="-${base_length/2.0+0.3} -${base_width/2.0-wheel_radius/2.0} -${wheel_radius/2.0}" rpy="0 0 0" />
-      <parent link="${prefix}base_link"/>
-      <child link="${prefix}base_helper_2_link" />
-    </joint>
-
-    <link name="${prefix}base_helper_2_link">
-      <!--visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-           <box size="${wheel_radius} ${wheel_radius} ${wheel_radius}"/>
-        </geometry>
-         <material name="darkgrey">
-           <color rgba="0.1 0.1 0.1 1"/>
-         </material>
-      </visual-->
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <sphere radius="${wheel_radius/2.0}"/>
-        </geometry>
-      </collision>
-      </link>
-
 
   </xacro:macro>
 </robot>
