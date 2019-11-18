@@ -11,7 +11,8 @@ mobile_controller:
   # Odom frame_id
   odom_frame_id: hr_recycler_odom
   enable_odom_tf: true
-  wheel_separation_h :  0.01         
+  #Falta calcular..
+  wheel_separation_h :  1.67         
   wheel_radius : 0.1
 
 steer_controller:

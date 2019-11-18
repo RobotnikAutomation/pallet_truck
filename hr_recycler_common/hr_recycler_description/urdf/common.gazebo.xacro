@@ -9,6 +9,7 @@
         <robotParam>robot_description</robotParam>
         <controlPeriod>0.001</controlPeriod>
 	    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+			<legacyModeNS>true</legacyModeNS>
       </plugin>
    </gazebo>
    </xacro:macro>

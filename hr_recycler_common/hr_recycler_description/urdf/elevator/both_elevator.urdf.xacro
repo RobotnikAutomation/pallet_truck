@@ -11,7 +11,7 @@
   	<xacro:property name="elevator_z" value="${fork_height}" />
   	<xacro:property name="fork_width" value="0.11" />
   	<xacro:property name="fork_height" value="0.015" />
-  	<xacro:property name="fork_mass" value="10.0" />
+  	<xacro:property name="fork_mass" value="1.0" />
     <xacro:property name="fork_separation" value="0.116" />
     <xacro:property name="fork_x" value="0.0" />
     <xacro:property name="fork_y" value="0.195" />
@@ -27,7 +27,7 @@
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
-        <cylinder_inertia m="1" r="1" h="1" />
+        <cylinder_inertia m="7" r="1" h="1" />
       </inertial>
     </link>
 
