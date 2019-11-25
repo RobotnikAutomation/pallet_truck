@@ -5,21 +5,16 @@
 
   <!-- Robot mechanical and motor parameters -->
   <xacro:property name="PI" value="3.1415926535897931"/>
-  <xacro:property name="wheel_width" value="0.220" />
+  
   <xacro:property name="wheel_radius" value="0.10" />
 
   <xacro:property name="base_length" value="0.679" />
   <xacro:property name="base_width" value="0.754" />
   <xacro:property name="base_height" value="0.2" />
   <xacro:property name="base_mass" value="50"/>
-  <xacro:property name="visual_base_link_z" value="${wheel_radius+base_height/2.0+separation_wheel_box}" />
+  <xacro:property name="base_link_height" value="${wheel_radius+base_height/2.0+separation_wheel_box}" />
 
-  <xacro:property name="fork_length" value="1.176" />
-  <xacro:property name="fork_width" value="0.11" />
-  <xacro:property name="fork_height" value="0.05" />
-  <xacro:property name="fork_separation" value="0.116" />
-
-  <xacro:property name="separation_wheel_box" value="0.08" />
+  <xacro:property name="separation_wheel_box" value="0.07" />
 
   <xacro:macro name="box_inertia" params="m x y z">
     <inertia  ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
@@ -28,32 +23,30 @@
   </xacro:macro>
 
   <!-- BASE FOOTPRINT -->
-  <xacro:if value="${publish_bf}">
-    <link name="${prefix}base_footprint">
-      <visual>
-          <origin xyz="0 0 0" rpy="0 0 0" />
-          <geometry>
-             <box size="0.001 0.001 0.001" />
-          </geometry>
-      </visual>
-    </link>
+  <link name="${prefix}base_footprint">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+         <box size="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
 
-    <joint name="${prefix}base_footprint_joint" type="fixed">
-      <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
-      <parent link="${prefix}base_footprint"/>
-      <child link="${prefix}base_link" />
-    </joint>
-  </xacro:if>
+  <joint name="${prefix}base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="${prefix}base_footprint"/>
+    <child link="${prefix}base_link" />
+  </joint>
 
-  <!-- BASE_LINK -->
+  <!-- BASE LINK -->
   <link name="${prefix}base_link">
     <inertial>
       <mass value="${base_mass}" />
-      <origin xyz="0 0 -${wheel_radius}" />
+      <origin xyz="0 0 -${wheel_radius}" /><!-- Base_link's inertia origin ->  base_footprint -->
       <box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
     </inertial>
     <visual>
-      <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
+      <origin xyz="0 0 ${base_link_height}" rpy="0 0 0" />
       <geometry>
 	       <box size="${base_length} ${base_width} ${base_height}"/>
       </geometry>
@@ -62,7 +55,7 @@
        </material>
     </visual>
     <collision>
-      <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
+      <origin xyz="0 0 ${base_link_height}" rpy="0 0 0" />
       <geometry>
 	       <box size="${base_length} ${base_width} ${base_height}"/>
       </geometry>

@@ -2,13 +2,14 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="M_PI" value="3.1415926535897931" />
+
   <!-- Wheels -->
   <xacro:property name="wheel_radius" value="0.1" />
-  <xacro:property name="wheel_height" value="0.1" />
-  <!--xacro:property name="wheel_height" value="0.14" /-->
-  <xacro:property name="wheel_mass" value="4.0" />
-  <!-- in kg-->
+  <xacro:property name="wheel_width" value="0.1" />
+  <!--xacro:property name="wheel_width" value="0.14" /-->
+  <xacro:property name="wheel_mass" value="4.0" /><!-- in kg-->
 
+  <!-- Steer wheel properties -->
   <xacro:property name="steer_joint_damping" value="1000" />
   <xacro:property name="steer_joint_friction" value="1000.0" />
   <xacro:property name="steer_joint_effort_limit" value="9999.0" />
@@ -16,24 +17,26 @@
   <xacro:property name="steer_mechanical_reduction" value="1.0" />
   <xacro:property name="steer_joint_position_limit" value="1.56" />
 
+  <!-- Traction wheel properties -->
   <xacro:property name="traction_joint_damping" value="5" />
   <xacro:property name="traction_joint_friction" value="1000.0" />
   <xacro:property name="traction_joint_effort_limit" value="100000.0" />
   <xacro:property name="traction_joint_velocity_limit" value="100" />
-  <!--xacro:property name="traction_joint_velocity_limit" value="6.28" /-->
+  <!--xacro:property name="traction_joint_velocity_limit" value="6.28" -->
   <xacro:property name="traction_mechanical_reduction" value="1.0" />
-  <xacro:property name="traction_joint_position_limit" value="1000.0" />
 
-
-  <!--xacro:property name="traction_joint_position_limit" value="1000.0" /-->
-
+  <!-- inertial equation depending of forms -->
   <xacro:macro name="cylinder_inertia" params="m r h">
     <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0" iyy="${m*(3*r*r+h*h)/12}" iyz = "0" izz="${m*r*r/2}" />
   </xacro:macro>
 
+  <!-- *********** -->
+  <!-- MOTOR WHEEL -->
+  <!-- *********** -->
+
   <xacro:macro name="motor_wheel" params="prefix parent *origin hq">
 
-    <!--MOTOR WHEEL -->
+    <!-- STEER -->
     <joint name="${prefix}wheel_steer_joint" type="revolute">
       <parent link="${parent}"/>
       <child link="${prefix}wheel_steer_link"/>
@@ -43,7 +46,71 @@
       <dynamics damping="${steer_joint_damping}" friction="${steer_joint_friction}"/>
     </joint>
 
+    <link name="${prefix}wheel_steer_link">
+      <inertial>
+        <mass value="${wheel_mass}" />
+        <origin xyz="0 0 0" />
+        <cylinder_inertia m="${wheel_mass}" r="${wheel_width}" h="${wheel_radius}" />
+      </inertial>
+    </link>
 
+
+    <!-- TRACTION -->
+    <joint name="${prefix}wheel_traction_joint" type="continuous">
+      <parent link="${prefix}wheel_steer_link"/>
+      <child link="${prefix}wheel_traction_link"/>
+      <origin xyz="0 0 -${wheel_radius}" rpy="0 0 ${M_PI}" />
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <limit effort="${traction_joint_effort_limit}" velocity="${traction_joint_velocity_limit}" />
+      <dynamics damping="${traction_joint_damping}" friction="${traction_joint_friction}"/>
+    </joint>
+
+
+    <link name="${prefix}wheel_traction_link">
+      <visual>
+        <xacro:if value="${hq}">
+          <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+          <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+          </geometry>
+        </xacro:if>
+        <xacro:unless value="${hq}">
+          <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+          <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+          </geometry>
+        </xacro:unless>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${wheel_mass}" />
+        <origin xyz="0 0 0" />
+        <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}" />
+      </inertial>
+    </link>
+
+
+    <!-- ***************** -->
+    <!-- GAZEBO PROPERTIES -->
+    <!-- ***************** -->
+
+    <!-- TRACTION LINK -->
+    <gazebo reference="${prefix}wheel_traction_link">
+      <mu1>3</mu1>
+      <mu2>2</mu2>
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- ************* -->
+    <!-- TRANSMISSIONS -->
+    <!-- ************* -->
+
+    <!-- STEER -->
     <transmission name="${prefix}wheel_steer_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_steer_joint">
@@ -55,25 +122,7 @@
       </actuator>
     </transmission>
 
-    <link name="${prefix}wheel_steer_link">
-      <inertial>
-        <mass value="${wheel_mass}" />
-        <origin xyz="0 0 0" />
-        <cylinder_inertia m="${wheel_mass}" r="${wheel_height}" h="${wheel_radius}" />
-      </inertial>
-    </link>
-
-
-    <!--WHEEL TIRE -->
-    <joint name="${prefix}wheel_traction_joint" type="continuous">
-      <parent link="${prefix}wheel_steer_link"/>
-      <child link="${prefix}wheel_traction_link"/>
-      <origin xyz="0 0 -${wheel_radius}" rpy="0 0 ${M_PI}" />
-      <axis xyz="0 1 0" rpy="0 0 0" />
-      <limit effort="${traction_joint_effort_limit}" velocity="${traction_joint_velocity_limit}" />
-      <dynamics damping="${traction_joint_damping}" friction="${traction_joint_friction}"/>
-    </joint>
-
+  <!-- TRACTION -->
     <transmission name="${prefix}wheel_traction">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wheel_traction_joint">
@@ -85,41 +134,5 @@
       </actuator>
     </transmission>
 
-    <link name="${prefix}wheel_traction_link">
-      <visual>
-        <xacro:if value="${hq}">
-          <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
-          <geometry>
-            <cylinder radius="${wheel_radius}" length="${wheel_height}"/>
-          </geometry>
-        </xacro:if>
-        <xacro:unless value="${hq}">
-          <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
-          <geometry>
-            <cylinder radius="${wheel_radius}" length="${wheel_height}"/>
-          </geometry>
-        </xacro:unless>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
-        <geometry>
-          <cylinder radius="${wheel_radius}" length="${wheel_height}"/>
-        </geometry>
-      </collision>
-      <inertial>
-        <mass value="${wheel_mass}" />
-        <origin xyz="0 0 0" />
-        <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_height}" />
-      </inertial>
-    </link>
-
-    <gazebo reference="${prefix}wheel_traction_link">
-      <mu1>3</mu1>
-      <mu2>2</mu2>
-      <material>Gazebo/Black</material>
-    </gazebo>
-
-
   </xacro:macro>
-
 </robot>

@@ -11,30 +11,24 @@
 	<!-- Import HR-RECYCLER base elements -->
   <xacro:include filename="$(find hr_recycler_description)/urdf/bases/hr_recycler.urdf.xacro" />
 
-
 	<!-- Import HR-RECYCLER wheels -->
-	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/rubber_wheel.urdf.xacro" />
-	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/omni_wheel.urdf.xacro" />
 	<xacro:include filename="$(find hr_recycler_description)/urdf/wheels/motor_wheel.urdf.xacro" />
 
   <!-- Import HR-RECYCLER elevator -->
-	<xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.urdf.xacro" />
   <xacro:include filename="$(find hr_recycler_description)/urdf/elevator/both_elevator.urdf.xacro" />
 
-
-	<!-- Import all available sensors -->
+	<!-- Import sensors -->
 	<xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
 
-    <!-- Import Gazebo Stuff -->
+  <!-- Import Gazebo Stuff -->
   <xacro:include filename="$(find hr_recycler_description)/urdf/common.gazebo.xacro" />
 
-	<!-- ***************** -->
 	<!-- Global parameters -->
-	<!-- ***************** -->
 	<xacro:property name="PI" value="3.1415926535897931"/>
 
 	<!-- Wheel parameters -->
-	<xacro:property name="wheel_offset_x" value="0.1"/>    <!-- x,y,z in translation from base_link to the center of the wheel -->
+  <!-- x,y,z in translation from base_link to the center of the wheel -->
+	<xacro:property name="wheel_offset_x" value="0.1"/>
 	<xacro:property name="wheel_offset_y" value="0.0"/>
 	<xacro:property name="wheel_offset_z" value="${wheel_radius}"/>
   <xacro:property name="separation_wheel_box" value="0.08" />
@@ -44,32 +38,21 @@
   <xacro:property name="base_height" value="0.533" />
   <xacro:property name="base_width" value="0.754" />
 
-	<!-- Castor paramters -->
-	<!--xacro:property name="omni_x" value="0.296"/>
-	<xacro:property name="omni_y" value="0.249"/>
-	<xacro:property name="omni_z" value="0.010"/-->
-
 	<!-- Flag to select the high or low quality model -->
 	<xacro:property name="hq" value="true" />
 
-  <!-- ******************* -->
 	<!--  SENSOR PARAMETERS  -->
-	<!-- ******************* -->
   <xacro:property name="sensor_x" value="${base_length/2.0+sensor_length}" />
   <xacro:property name="sensor_y" value="0.0" />
   <xacro:property name="sensor_z" value="${wheel_radius+separation_wheel_box+0.087}" />
   <xacro:property name="sensor_length" value="0.055" />
 
-  <!-- ******************* -->
 	<!--  CAMERA PARAMETERS  -->
-	<!-- ******************* -->
   <xacro:property name="camera_x" value="-${fork_length+0.025}" />
   <xacro:property name="camera_y" value="0" />
   <xacro:property name="camera_z" value="0" />
 
-	<!-- ******************* -->
 	<!-- ELEVATOR PARAMETERS -->
-	<!-- ******************* -->
 	<xacro:property name="elevator_x" value="-${base_length/2.0}" />
 	<xacro:property name="elevator_y" value="0.0" />
 	<xacro:property name="elevator_z" value="${-wheel_radius/2.0+fork_height/2.0}" />
@@ -79,33 +62,31 @@
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
-
 	<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
-	<!-- HR-RECYCLER base -->
 	<xacro:arg name="prefix" default="hr_recycler_"/>
 
-	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" />
+	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" /> <!-- BASE -->
 
-	<xacro:motor_wheel prefix="$(arg prefix)back" parent="$(arg prefix)base_link" hq="${hq}">
+	<xacro:motor_wheel prefix="$(arg prefix)front_" parent="$(arg prefix)base_link" hq="${hq}"> <!-- WHEEL -->
 			<origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
-  <xacro:both_elevator prefix="$(arg prefix)both_forks" parent="$(arg prefix)base_link" hq="${hq}">
-      <origin xyz="${elevator_x} ${elevator_y} ${elevator_z+0.01}" rpy="0 0 0"/>
+  <xacro:both_elevator prefix="$(arg prefix)both_forks" parent="$(arg prefix)base_link" hq="${hq}"> <!-- ELEVATOR -->
+      <origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
   </xacro:both_elevator>
 
-  <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link">
+  <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_link"> <!-- FRONT SENSOR -->
       <origin xyz="${sensor_x} ${sensor_y} ${sensor_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
-  <xacro:sensor_r430 prefix="$(arg prefix)right_fork_camera" parent="$(arg prefix)right_fork_platform_link" prefix_topic="front_right_rgbd_camera">
+  <xacro:sensor_r430 prefix="$(arg prefix)right_fork_camera" parent="$(arg prefix)right_foot_elevator_link" prefix_topic="front_right_rgbd_camera">
       <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
-  </xacro:sensor_r430>
+  </xacro:sensor_r430> <!-- BACK CAMERA -->
 
-  <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_fork_platform_link" prefix_topic="front_left_rgbd_camera">
+  <xacro:sensor_r430 prefix="$(arg prefix)left_fork_camera" parent="$(arg prefix)left_foot_elevator_link" prefix_topic="front_left_rgbd_camera">
       <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
-  </xacro:sensor_r430>
+  </xacro:sensor_r430> <!-- BACK CAMERA -->
 
 	<!-- Gazebo ros control pluggins -->
 

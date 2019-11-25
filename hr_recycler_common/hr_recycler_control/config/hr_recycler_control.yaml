@@ -1,9 +1,9 @@
 mobile_controller:
   type: "ackermann_steering_controller/AckermannSteeringController"
-  rear_wheel: 'hr_recycler_backwheel_traction_joint'
-  front_steer: 'hr_recycler_backwheel_steer_joint'
-  traction_wheel: 'hr_recycler_backwheel_traction_joint'
-  steer_wheel: 'hr_recycler_backwheel_steer_joint'
+  rear_wheel: 'hr_recycler_front_wheel_traction_joint'
+  front_steer: 'hr_recycler_front_wheel_steer_joint'
+  traction_wheel: 'hr_recycler_front_wheel_traction_joint'
+  steer_wheel: 'hr_recycler_front_wheel_steer_joint'
   pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
   twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0] 
   # Base frame_id
@@ -17,7 +17,7 @@ mobile_controller:
 
 steer_controller:
   type: position_controllers/JointPositionController
-  joint: hr_recycler_backwheel_steer_joint
+  joint: hr_recycler_front_wheel_steer_joint
   pid:
     p: 100
     i: 0.01
@@ -27,7 +27,7 @@ steer_controller:
 
 traction_controller:
   type: velocity_controllers/JointVelocityController
-  joint: hr_recycler_backwheel_traction_joint
+  joint: hr_recycler_front_wheel_traction_joint
   pid:
     p: 100
     i: 0.01
@@ -37,7 +37,7 @@ traction_controller:
 
 elevator_controller:
   type: position_controllers/JointPositionController
-  joint: hr_recycler_both_forks_prismatic_both_forks_joint
+  joint: hr_recycler_both_forks_elevator_joint
   pid:
     p: 100
     i: 0.01

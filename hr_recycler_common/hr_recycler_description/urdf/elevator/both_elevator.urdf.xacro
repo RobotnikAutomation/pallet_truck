@@ -1,29 +1,101 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find hr_recycler_description)/urdf/elevator/elevator.urdf.xacro"/>
+  <xacro:include filename="$(find hr_recycler_description)/urdf/wheels/omni_wheel.urdf.xacro" />
 
+  <!-- Fork measurements -->
+  <xacro:property name="fork_length" value="1.176" />
+	<xacro:property name="fork_width" value="0.11" />
+	<xacro:property name="fork_height" value="0.015" />
+	<xacro:property name="fork_mass" value="2.0" />
+
+  <!-- Fork positions -->
+  <xacro:property name="fork_x" value="0.0" />
+  <xacro:property name="fork_y" value="0.195" />
+  <xacro:property name="upper_fork_z" value="${fork_height}" />
+  <xacro:property name="lower_fork_z" value="0.0" />
+  <xacro:property name="visual_fork_position" value="-${fork_length/2}" />
+
+  <!-- Support wheel measurements -->
+  <xacro:property name="support_wheel_radius" value="${wheel_radius/4.0}" />
+  <xacro:property name="support_wheel_length" value="${fork_width}" />
+  <xacro:property name="support_wheel_mass" value="2.0" />
+
+  <!-- Support wheel position -->
+  <xacro:property name="support_wheel_joint_x" value="${0.16-fork_length}" />
+  <xacro:property name="support_wheel_joint_y" value="0.0" />
+  <xacro:property name="support_wheel_joint_z" value="-${fork_height/2.0+support_wheel_radius}" />
+
+  <!-- Limit elevator -->
+  <xacro:property name="upper_limit_elevator" value="0.25" />
+
+  <!-- Inertial equation depending of forms -->
+  <xacro:macro name="solid_cuboid_inertia" params="m h d w">
+   <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
+             iyy="${(m*(w*w+d*d))/12}" iyz = "0"
+             izz="${(m*(w*w+h*h))/12}"
+    />
+  </xacro:macro>
+
+  <!-- Platform is divided into two parts: TOP PLATFORM with a prismatic
+   joint, BELOW PLATFORM which has the two support wheels.-->
+
+  <!-- ************ -->
+  <!-- TOP PLATFORM -->
+  <!-- ************ -->
+  <xacro:macro name="elevator_platform" params="prefix parent hq *origin">
+
+  	<joint name="${prefix}_foot_elevator_joint" type="fixed">
+  			<xacro:insert_block name="origin" />
+  			<parent link="${parent}"/>
+  			<child link="${prefix}_foot_elevator_link" />
+  	</joint>
+
+    <!--Fork -->
+  	<link name="${prefix}_foot_elevator_link">
+  		<visual>
+  			<origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+  			<geometry>
+  				<!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/-->
+  				<box size="${fork_length} ${fork_width} ${fork_height}"/>
+  			</geometry>
+  			<material name="black">
+  				<color rgba="0.0 0.0 0.0 1"/>
+  			</material>
+  		</visual>
+  		<collision>
+  			<origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+  			<geometry>
+  				<box size="${fork_length} ${fork_width} ${fork_height}"/>
+  			</geometry>
+  		</collision>
+  		<inertial>
+  			<mass value="${fork_mass}" />
+  			<origin xyz="-${fork_length} 0 0" />
+  			<solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
+  		</inertial>
+  	</link>
+
+    <!-- Support wheel -->
+  	<xacro:omni_wheel prefix="${prefix}_omni" parent="${prefix}_foot_elevator_link" hq="${hq}">
+  			<origin xyz="${support_wheel_joint_x} ${support_wheel_joint_y} ${support_wheel_joint_z}" rpy="0 0 0"/>
+  	</xacro:omni_wheel>
+
+  </xacro:macro>
+
+  <!-- ************** -->
+  <!-- BELOW PLATFORM -->
+  <!-- ************** -->
   <xacro:macro name="both_elevator" params="prefix parent hq *origin" >
 
-    <xacro:property name="fork_length" value="1.176" />
-    <xacro:property name="elevator_x" value="0.0" />
-  	<xacro:property name="elevator_y" value="0.195" />
-  	<xacro:property name="elevator_z" value="${fork_height}" />
-  	<xacro:property name="fork_width" value="0.11" />
-  	<xacro:property name="fork_height" value="0.015" />
-  	<xacro:property name="fork_mass" value="1.0" />
-    <xacro:property name="fork_separation" value="0.116" />
-    <xacro:property name="fork_x" value="0.0" />
-    <xacro:property name="fork_y" value="0.195" />
-    <xacro:property name="fork_z" value="0.0" />
-
-    <joint name="${prefix}_both_elevator_joint" type="fixed">
+    <joint name="${prefix}_base_elevator_joint" type="fixed">
         <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
-        <child link="${prefix}_platform_link" />
+        <child link="${prefix}_base_elevator_link" />
     </joint>
 
-    <link name="${prefix}_platform_link">
+    <!-- This piece supports the two lower forks -->
+    <link name="${prefix}_base_elevator_link">
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
@@ -31,118 +103,105 @@
       </inertial>
     </link>
 
-    <xacro:elevator_platform prefix="$(arg prefix)left_fork" parent="${prefix}_platform_link" hq="${hq}">
-        <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
+    <!-- Called two lower forks -->
+    <xacro:elevator_platform prefix="$(arg prefix)left" parent="${prefix}_base_elevator_link" hq="${hq}">
+        <origin xyz="${fork_x} ${fork_y} ${lower_fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
-    <xacro:elevator_platform prefix="$(arg prefix)right_fork" parent="${prefix}_platform_link" hq="${hq}">
-        <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
+    <xacro:elevator_platform prefix="$(arg prefix)right" parent="${prefix}_base_elevator_link" hq="${hq}">
+        <origin xyz="${fork_x} -${fork_y} ${lower_fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
-    <joint name="${prefix}_prismatic_both_forks_joint" type="prismatic">
+    <joint name="${prefix}_elevator_joint" type="prismatic">
          <origin xyz="0 0 0" rpy="0 0 0"/>
-         <parent link="${prefix}_platform_link"/>
-         <child link="${prefix}_prismatic_forks_link" />
+         <parent link="${prefix}_base_elevator_link"/>
+         <child link="${prefix}_elevator_link" />
          <axis xyz="0 0 1"/>
-         <limit effort="1000.0" lower="0.0" upper="0.25" velocity="1"/>
+         <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
      </joint>
 
-     <transmission name="${prefix}_prismatic_both_forks_joint_transmission">
+     <!-- This piece holds the forks that are going to be elevated -->
+     <link name="${prefix}_elevator_link">
+       <inertial>
+         <mass value="${fork_mass}" />
+         <origin xyz="0 0 1" />
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
+       </inertial>
+     </link>
+
+     <joint name="${prefix}_left_fork_joint" type="fixed">
+         <origin xyz="${fork_x} ${fork_y} ${upper_fork_z}" rpy="0 0 0"/>
+         <parent link="${prefix}_elevator_link"/>
+         <child link="${prefix}_left_fork" />
+     </joint>
+
+     <link name="${prefix}_left_fork">
+       <visual>
+         <origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+         <geometry>
+          <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.stl"/-->
+           <box size="${fork_length} ${fork_width} ${fork_height}"/>
+         </geometry>
+         <material name="black">
+           <color rgba="0.0 0.0 0.0 1"/>
+         </material>
+       </visual>
+       <collision>
+         <origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="${fork_length} ${fork_width} ${fork_height}"/>
+         </geometry>
+       </collision>
+       <inertial>
+         <mass value="${fork_mass}" />
+         <origin xyz="-1 0 0" />
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
+       </inertial>
+     </link>
+
+     <joint name="${prefix}_right_fork_joint" type="fixed">
+         <origin xyz="${fork_x} -${fork_y} ${upper_fork_z}" rpy="0 0 0"/>
+         <parent link="${prefix}_elevator_link"/>
+         <child link="${prefix}_right_fork" />
+     </joint>
+
+     <link name="${prefix}_right_fork">
+       <visual>
+         <origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+         <geometry>
+             <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/-->
+           <box size="${fork_length} ${fork_width} ${fork_height}"/>
+         </geometry>
+         <material name="black">
+           <color rgba="0.0 0.0 0.0 1"/>
+         </material>
+       </visual>
+       <collision>
+         <origin xyz="${visual_fork_position} 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="${fork_length} ${fork_width} ${fork_height}"/>
+         </geometry>
+       </collision>
+       <inertial>
+         <mass value="${fork_mass}" />
+         <origin xyz="-1 0 0" />
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
+       </inertial>
+     </link>
+
+    <!-- ************* -->
+    <!-- TRANSMISSIONS -->
+    <!-- ************* -->
+     <transmission name="${prefix}_elevator_joint_transmission">
        <type>transmission_interface/SimpleTransmission</type>
-       <joint name="${prefix}_prismatic_both_forks_joint">
+       <joint name="${prefix}_elevator_joint">
          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
        </joint>
-       <actuator name="${prefix}_prismatic_both_forks_joint_motor">
+       <actuator name="${prefix}_elevator_joint_motor">
          <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
          <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
        </actuator>
      </transmission>
-
-     <link name="${prefix}_prismatic_forks_link">
-       <inertial>
-         <mass value="${fork_mass}" />
-         <origin xyz="0 0 1" />
-         <solid_cuboid_inertia m="${fork_mass/2.0}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
-       </inertial>
-     </link>
-
-     <joint name="${prefix}_prismatic_left_fork_joint" type="fixed">
-         <origin xyz="${elevator_x} ${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-         <parent link="${prefix}_prismatic_forks_link"/>
-         <child link="${prefix}_prismatic_left_fork" />
-     </joint>
-
-
-     <link name="${prefix}_prismatic_left_fork">
-       <visual>
-         <origin xyz="-${fork_length/2} 0 0" rpy="0 0 0" />
-         <xacro:if value="${hq}">
-           <geometry>
-             <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/-->
-             <box size="${fork_length} ${fork_width} ${fork_height}"/>
-           </geometry>
-         </xacro:if>
-         <xacro:unless value="${hq}">
-           <geometry>
-             <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.stl"/-->
-             <box size="${fork_length} ${fork_width} ${fork_height}"/>
-           </geometry>
-         </xacro:unless>
-         <material name="black">
-           <color rgba="0.0 0.0 0.0 1"/>
-         </material>
-       </visual>
-       <collision>
-         <origin xyz="-${fork_length/2} 0 0" rpy="0 0 0" />
-         <geometry>
-           <box size="${fork_length} ${fork_width} ${fork_height}"/>
-         </geometry>
-       </collision>
-       <inertial>
-         <mass value="${fork_mass}" />
-         <origin xyz="-1 0 0" />
-         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
-       </inertial>
-     </link>
-
-     <joint name="${prefix}_prismatic_right_fork_joint" type="fixed">
-         <origin xyz="${elevator_x} -${elevator_y} ${elevator_z}" rpy="0 0 0"/>
-         <parent link="${prefix}_prismatic_forks_link"/>
-         <child link="${prefix}_prismatic_right_fork" />
-     </joint>
-
-
-     <link name="${prefix}_prismatic_right_fork">
-       <visual>
-         <origin xyz="-${fork_length/2} 0 0" rpy="0 0 0" />
-         <xacro:if value="${hq}">
-           <geometry>
-             <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.dae"/-->
-             <box size="${fork_length} ${fork_width} ${fork_height}"/>
-           </geometry>
-         </xacro:if>
-         <xacro:unless value="${hq}">
-           <geometry>
-             <!--mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_elevator.stl"/-->
-             <box size="${fork_length} ${fork_width} ${fork_height}"/>
-           </geometry>
-         </xacro:unless>
-         <material name="black">
-           <color rgba="0.0 0.0 0.0 1"/>
-         </material>
-       </visual>
-       <collision>
-         <origin xyz="-${fork_length/2} 0 0" rpy="0 0 0" />
-         <geometry>
-           <box size="${fork_length} ${fork_width} ${fork_height}"/>
-         </geometry>
-       </collision>
-       <inertial>
-         <mass value="${fork_mass}" />
-         <origin xyz="-1 0 0" />
-         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
-       </inertial>
-     </link>
 
   </xacro:macro>
 </robot>
