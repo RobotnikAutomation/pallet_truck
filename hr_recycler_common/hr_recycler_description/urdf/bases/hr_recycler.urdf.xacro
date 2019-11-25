@@ -10,8 +10,8 @@
 
   <xacro:property name="base_length" value="0.679" />
   <xacro:property name="base_width" value="0.754" />
-  <xacro:property name="base_height" value="0.533" />
-  <xacro:property name="base_mass" value="2"/>
+  <xacro:property name="base_height" value="0.2" />
+  <xacro:property name="base_mass" value="50"/>
   <xacro:property name="visual_base_link_z" value="${wheel_radius+base_height/2.0+separation_wheel_box}" />
 
   <xacro:property name="fork_length" value="1.176" />
@@ -50,8 +50,7 @@
     <inertial>
       <mass value="${base_mass}" />
       <origin xyz="0 0 -${wheel_radius}" />
-      <!--box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/-->
-      <box_inertia  m="${base_mass}" x="0.005" y="0.005" z="0.005"/>
+      <box_inertia  m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
     </inertial>
     <visual>
       <origin xyz="0 0 ${visual_base_link_z}" rpy="0 0 0" />
