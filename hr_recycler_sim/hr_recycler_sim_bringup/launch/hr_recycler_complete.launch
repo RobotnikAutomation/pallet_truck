@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+
+    <include file="$(find hr_recycler_description)/launch/hr_recycler_state.launch" />
+    <include file="$(find hr_recycler_gazebo)/launch/simple_gazebo.launch" />
+    <include file="$(find hr_recycler_control)/launch/hr_recycler_control.launch" />
+  
+</launch>
+
