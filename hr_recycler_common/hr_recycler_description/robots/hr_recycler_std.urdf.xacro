@@ -64,27 +64,28 @@
 	<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
 	<xacro:arg name="prefix" default="hr_recycler_"/>
+    <xacro:property name="prefix" value="$(arg prefix)" />
 
-	<xacro:hr_recycler prefix="$(arg prefix)" publish_bf="true" hq="${hq}" /> <!-- BASE -->
+	<xacro:hr_recycler prefix="${prefix}" publish_bf="true" hq="${hq}" /> <!-- BASE -->
 
-	<xacro:motor_wheel prefix="$(arg prefix)front_" parent="$(arg prefix)base_link" hq="${hq}"> <!-- WHEEL -->
+	<xacro:motor_wheel prefix="${prefix}front_" parent="${prefix}base_link" hq="${hq}"> <!-- WHEEL -->
 			<!--origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/-->
       <origin xyz="0 0 0.460" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
-    <xacro:elevator prefix="$(arg prefix)" parent="$(arg prefix)base_link" hq="${hq}"> <!-- ELEVATOR -->
+    <xacro:elevator prefix="${prefix}" parent="${prefix}base_link" hq="${hq}"> <!-- ELEVATOR -->
         <origin xyz="${elevator}" rpy="0 0 0"/>
     </xacro:elevator>
 
-    <xacro:sensor_sick_s300 prefix="$(arg prefix)front_laser" parent="$(arg prefix)base_footprint"> <!-- BACK SENSOR -->
+    <xacro:sensor_sick_s300 prefix="${prefix}front_laser" parent="${prefix}base_footprint"> <!-- BACK SENSOR -->
         <origin xyz="${sensor}" rpy="${PI} 0 0"/>
     </xacro:sensor_sick_s300>
 
-    <xacro:sensor_r430 prefix="$(arg prefix)right_fork" parent="$(arg prefix)elevator_link" prefix_topic="front_right_rgbd_camera">
+    <xacro:sensor_r430 prefix="${prefix}right_fork" parent="${prefix}elevator_link" prefix_topic="front_right_rgbd_camera">
         <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
     </xacro:sensor_r430>
 
-    <xacro:sensor_r430 prefix="$(arg prefix)left_fork" parent="$(arg prefix)elevator_link" prefix_topic="front_left_rgbd_camera">
+    <xacro:sensor_r430 prefix="${prefix}left_fork" parent="${prefix}elevator_link" prefix_topic="front_left_rgbd_camera">
         <origin xyz="${camera_x} -${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
     </xacro:sensor_r430> 
   

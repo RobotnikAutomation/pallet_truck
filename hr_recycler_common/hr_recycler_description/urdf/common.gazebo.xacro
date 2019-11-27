@@ -15,15 +15,15 @@
    </xacro:macro>
 
    <xacro:macro name="gazebo_colors" params="prefix">
-		<gazebo reference="$(arg prefix)base_footprint">
+		<gazebo reference="${prefix}base_footprint">
 			<material>Gazebo/Green</material>
 		</gazebo>
 
-		<gazebo reference="$(arg prefix)base_link">
+		<gazebo reference="${prefix}base_link">
 			<material>Gazebo/Grey</material>
 		</gazebo>
 
-		<gazebo reference="$(arg prefix)front_cover_link">
+		<gazebo reference="${prefix}front_cover_link">
 			<material>Gazebo/Black</material>
 		</gazebo>
 	</xacro:macro>

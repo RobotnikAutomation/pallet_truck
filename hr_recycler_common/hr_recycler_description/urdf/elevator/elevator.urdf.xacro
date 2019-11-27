@@ -104,11 +104,11 @@
      </link>
 
     <!-- Called two lower forks -->
-    <xacro:elevator_platform prefix="$(arg prefix)left_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}left_" parent="${prefix}base_elevator_link" hq="${hq}">
         <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
-    <xacro:elevator_platform prefix="$(arg prefix)right_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}right_" parent="${prefix}base_elevator_link" hq="${hq}">
         <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
