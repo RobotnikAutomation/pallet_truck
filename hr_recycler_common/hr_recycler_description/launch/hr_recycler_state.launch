@@ -3,10 +3,10 @@
   <arg name="version" default="hr_recycler_std.urdf.xacro" />
   <arg name="prefix" default="hr_recycler_"/>
 
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find hr_recycler_description)/robots/$(arg version)' prefix:=$(arg prefix)" />
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hr_recycler_description)/robots/$(arg version)' prefix:=$(arg prefix)" />
 
   <!-- publish tfs through the robot_state_publisher -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
 </launch>
 
