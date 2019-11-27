@@ -35,17 +35,17 @@
   <!-- ************** -->
   <xacro:macro name="elevator_platform" params="prefix parent hq *origin">
 
-  	<joint name="${prefix}_foot_elevator_joint" type="fixed">
+  	<joint name="${prefix}foot_elevator_joint" type="fixed">
   			<xacro:insert_block name="origin" />
   			<parent link="${parent}"/>
-  			<child link="${prefix}_foot_elevator_link" />
+  			<child link="${prefix}foot_elevator_link" />
   	</joint>
 
-  	<link name="${prefix}_foot_elevator_link">
+  	<link name="${prefix}foot_elevator_link">
   	</link>
 
     <!-- Support wheel -->
-  	<xacro:omni_wheel prefix="${prefix}_omni" parent="${prefix}_foot_elevator_link" hq="${hq}">
+  	<xacro:omni_wheel prefix="${prefix}omni" parent="${prefix}foot_elevator_link" hq="${hq}">
   			<origin xyz="${support_wheel_origin}" rpy="0 0 0"/>
   	</xacro:omni_wheel>
 
@@ -54,16 +54,16 @@
   <!-- ************** -->
   <!--    PLATFORM    -->
   <!-- ************** -->
-  <xacro:macro name="both_elevator" params="prefix parent hq *origin" >
+  <xacro:macro name="elevator" params="prefix parent hq *origin" >
 
-    <joint name="${prefix}_base_elevator_joint" type="fixed">
+    <joint name="${prefix}base_elevator_joint" type="fixed">
         <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
-        <child link="${prefix}_base_elevator_link" />
+        <child link="${prefix}base_elevator_link" />
     </joint>
 
     <!-- This piece supports the two lower forks -->
-    <link name="${prefix}_base_elevator_link">
+    <link name="${prefix}base_elevator_link">
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
@@ -71,25 +71,16 @@
       </inertial>
     </link>
 
-    <!-- Called two lower forks -->
-    <xacro:elevator_platform prefix="$(arg prefix)left" parent="${prefix}_base_elevator_link" hq="${hq}">
-        <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
-    </xacro:elevator_platform>
-
-    <xacro:elevator_platform prefix="$(arg prefix)right" parent="${prefix}_base_elevator_link" hq="${hq}">
-        <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
-    </xacro:elevator_platform>
-
-    <joint name="${prefix}_elevator_joint" type="prismatic">
+    <joint name="${prefix}elevator_joint" type="prismatic">
        <xacro:insert_block name="origin" />
-       <parent link="${parent}"/>
-       <child link="${prefix}_elevator_link" />
+       <parent link="${prefix}base_elevator_link"/>
+       <child link="${prefix}elevator_link" />
        <axis xyz="0 0 1"/>
        <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
      </joint>
 
      <!-- This piece holds the forks that are going to be elevated -->
-     <link name="${prefix}_elevator_link">
+     <link name="${prefix}elevator_link">
        <inertial>
          <mass value="${fork_mass}" />
          <origin xyz="0 0 1" />
@@ -98,7 +89,7 @@
        <visual>
          <origin xyz="0 0 0.410" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/HR_recycler_base_forks.stl" scale="-1 1 1"/>
+           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
          </geometry>
           <material name="darkgrey">
             <color rgba="0.1 0.1 0.1 1"/>
@@ -107,20 +98,29 @@
        <collision>
          <origin xyz="0 0 0.410" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/HR_recycler_base_forks.stl" scale="-1 1 1"/>
+           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
          </geometry>
        </collision>
      </link>
 
+    <!-- Called two lower forks -->
+    <xacro:elevator_platform prefix="$(arg prefix)left_" parent="${prefix}base_elevator_link" hq="${hq}">
+        <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
+    </xacro:elevator_platform>
+
+    <xacro:elevator_platform prefix="$(arg prefix)right_" parent="${prefix}base_elevator_link" hq="${hq}">
+        <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
+    </xacro:elevator_platform>
+
     <!-- ************* -->
     <!-- TRANSMISSIONS -->
     <!-- ************* -->
-     <transmission name="${prefix}_elevator_joint_transmission">
+     <transmission name="${prefix}elevator_joint_transmission">
        <type>transmission_interface/SimpleTransmission</type>
-       <joint name="${prefix}_elevator_joint">
+       <joint name="${prefix}elevator_joint">
          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
        </joint>
-       <actuator name="${prefix}_elevator_joint_motor">
+       <actuator name="${prefix}elevator_joint_motor">
          <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
          <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
        </actuator>

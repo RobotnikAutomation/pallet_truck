@@ -38,15 +38,9 @@
     <visual>
       <origin xyz="${base_link_origin}" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://hr_recycler_description/meshes/wheels/HR_recycler_steer.stl" scale="-1 1 1"/>
+        <mesh filename="package://hr_recycler_description/meshes/wheels/hr_recycler_steer.stl" scale="-1 1 1"/>
       </geometry>
     </visual>
-    <!--collision>
-      <origin xyz="${base_link_origin}" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://hr_recycler_description/meshes/wheels/HR_recycler_steer.stl" scale="-1 1 1"/>
-      </geometry>
-    </collision-->
   </link>
 
   </xacro:macro>

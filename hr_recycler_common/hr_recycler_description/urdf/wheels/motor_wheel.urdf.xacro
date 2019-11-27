@@ -70,20 +70,20 @@
         <xacro:if value="${hq}">
           <origin xyz="0 0 -0.125" rpy="0 0 0" />
           <geometry>
-            <mesh filename="package://hr_recycler_description/meshes/wheels/HR_recycler_wheel.stl" scale="1 -0.9 1"/>
+            <mesh filename="package://hr_recycler_description/meshes/wheels/hr_recycler_wheel.stl" scale="1 -0.9 1"/>
           </geometry>
         </xacro:if>
         <xacro:unless value="${hq}">
           <origin xyz="0 0 -0.125" rpy="0 0 0" />
           <geometry>
-            <mesh filename="package://hr_recycler_description/meshes/wheels/HR_recycler_wheel.stl" scale="1 -0.9 1"/>
+            <mesh filename="package://hr_recycler_description/meshes/wheels/hr_recycler_wheel.stl" scale="1 -0.9 1"/>
           </geometry>
         </xacro:unless>
       </visual>
       <collision>
         <origin xyz="0 0 -0.125" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://hr_recycler_description/meshes/wheels/HR_recycler_wheel.stl" scale="1 -0.9 1"/>
+          <mesh filename="package://hr_recycler_description/meshes/wheels/hr_recycler_wheel.stl" scale="1 -0.9 1"/>
         </geometry>
       </collision>
       <inertial>
