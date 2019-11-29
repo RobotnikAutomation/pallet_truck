@@ -19,14 +19,6 @@
   <!-- Limit elevator -->
   <xacro:property name="upper_limit_elevator" value="0.07" />
 
-  <!-- Inertial equation depending of forms -->
-  <xacro:macro name="solid_cuboid_inertia" params="m h d w">
-   <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
-             iyy="${(m*(w*w+d*d))/12}" iyz = "0"
-             izz="${(m*(w*w+h*h))/12}"
-    />
-  </xacro:macro>
-
   <!-- Platform is divided into two parts: TOP PLATFORM with a prismatic
    joint, BELOW PLATFORM which has the two support wheels.-->
 
@@ -63,7 +55,9 @@
        <inertial>
          <mass value="1" />
          <origin xyz="0 0 0" />
-         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_width}" d="${fork_height}" w="${fork_length}"/>
        </inertial>
        <visual>
          <!--<origin xyz="${fork_length} 0 0" rpy="0 0 0" />-->
@@ -110,7 +104,9 @@
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
-        <box_inertia  m="0.001" x="0.001" y="0.001" z="0.001"/>
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="0.001" h="0.001" d="0.001" w="0.001"/>
       </inertial>
     </link> 
 
@@ -135,7 +131,9 @@
       <inertial>
         <mass value="1" />
         <origin xyz="-0.8 0 0" />
-        <box_inertia  m="1" x="1.67" y="0.1" z="0.03"/>
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="0.001" h="0.1" d="0.03" w="1.67"/>
       </inertial>
       <collision>
         <origin xyz="0 0 0.410" rpy="0 0 0" />
