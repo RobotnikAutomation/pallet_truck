@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!-- Source: https://en.wikipedia.org/wiki/List_of_moments_of_inertia-->
+  <!-- source en.wikipedia.org/wiki/List_of_moments_of_inertia-->
 
   <!-- TODO Solid sphere of radius r and mass m-->
   <xacro:macro name="solid_sphere_inertia" params="m r">
