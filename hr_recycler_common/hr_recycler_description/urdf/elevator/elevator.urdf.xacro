@@ -84,9 +84,9 @@
         <geometry>
           <mesh filename="package://hr_recycler_description/meshes/bases/base.stl" scale="-1 1 1"/>
         </geometry>
-         <material name="darkgrey">
-           <color rgba="0.1 0.1 0.1 1"/>
-         </material>
+        <material name="darkgrey">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material>
       </visual>
       <inertial>
         <mass value="1" />
@@ -102,7 +102,7 @@
     </link>
 
     <joint name="${prefix}forks_joint" type="fixed">
-       <xacro:insert_block name="origin" />
+       <origin xyz="-0.363 0.195 0.080" rpy="0 0 3.1415" />
        <parent link="${prefix}elevator_link"/>
        <child link="${prefix}forks_link" />
      </joint>
@@ -111,22 +111,26 @@
      <link name="${prefix}forks_link">
        <inertial>
          <mass value="1" />
-         <origin xyz="-0.2 0 0" />
+         <origin xyz="0 0 0" />
          <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
        </inertial>
        <visual>
-         <origin xyz="-1.3725 0 0.080" rpy="0 0 0" />
+         <!--<origin xyz="${fork_length} 0 0" rpy="0 0 0" />-->
+         <!--<geometry>-->
+           <!--<mesh filename="package://hr_recycler_description/meshes/elevator/single_fork.stl"/>-->
+         <!--</geometry>-->
+         <origin xyz="${fork_length/2.0} 0.0 0.0" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_forks.stl" scale="-1 1 1"/>
+            <box size="${fork_length} ${fork_width} ${fork_height}" />
          </geometry>
-          <material name="darkgrey">
-            <color rgba="0.1 0.1 0.1 1"/>
-          </material>
+         <material name="darkgrey">
+           <color rgba="0.1 0.1 0.1 1.0"/>
+         </material>
        </visual>
        <collision>
-         <origin xyz="-1.3725 0 0.080" rpy="0 0 0" />
+         <origin xyz="${fork_length/2.0} 0.0 0.0" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_forks.stl" scale="-1 1 1"/>
+            <box size="${fork_length} ${fork_width} ${fork_height}" />
          </geometry>
          <surface>
            <friction>
