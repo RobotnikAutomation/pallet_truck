@@ -22,7 +22,7 @@
   <xacro:property name="traction_mechanical_reduction" value="1.0" />
 
 
-  <xacro:property name="steer_origin" value="0 0 0.460"/>
+  <xacro:property name="steer_origin" value="0 0 -0.210"/>
   <xacro:property name="traction_origin" value="0 0 -0.335"/>
 
   <!-- inertial equation -->
@@ -48,7 +48,7 @@
     <link name="${prefix}wheel_steer_link">
       <inertial>
         <mass value="${wheel_mass}" />
-        <origin xyz="${steer_origin}" />
+        <origin xyz="${steer_origin}"/>
         <cylinder_inertia m="${wheel_mass}" r="${wheel_width}" h="${wheel_radius}" />
       </inertial>
     </link>
