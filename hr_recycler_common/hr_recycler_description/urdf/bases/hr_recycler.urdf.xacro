@@ -6,7 +6,6 @@
   <xacro:macro name="hr_recycler" params="prefix publish_bf hq">
 
   <!-- Robot mechanical and motor parameters -->
-  <xacro:property name="wheel_radius" value="0.10" />
   <xacro:property name="base_length" value="0.679" />
   <xacro:property name="base_width" value="0.754" />
   <xacro:property name="base_height" value="0.2" />
