@@ -56,71 +56,86 @@
   <!-- ************** -->
   <xacro:macro name="elevator" params="prefix parent hq *origin" >
 
-    <joint name="${prefix}base_elevator_joint" type="fixed">
+    <joint name="${prefix}base_elevator_joint" type="prismatic">
         <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
         <child link="${prefix}base_elevator_link" />
+        <axis xyz="0 0 1"/>
+        <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
     </joint>
 
     <!-- This piece supports the two lower forks -->
     <link name="${prefix}base_elevator_link">
+      <visual>
+        <origin xyz="0 0 0.410" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://hr_recycler_description/meshes/bases/base.stl" scale="-1 1 1"/>
+        </geometry>
+         <material name="darkgrey">
+           <color rgba="0.1 0.1 0.1 1"/>
+         </material>
+      </visual>
       <inertial>
         <mass value="1" />
-        <origin xyz="0 0 0" />
-        <cylinder_inertia m="7" r="1" h="1" />
+        <origin xyz="-0.8 0 0" />
+        <box_inertia  m="1" x="1.67" y="0.1" z="0.03"/>
       </inertial>
+      <collision>
+        <origin xyz="0 0 0.410" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://hr_recycler_description/meshes/bases/base.stl" scale="-1 1 1"/>
+        </geometry>
+      </collision>
     </link>
 
-    <joint name="${prefix}elevator_joint" type="prismatic">
+    <joint name="${prefix}elevator_joint" type="fixed">
        <xacro:insert_block name="origin" />
        <parent link="${prefix}base_elevator_link"/>
        <child link="${prefix}elevator_link" />
-       <axis xyz="0 0 1"/>
-       <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
      </joint>
 
      <!-- This piece holds the forks that are going to be elevated -->
      <link name="${prefix}elevator_link">
        <inertial>
-         <mass value="${fork_mass}" />
-         <origin xyz="0 0 1" />
+         <mass value="1" />
+         <origin xyz="-0.2 0 0" />
          <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
        </inertial>
        <visual>
-         <origin xyz="0 0 0.410" rpy="0 0 0" />
+         <origin xyz="-1.3725 0 0.080" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
+           <mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_forks.stl" scale="-1 1 1"/>
          </geometry>
           <material name="darkgrey">
             <color rgba="0.1 0.1 0.1 1"/>
           </material>
        </visual>
        <collision>
-         <origin xyz="0 0 0.410" rpy="0 0 0" />
+         <origin xyz="-1.3725 0 0.080" rpy="0 0 0" />
          <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
+           <mesh filename="package://hr_recycler_description/meshes/elevator/hr_recycler_forks.stl" scale="-1 1 1"/>
          </geometry>
        </collision>
      </link>
 
     <!-- Called two lower forks -->
-    <xacro:elevator_platform prefix="${prefix}left_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}left_" parent="${prefix}base_footprint" hq="${hq}">
         <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
-    <xacro:elevator_platform prefix="${prefix}right_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}right_" parent="${prefix}base_footprint" hq="${hq}">
         <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
     <!-- ************* -->
     <!-- TRANSMISSIONS -->
     <!-- ************* -->
-     <transmission name="${prefix}elevator_joint_transmission">
+     <transmission name="${prefix}base_elevator_joint_transmission">
        <type>transmission_interface/SimpleTransmission</type>
-       <joint name="${prefix}elevator_joint">
+       <joint name="${prefix}base_elevator_joint">
          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
        </joint>
-       <actuator name="${prefix}elevator_joint_motor">
+       <actuator name="${prefix}base_elevator_joint_motor">
          <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
          <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
        </actuator>

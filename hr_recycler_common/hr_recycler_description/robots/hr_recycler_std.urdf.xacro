@@ -64,7 +64,7 @@
 	<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
 	<xacro:arg name="prefix" default="hr_recycler_"/>
-    <xacro:property name="prefix" value="$(arg prefix)" />
+  <xacro:property name="prefix" value="$(arg prefix)" />
 
 	<xacro:hr_recycler prefix="${prefix}" publish_bf="true" hq="${hq}" /> <!-- BASE -->
 
@@ -87,8 +87,8 @@
 
     <xacro:sensor_r430 prefix="${prefix}left_fork" parent="${prefix}elevator_link" prefix_topic="front_left_rgbd_camera">
         <origin xyz="${camera_x} -${camera_y} ${camera_z}" rpy="0 0 ${PI}"/>
-    </xacro:sensor_r430> 
-  
+    </xacro:sensor_r430>
+
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>
 
