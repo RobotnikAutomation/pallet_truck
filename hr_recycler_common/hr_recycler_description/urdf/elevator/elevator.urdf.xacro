@@ -19,14 +19,6 @@
   <!-- Limit elevator -->
   <xacro:property name="upper_limit_elevator" value="0.07" />
 
-  <!-- Inertial equation depending of forms -->
-  <xacro:macro name="solid_cuboid_inertia" params="m h d w">
-   <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
-             iyy="${(m*(w*w+d*d))/12}" iyz = "0"
-             izz="${(m*(w*w+h*h))/12}"
-    />
-  </xacro:macro>
-
   <!-- Platform is divided into two parts: TOP PLATFORM with a prismatic
    joint, BELOW PLATFORM which has the two support wheels.-->
 
@@ -50,65 +42,121 @@
   	</xacro:omni_wheel>
 
   </xacro:macro>
+    
+  <xacro:macro name="fork" params="prefix parent hq *origin">
+    <joint name="${prefix}forks_joint" type="fixed">
+  	   <xacro:insert_block name="origin" />
+       <parent link="${parent}"/>
+       <child link="${prefix}fork_link" />
+     </joint>
+
+     <!-- This piece holds the forks that are going to be elevated -->
+     <link name="${prefix}fork_link">
+       <inertial>
+         <mass value="1" />
+         <origin xyz="0 0 0" />
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_width}" d="${fork_height}" w="${fork_length}"/>
+       </inertial>
+       <visual>
+         <!--<origin xyz="${fork_length} 0 0" rpy="0 0 0" />-->
+         <!--<geometry>-->
+           <!--<mesh filename="package://hr_recycler_description/meshes/elevator/single_fork.stl"/>-->
+         <!--</geometry>-->
+         <origin xyz="${fork_length/2.0} 0.0 0.0" rpy="0 0 0" />
+         <geometry>
+            <box size="${fork_length} ${fork_width} ${fork_height}" />
+         </geometry>
+         <material name="darkgrey">
+           <color rgba="0.1 0.1 0.1 1.0"/>
+         </material>
+       </visual>
+       <collision>
+         <origin xyz="${fork_length/2.0} 0.0 0.0" rpy="0 0 0" />
+         <geometry>
+            <box size="${fork_length} ${fork_width} ${fork_height}" />
+         </geometry>
+         <surface>
+           <friction>
+             <ode>
+               <mu>100000</mu>
+               <mu2>50000</mu2>
+             </ode>
+           </friction>
+         </surface>
+       </collision>
+     </link>
+  </xacro:macro>
 
   <!-- ************** -->
   <!--    PLATFORM    -->
   <!-- ************** -->
   <xacro:macro name="elevator" params="prefix parent hq *origin" >
 
-    <joint name="${prefix}base_elevator_joint" type="fixed">
+    <joint name="${prefix}elevator_base_joint" type="fixed">
         <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
-        <child link="${prefix}base_elevator_link" />
+        <child link="${prefix}elevator_base_link" />
     </joint>
-
-    <!-- This piece supports the two lower forks -->
-    <link name="${prefix}base_elevator_link">
+    
+    <link name="${prefix}elevator_base_link" >
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
-        <cylinder_inertia m="7" r="1" h="1" />
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="0.001" h="0.001" d="0.001" w="0.001"/>
       </inertial>
-    </link>
+    </link> 
 
     <joint name="${prefix}elevator_joint" type="prismatic">
-       <xacro:insert_block name="origin" />
-       <parent link="${prefix}base_elevator_link"/>
-       <child link="${prefix}elevator_link" />
-       <axis xyz="0 0 1"/>
-       <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
-     </joint>
+        <parent link="${prefix}elevator_base_link"/>
+        <child link="${prefix}elevator_link" />
+        <axis xyz="0 0 1"/>
+        <limit effort="1000.0" lower="0.0" upper="${upper_limit_elevator}" velocity="1"/>
+    </joint>
 
-     <!-- This piece holds the forks that are going to be elevated -->
-     <link name="${prefix}elevator_link">
-       <inertial>
-         <mass value="${fork_mass}" />
-         <origin xyz="0 0 1" />
-         <solid_cuboid_inertia m="${fork_mass}" h="${fork_height}" d="${fork_length}" w="${fork_width}"/>
-       </inertial>
-       <visual>
-         <origin xyz="0 0 0.410" rpy="0 0 0" />
-         <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
-         </geometry>
-          <material name="darkgrey">
-            <color rgba="0.1 0.1 0.1 1"/>
-          </material>
-       </visual>
-       <collision>
-         <origin xyz="0 0 0.410" rpy="0 0 0" />
-         <geometry>
-           <mesh filename="package://hr_recycler_description/meshes/bases/hr_recycler_base_forks.stl" scale="-1 1 1"/>
-         </geometry>
-       </collision>
-     </link>
+    <!-- This piece supports the two lower forks -->
+    <link name="${prefix}elevator_link">
+      <visual>
+        <origin xyz="0 0 0.410" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://hr_recycler_description/meshes/bases/base.stl" scale="-1 1 1"/>
+        </geometry>
+        <material name="darkgrey">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material>
+      </visual>
+      <inertial>
+        <mass value="1" />
+        <origin xyz="-0.8 0 0" />
+         <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+         <!-- Keep this comment -->
+         <solid_cuboid_inertia m="0.001" h="0.1" d="0.03" w="1.67"/>
+      </inertial>
+      <collision>
+        <origin xyz="0 0 0.410" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://hr_recycler_description/meshes/bases/base.stl" scale="-1 1 1"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <xacro:fork prefix="${prefix}left_" parent="${prefix}elevator_link" hq="${hq}">
+       <origin xyz="-0.363 -0.195 0.080" rpy="0 0 3.1415" />
+    </xacro:fork>
+
+    <xacro:fork prefix="${prefix}right_" parent="${prefix}elevator_link" hq="${hq}">
+       <origin xyz="-0.363 0.195 0.080" rpy="0 0 3.1415" />
+    </xacro:fork>
 
     <!-- Called two lower forks -->
-    <xacro:elevator_platform prefix="${prefix}left_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}left_" parent="${prefix}base_footprint" hq="${hq}">
         <origin xyz="${fork_x} ${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 
-    <xacro:elevator_platform prefix="${prefix}right_" parent="${prefix}base_elevator_link" hq="${hq}">
+    <xacro:elevator_platform prefix="${prefix}right_" parent="${prefix}base_footprint" hq="${hq}">
         <origin xyz="${fork_x} -${fork_y} ${fork_z}" rpy="0 0 0"/>
     </xacro:elevator_platform>
 

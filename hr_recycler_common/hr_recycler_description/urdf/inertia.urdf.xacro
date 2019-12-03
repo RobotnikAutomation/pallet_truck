@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!-- Source: https://en.wikipedia.org/wiki/List_of_moments_of_inertia-->
+  <!-- source en.wikipedia.org/wiki/List_of_moments_of_inertia-->
 
   <!-- TODO Solid sphere of radius r and mass m-->
   <xacro:macro name="solid_sphere_inertia" params="m r">
@@ -35,6 +35,8 @@
   </xacro:macro>
   
   <!-- TODO Solid cuboid of width w, height h, depth d, and mass m -->
+  <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+  <!-- Keep this comment -->
   <xacro:macro name="solid_cuboid_inertia" params="m h d w">
     <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
               iyy="${(m*(w*w+d*d))/12}" iyz = "0"
