@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+
+    <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" />
+    <include file="$(find pallet_truck_gazebo)/launch/simple_gazebo.launch" />
+    <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch" />
+  
+</launch>
+

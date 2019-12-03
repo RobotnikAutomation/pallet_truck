@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="version" default="pallet_truck_std.urdf.xacro" />
+  <arg name="prefix" default="pallet_truck_"/>
+
+  <!-- run state -->
+  <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
+    <arg name="version" value="$(arg version)" />
+    <arg name="prefix" value="$(arg prefix)" />
+  </include>
+
+  <!-- send fake joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="TRUE"/>
+  </node>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz"/>
+
+</launch>

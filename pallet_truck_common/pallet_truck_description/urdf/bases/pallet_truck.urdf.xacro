@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot name="pallet_truck" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find pallet_truck_description)/urdf/inertia.urdf.xacro" />
+
+  <xacro:macro name="pallet_truck" params="prefix publish_bf hq">
+
+  <!-- Robot mechanical and motor parameters -->
+  <xacro:property name="base_length" value="0.679" />
+  <xacro:property name="base_width" value="0.754" />
+  <xacro:property name="base_height" value="0.2" />
+  <xacro:property name="base_mass" value="1"/>
+  <xacro:property name="base_link_origin" value="0 0 0.46" />
+
+
+  <!-- BASE FOOTPRINT -->
+  <link name="${prefix}base_footprint">
+  </link>
+
+  <joint name="${prefix}base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="${prefix}base_footprint"/>
+    <child link="${prefix}base_link" />
+  </joint>
+
+  <!-- BASE LINK -->
+  <link name="${prefix}base_link">
+    <inertial>
+      <mass value="${base_mass}" />
+      <origin xyz="${base_link_origin}" /><!-- Base_link's inertia origin ->  base_footprint -->
+      <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
+      <!-- Keep this comment -->
+      <solid_cuboid_inertia  m="${base_mass}" d="${base_height}" w="${base_length}" h="${base_width}"/>
+    </inertial>
+    <visual>
+      <origin xyz="${base_link_origin}" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_steer.stl" scale="-1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  </xacro:macro>
+</robot>
