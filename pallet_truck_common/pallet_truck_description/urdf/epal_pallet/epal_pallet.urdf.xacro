@@ -2,13 +2,13 @@
 <robot name="pallet" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:include filename="$(find pallet_truck_description)/urdf/inertia.urdf.xacro" />
-  
+
   <xacro:arg name="prefix" default="pallet_"/>
   <xacro:property name="prefix" value="$(arg prefix)" />
 
   <link name="${prefix}base_link">
   </link>
-  
+
   <joint name="${prefix}cover_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.122"/>
     <parent link="${prefix}base_link"/>
@@ -20,7 +20,7 @@
       <origin xyz="0 0 0" />
       <!-- yes, axis in solid_cuboid_inertia are changed, w relates to X axis, d to Z axis, and h to Y axis -->
       <!-- Keep this comment -->
-      <solid_cuboid_inertia m="5" h="0.8" d="0.044" w="1.2"/> <!-- h = z, d = y, w = x -->
+      <solid_cuboid_inertia m="5" h="0.044" d="0.8" w="1.2"/> <!-- h = z, d = y, w = x -->
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -71,7 +71,7 @@
       </geometry>
     </collision>
   </link>
-  
+
   <joint name="${prefix}left_foot_joint" type="fixed">
     <origin rpy="0 0 0" xyz="-0.35 0 0.05"/>
     <parent link="${prefix}base_link"/>

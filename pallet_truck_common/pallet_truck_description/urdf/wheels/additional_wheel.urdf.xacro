@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<robot name="fixed_wheels" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="additional_wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- Wheels -->
   <xacro:property name="support_wheel_radius" value="0.073" />
-  <xacro:property name="support_wheel_mass" value="0.01" />
+  <xacro:property name="support_wheel_mass" value="1" />
 
   <xacro:macro name="solid_sphere_inertia" params="m r">
     <inertia  ixx="${(2*r*r*m)/3}" ixy = "0" ixz = "0"
@@ -13,7 +13,7 @@
      />
   </xacro:macro>
 
-  <xacro:macro name="fixed_wheels" params="prefix parent *origin hq">
+  <xacro:macro name="additional_wheel" params="prefix parent *origin hq">
 
     <!--  -->
     <joint name="${prefix}wheel_joint" type="fixed">
@@ -26,7 +26,7 @@
       <inertial>
         <mass value="${support_wheel_mass}" />
         <origin xyz="0 0 0" rpy="${PI/2.0} 0 0"/>
-        <sphere_inertia  m="${support_wheel_mass}" r="${support_wheel_radius}"/>
+        <solid_sphere_inertia  m="${support_wheel_mass}" r="${support_wheel_radius}"/>
       </inertial>
       <collision>
         <origin xyz="0 0 0" rpy="${PI/2.0} 0 0"/>

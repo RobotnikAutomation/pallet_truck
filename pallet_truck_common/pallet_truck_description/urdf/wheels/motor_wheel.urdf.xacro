@@ -4,7 +4,7 @@
   <!-- Wheels -->
   <xacro:property name="wheel_radius" value="0.125" />
   <xacro:property name="wheel_width" value="0.1" />
-  <xacro:property name="wheel_mass" value="4.0" /><!-- in kg-->
+  <xacro:property name="wheel_mass" value="1.0" /><!-- in kg-->
 
   <!-- Steer wheel properties -->
   <xacro:property name="steer_joint_damping" value="1000" />
