@@ -18,6 +18,14 @@ traction_controller:
   type: velocity_controllers/JointVelocityController
   joint: pallet_truck_front_wheel_traction_joint
 
+right_elevator_wheel_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: pallet_truck_right_wheel_joint
+
+left_elevator_wheel_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: pallet_truck_left_wheel_joint
+
 elevator_controller:
   type: position_controllers/JointPositionController
   joint: pallet_truck_elevator_joint

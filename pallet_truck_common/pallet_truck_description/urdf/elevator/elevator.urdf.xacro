@@ -79,6 +79,20 @@
       <material>Gazebo/Black</material>
     </gazebo>
 
+    <!-- ************* -->
+    <!-- TRANSMISSIONS -->
+    <!-- ************* -->
+     <transmission name="${prefix}wheel_joint_transmission">
+       <type>transmission_interface/SimpleTransmission</type>
+       <joint name="${prefix}wheel_joint">
+         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+       </joint>
+       <actuator name="${prefix}wheel_joint_motor">
+         <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+       </actuator>
+     </transmission>
+
   </xacro:macro>
 
   <xacro:macro name="fork" params="prefix parent hq *origin">

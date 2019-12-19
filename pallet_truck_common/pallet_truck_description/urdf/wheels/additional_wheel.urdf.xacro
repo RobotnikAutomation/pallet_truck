@@ -5,6 +5,7 @@
   <!-- Wheels -->
   <xacro:property name="support_wheel_radius" value="0.073" />
   <xacro:property name="support_wheel_mass" value="1" />
+  <xacro:property name="wheel_mechanical_reduction" value="1" />
 
   <xacro:macro name="solid_sphere_inertia" params="m r">
     <inertia  ixx="${(2*r*r*m)/3}" ixy = "0" ixz = "0"
@@ -50,6 +51,20 @@
 		<turnGravityOff>false</turnGravityOff>
     </gazebo>
 
+    <!-- ***************** -->
+    <!--    TRANSMISSONS   -->
+    <!-- ***************** -->
+
+    <transmission name="${prefix}wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}wheel_joint">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}wheel_joint_motor">
+        <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+        <mechanicalReduction>${wheel_mechanical_reduction}</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 
 </robot>

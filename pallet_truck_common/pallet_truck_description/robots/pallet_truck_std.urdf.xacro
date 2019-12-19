@@ -63,11 +63,11 @@
 	</xacro:motor_wheel>
 
   <!--xacro:additional_wheel prefix="${prefix}front_left" parent="${prefix}base_link" hq="${hq}">
-			<origin xyz="1 1 1" rpy="0 0 0"/>
-	</xacro:additional_wheel-->
+			<origin xyz="-0.3 0.3 -0.4235" rpy="0 0 0"/>
+	</xacro:additional_wheel>
 
-  <!--xacro:additional_wheel prefix="${prefix}front_right" parent="${prefix}base_link" hq="${hq}">
-      <origin xyz="1 -1 1" rpy="0 0 0"/>
+  <xacro:additional_wheel prefix="${prefix}front_right" parent="${prefix}base_link" hq="${hq}">
+      <origin xyz="-0.3 -0.3 -0.4235" rpy="0 0 0"/>
   </xacro:additional_wheel-->
 
   <xacro:elevator prefix="${prefix}" parent="${prefix}base_link" hq="${hq}"> <!-- ELEVATOR -->
