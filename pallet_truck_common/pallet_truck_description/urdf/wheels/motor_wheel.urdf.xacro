@@ -59,7 +59,7 @@
       <parent link="${prefix}wheel_steer_link"/>
       <child link="${prefix}wheel_traction_link"/>
       <origin xyz="${traction_origin}" rpy="0 0 0" />
-      <axis xyz="0 1 0" rpy="0 0 0" />
+      <axis xyz="0 -1 0" rpy="0 0 0" />
       <limit effort="${traction_joint_effort_limit}" velocity="${traction_joint_velocity_limit}" />
       <dynamics damping="${traction_joint_damping}" friction="${traction_joint_friction}"/>
     </joint>
