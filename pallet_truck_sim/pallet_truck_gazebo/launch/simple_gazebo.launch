@@ -8,7 +8,7 @@
 	<!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<!--arg name="world_name" value="$(find pallet_truck_gazebo)/worlds/pallet_truck_office.world"/-->
-		<arg name="world_name" value="$(find pallet_truck_gazebo)/worlds/pallet_truck_europallet.world"/>
+		<arg name="world_name" value="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
 		<arg name="debug" value="$(arg debug)" />
 		<arg name="paused" value="true"/>
 		<arg name="use_sim_time" value="true"/>
@@ -17,7 +17,7 @@
 	</include>
 
     <node name="urdf_spawner_pallet_truck_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-		 args="-z 0.2 -urdf -param robot_description -model pallet_truck" />
+		 args="-z 0.0 -urdf -param robot_description -model pallet_truck" />
 
 
 </launch>

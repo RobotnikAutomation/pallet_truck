@@ -16,6 +16,7 @@
 
   <!-- Import HR-RECYCLER additional wheels -->
   <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/additional_wheel.urdf.xacro" />
+  <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/omni_wheel.urdf.xacro" />
 
   <!-- Import HR-RECYCLER elevator -->
   <xacro:include filename="$(find pallet_truck_description)/urdf/elevator/elevator.urdf.xacro" />
@@ -40,9 +41,9 @@
 	<xacro:property name="hq" value="true" />
 
 	<!--  FORK CAMERAS  -->
-  <xacro:property name="fork_camera_x" value="1.525" />
+  <xacro:property name="fork_camera_x" value="1.54" />
   <xacro:property name="fork_camera_y" value="0.195" />
-  <xacro:property name="fork_camera_z" value="0.0825" />
+  <xacro:property name="fork_camera_z" value="0.375" />
 
    <!-- FRONT LASER -->
  <xacro:property name="front_laser_x" value="-0.2529" />
@@ -62,29 +63,37 @@
 			<origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
+  <xacro:additional_wheel1 prefix="${prefix}front_left" parent="${prefix}base_link" hq="${hq}">
+      <origin xyz="-0.2 0.2 -0.4235" rpy="0 0 0"/>
+  </xacro:additional_wheel1>
+
+  <xacro:additional_wheel1 prefix="${prefix}front_right" parent="${prefix}base_link" hq="${hq}">
+      <origin xyz="-0.2 -0.2 -0.4235" rpy="0 0 0"/>
+  </xacro:additional_wheel1>
+
   <!--xacro:additional_wheel prefix="${prefix}front_left" parent="${prefix}base_link" hq="${hq}">
-			<origin xyz="-0.3 0.3 -0.4235" rpy="0 0 0"/>
+			<origin xyz="-0.2 0.2 -0.4235" rpy="0 0 0"/>
 	</xacro:additional_wheel>
 
   <xacro:additional_wheel prefix="${prefix}front_right" parent="${prefix}base_link" hq="${hq}">
-      <origin xyz="-0.3 -0.3 -0.4235" rpy="0 0 0"/>
+      <origin xyz="-0.2 -0.2 -0.4235" rpy="0 0 0"/>
   </xacro:additional_wheel-->
 
   <xacro:elevator prefix="${prefix}" parent="${prefix}base_link" hq="${hq}"> <!-- ELEVATOR -->
       <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:elevator>
 
-  <!--xacro:sensor_sick_s300 prefix="${prefix}front_laser" parent="${prefix}base_footprint"> <!- - FRONT LIDAR - ->
+  <xacro:sensor_sick_s300 prefix="${prefix}front_laser" parent="${prefix}base_footprint"> <!-- FRONT LIDAR -->
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 ${PI}"/>
   </xacro:sensor_sick_s300>
 
   <xacro:sensor_r430 prefix="${prefix}right_fork" parent="${prefix}elevator_link" prefix_topic="right_fork_rgbd_camera">
-      <origin xyz="${fork_camera_x} ${fork_camera_y} ${fork_camera_z}" rpy="0 0 ${PI}"/>
+      <origin xyz="${fork_camera_x} ${fork_camera_y} -${fork_camera_z}" rpy="0 0 0"/>
   </xacro:sensor_r430>
 
   <xacro:sensor_r430 prefix="${prefix}left_fork" parent="${prefix}elevator_link" prefix_topic="left_fork_rgbd_camera">
-      <origin xyz="${fork_camera_x} -${fork_camera_y} ${fork_camera_z}" rpy="0 0 ${PI}"/>
-  </xacro:sensor_r430-->
+      <origin xyz="${fork_camera_x} -${fork_camera_y} -${fork_camera_z}" rpy="0 0 0"/>
+  </xacro:sensor_r430>
 
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>

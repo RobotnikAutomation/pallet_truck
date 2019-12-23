@@ -57,14 +57,6 @@
         <geometry>
           <cylinder radius="${support_wheel_radius}" length="${support_wheel_length}" />
         </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>100000</mu>
-              <mu2>1000000</mu2>
-            </ode>
-          </friction>
-        </surface>
       </collision>
   	</link>
 
@@ -131,16 +123,20 @@
          <geometry>
             <box size="${fork_length} ${fork_width} ${fork_height}" />
          </geometry>
-         <surface>
-           <friction>
-             <ode>
-               <mu>100000</mu>
-               <mu2>50000</mu2>
-             </ode>
-           </friction>
-         </surface>
        </collision>
      </link>
+
+     <!-- ***************** -->
+     <!-- GAZEBO PROPERTIES -->
+     <!-- ***************** -->
+
+     <!-- FORK LINK -->
+     <gazebo reference="${prefix}fork_link">
+       <mu1>100000</mu1>
+       <mu2>100000</mu2>
+       <material>Gazebo/Black</material>
+     </gazebo>
+
   </xacro:macro>
 
   <!-- ************** -->

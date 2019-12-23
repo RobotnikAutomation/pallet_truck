@@ -91,9 +91,9 @@
             <ixx>0.973027</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>1.48389</iyy>
+            <iyy>0.517473</iyy>
             <iyz>0</iyz>
-            <izz>0.517473</izz>
+            <izz>1.48389</izz>
           </inertia>
         </inertial>
         <self_collide>0</self_collide>
@@ -374,7 +374,7 @@
       </link>
       <static>0</static>
       <allow_auto_disable>1</allow_auto_disable>
-      <pose frame=''>-3 0 0 0 0 1.570796</pose>
+      <pose frame=''>3 0 0 0 0 1.570796</pose>
     </model>
     <gui fullscreen='0'>
       <camera name='user_camera'>

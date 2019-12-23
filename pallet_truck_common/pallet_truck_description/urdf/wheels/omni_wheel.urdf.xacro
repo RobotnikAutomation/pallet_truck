@@ -1,46 +1,73 @@
 <?xml version="1.0"?>
-<robot name="fixed_wheels" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="additional_wheel1" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- Wheels -->
-  <xacro:property name="support_wheel_radius" value="0.073" />
-  <xacro:property name="support_wheel_mass" value="0.01" />
+  <xacro:property name="omni_wheel_radius" value="0.036" />
+  <xacro:property name="omni_wheel_height" value="0.070" />
+  <xacro:property name="omni_wheel_mass" value="0.01" />
 
-  <xacro:macro name="solid_sphere_inertia" params="m r">
-    <inertia  ixx="${(2*r*r*m)/3}" ixy = "0" ixz = "0"
-              iyy="${(2*r*r*m)/3}" iyz = "0"
-              izz="${(2*r*r*m)/3}"
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+              iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+              izz="${m*r*r/2}"
      />
   </xacro:macro>
 
-  <xacro:macro name="fixed_wheels" params="prefix parent *origin hq">
+  <xacro:macro name="additional_wheel1" params="prefix parent *origin hq">
 
-    <!--  -->
-    <joint name="${prefix}wheel_joint" type="fixed">
-  			<xacro:insert_block name="origin" />
-  			<parent link="${parent}"/>
-  			<child link="${prefix}wheel_base_link" />
-  	</joint>
+    <!--WHEEL TIRE -->
+    <joint name="${prefix}_wheel_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_wheel_link"/>
+      <xacro:insert_block name="origin" />
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <limit effort="100" velocity="100"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
 
-  	<link name="${prefix}wheel_base_link">
-      <inertial>
-        <mass value="${support_wheel_mass}" />
-        <origin xyz="0 0 0" rpy="${PI/2.0} 0 0"/>
-        <sphere_inertia  m="${support_wheel_mass}" r="${support_wheel_radius}"/>
-      </inertial>
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <!-- HIGH RESOLUTION WHEELS -->
+        <xacro:if value="${hq}">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+				    <!--mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_omni_wheel_fake.dae"/-->
+            <sphere radius="${omni_wheel_radius}"/>
+          </geometry>
+        </xacro:if>
+       <!-- LOW RESOLUTION WHEELS -->
+        <xacro:unless value="${hq}">
+          <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+          <geometry>
+            <!--cylinder length="${omni_wheel_height}" radius="${omni_wheel_radius}" /-->
+            <sphere radius="${omni_wheel_radius}"/>
+          </geometry>
+        </xacro:unless>
+      </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="${PI/2.0} 0 0"/>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
         <geometry>
-          <sphere radius="${support_wheel_radius}"/>
+          <sphere radius="${omni_wheel_radius}"/>
         </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.0001</mu>
+              <mu2>0.0001</mu2>
+            </ode>
+          </friction>
+			  </surface>
       </collision>
-  	</link>
+      <inertial>
+        <mass value="${wheel_mass}" />
+        <origin xyz="0 0 0" />
+        <cylinder_inertia  m="${omni_wheel_mass}" r="${omni_wheel_radius}" h="${omni_wheel_height}" />
+        <!-- inertia  ixx="0.001" ixy="0.0"  ixz="0.0"  iyy="0.001"  iyz="0.0"  izz="0.001" / -->
+      </inertial>
+    </link>
 
-    <!-- ***************** -->
-    <!-- GAZEBO PROPERTIES -->
-    <!-- ***************** -->
-
-    <gazebo reference="${prefix}wheel_base_link">
+    <gazebo reference="${prefix}wheel">
 		<mu1 value="0"/>
 		<mu2 value="0"/>
 		<kp value="10000000.0" />

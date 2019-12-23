@@ -17,13 +17,13 @@
   <xacro:macro name="additional_wheel" params="prefix parent *origin hq">
 
     <!--  -->
-    <joint name="${prefix}wheel_joint" type="fixed">
+    <joint name="${prefix}_wheel_joint" type="fixed">
   			<xacro:insert_block name="origin" />
   			<parent link="${parent}"/>
-  			<child link="${prefix}wheel_base_link" />
+  			<child link="${prefix}_wheel_base_link" />
   	</joint>
 
-  	<link name="${prefix}wheel_base_link">
+  	<link name="${prefix}_wheel_base_link">
       <inertial>
         <mass value="${support_wheel_mass}" />
         <origin xyz="0 0 0" rpy="${PI/2.0} 0 0"/>
@@ -41,7 +41,7 @@
     <!-- GAZEBO PROPERTIES -->
     <!-- ***************** -->
 
-    <gazebo reference="${prefix}wheel_base_link">
+    <gazebo reference="${prefix}_wheel_base_link">
 		<mu1 value="0"/>
 		<mu2 value="0"/>
 		<kp value="10000000.0" />
@@ -55,12 +55,12 @@
     <!--    TRANSMISSONS   -->
     <!-- ***************** -->
 
-    <transmission name="${prefix}wheel_trans">
+    <transmission name="${prefix}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}wheel_joint">
+      <joint name="${prefix}_wheel_joint">
         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       </joint>
-      <actuator name="${prefix}wheel_joint_motor">
+      <actuator name="${prefix}_wheel_joint_motor">
         <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
         <mechanicalReduction>${wheel_mechanical_reduction}</mechanicalReduction>
       </actuator>
