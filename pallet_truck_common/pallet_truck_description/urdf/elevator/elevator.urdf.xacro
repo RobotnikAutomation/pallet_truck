@@ -93,8 +93,18 @@
        <parent link="${parent}"/>
        <child link="${prefix}fork_link" />
        <limit effort="1000.0" lower="0.0" upper="0" velocity="1"/>
-
      </joint>
+
+     <transmission name="${prefix}fork_joint_transmission">
+       <type>transmission_interface/SimpleTransmission</type>
+       <joint name="${prefix}fork_joint">
+         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+       </joint>
+       <actuator name="${prefix}fork_joint_motor">
+         <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
+         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+       </actuator>
+     </transmission>
 
      <!-- This piece holds the forks that are going to be elevated -->
      <link name="${prefix}fork_link">
@@ -200,12 +210,12 @@
     </xacro:fork>
 
     <!-- Called two support wheels -->
-    <xacro:support_wheel prefix="${prefix}left_" parent="${prefix}base_footprint" hq="${hq}">
-        <origin xyz="1.3725 0.195 0.04" rpy="0 0 0"/>
+    <xacro:support_wheel prefix="${prefix}left_" parent="${prefix}central_link" hq="${hq}">
+        <origin xyz="1.3725 0.195 -0.42" rpy="0 0 0"/>
     </xacro:support_wheel>
 
-    <xacro:support_wheel prefix="${prefix}right_" parent="${prefix}base_footprint" hq="${hq}">
-        <origin xyz="1.3725 -0.195 0.04" rpy="0 0 0"/>
+    <xacro:support_wheel prefix="${prefix}right_" parent="${prefix}central_link" hq="${hq}">
+        <origin xyz="1.3725 -0.195 -0.42" rpy="0 0 0"/>
     </xacro:support_wheel>
 
     <!-- ************* -->
