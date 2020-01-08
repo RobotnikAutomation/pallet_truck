@@ -9,6 +9,7 @@ mobile_controller:
   enable_odom_tf: true
   wheel_separation_h : 1.3725
   wheel_radius : 0.125
+  wheel_radius_multiplier: 1
 
 steer_controller:
   type: position_controllers/JointPositionController
