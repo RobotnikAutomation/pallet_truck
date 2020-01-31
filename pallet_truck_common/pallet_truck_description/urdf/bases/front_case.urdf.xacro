@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="front_case_mass" value="10" />
+
+  <xacro:macro name="front_case" params="prefix parent *origin">
+
+    <joint name="${prefix}front_case_joint" type="fixed">
+       <xacro:insert_block name="origin" />
+       <parent link="${parent}"/>
+       <child link="${prefix}front_case_link" />
+     </joint>
+
+     <link name="${prefix}front_case_link">
+       <inertial>
+         <mass value="${front_case_mass}" />
+         <origin xyz="0.226093 0.0 -0.285579" />
+         <inertia ixx="0.644" ixy="0.0" ixz="0.0" iyy="0.4944" iyz="0.0" izz="0.391"/>  <!-- Multiplicar por la masa -->
+       </inertial>
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://pallet_truck_description/meshes/bases/front_case.stl"/>
+         </geometry>
+       </visual>
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://pallet_truck_description/meshes/bases/front_case.stl"/>
+         </geometry>
+       </collision>
+     </link>
+
+  </xacro:macro>
+</robot>

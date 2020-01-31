@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot name="battery_case" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find pallet_truck_description)/urdf/inertia.urdf.xacro" />
+
+  <xacro:include filename="$(find pallet_truck_description)/urdf/elevator/fork.urdf.xacro" />
+
+      <!-- Robot mechanical and motor parameters -->
+  <xacro:property name="battery_case_mass" value="10"/>
+
+  <xacro:property name="fork_offset_x" value="-0.4325"/>
+  <xacro:property name="fork_offset_y" value="0.201"/>
+  <xacro:property name="fork_offset_z" value="-0.662"/>
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+  <xacro:macro name="battery_case" params="prefix parent *origin">
+
+  <joint name="${prefix}elevator_joint" type="prismatic">
+    <xacro:insert_block name="origin" />
+    <parent link="${parent}"/>
+    <child link="${prefix}battery_case_link" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0" upper="0.106" velocity="1"/>
+</joint>
+
+  <link name="${prefix}battery_case_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://pallet_truck_description/meshes/bases/battery_case.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://pallet_truck_description/meshes/bases/battery_case.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${battery_case_mass}" />
+      <origin xyz="-0.249758 0.0 -0.416592"/>
+      <!--inertia ixx="0.001371" ixy="-0.000021" ixz="-0.000146" iyy="0.000854" iyz="-0.000068" izz="0.000925"/-->
+      <inertia ixx="0.5824" ixy="0.0" ixz="0.0" iyy="0.5824" iyz="0.0" izz="0.4166"/>  <!-- Multiplicar por la masa -->
+    </inertial>
+  </link>
+
+  <xacro:fork prefix="${prefix}left_" parent="${prefix}battery_case_link">
+     <origin xyz="${fork_offset_x} ${fork_offset_y} ${fork_offset_z}" rpy="0 0 0" />
+  </xacro:fork>
+
+  <xacro:fork prefix="${prefix}right_" parent="${prefix}battery_case_link">
+     <origin xyz="${fork_offset_x} -${fork_offset_y} ${fork_offset_z}" rpy="0 0 0" />
+  </xacro:fork>
+
+  <transmission name="${prefix}elevator_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${prefix}elevator_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${prefix}elevator_motor">
+      <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
+      <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  </xacro:macro>
+</robot>

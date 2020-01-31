@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/castor_wheel.urdf.xacro" />
+
+  <!-- Fork measurements -->
+  <xacro:property name="fork_length" value="1.05" />
+	<xacro:property name="fork_width" value="0.157" />
+	<xacro:property name="fork_height" value="0.037" />
+	<xacro:property name="fork_mass" value="1" />
+
+  <xacro:macro name="fork" params="prefix parent *origin">
+
+    <joint name="${prefix}fork_joint" type="prismatic">
+       <xacro:insert_block name="origin" />
+       <parent link="${parent}"/>
+       <child link="${prefix}fork_link" />
+       <limit effort="1000.0" lower="0" upper="0" velocity="1"/>
+     </joint>
+
+     <link name="${prefix}fork_link">
+       <inertial>
+         <mass value="${fork_mass}" />
+         <origin xyz="-0.581270 0.000014 0.012941" />
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_width}" d="${fork_height}" w="${fork_length}"/>
+       </inertial>
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://pallet_truck_description/meshes/elevator/single_fork.stl"/>
+         </geometry>
+       </visual>
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://pallet_truck_description/meshes/elevator/single_fork.stl"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <transmission name="${prefix}fork_transmission">
+       <type>transmission_interface/SimpleTransmission</type>
+       <joint name="${prefix}fork_joint">
+         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+       </joint>
+       <actuator name="${prefix}fork_motor">
+         <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
+         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+       </actuator>
+     </transmission>
+
+     <!-- ***************** -->
+     <!-- GAZEBO PROPERTIES -->
+     <!-- ***************** -->
+
+     <!-- FORK LINK -->
+     <gazebo reference="${prefix}fork_link">
+       <mu1>100000</mu1>
+       <mu2>100000</mu2>
+       <material>Gazebo/Black</material>
+     </gazebo>
+
+  </xacro:macro>
+</robot>

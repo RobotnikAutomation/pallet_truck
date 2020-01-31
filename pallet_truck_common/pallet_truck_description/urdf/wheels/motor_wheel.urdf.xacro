@@ -2,9 +2,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Wheels -->
-  <xacro:property name="wheel_radius" value="0.125" />
+  <xacro:property name="wheel_radius" value="0.122" />
   <xacro:property name="wheel_width" value="0.1" />
-  <xacro:property name="wheel_mass" value="1.0" /><!-- in kg-->
+  <xacro:property name="wheel_mass" value="1" /><!-- in kg-->
 
   <!-- Steer wheel properties -->
   <xacro:property name="steer_joint_damping" value="1000" />
@@ -22,8 +22,8 @@
   <xacro:property name="traction_mechanical_reduction" value="1.0" />
 
 
-  <xacro:property name="steer_origin" value="0 0 -0.210"/>
-  <xacro:property name="traction_origin" value="0 0 -0.335"/>
+  <xacro:property name="steer_origin" value="0 0 ${wheel_radius}"/>
+  <xacro:property name="front_wheel_origin" value="0 0 0"/>
 
   <!-- inertial equation -->
   <xacro:macro name="cylinder_inertia" params="m r h">
@@ -33,65 +33,59 @@
   <!-- *********** -->
   <!-- MOTOR WHEEL -->
   <!-- *********** -->
-  <xacro:macro name="motor_wheel" params="prefix parent *origin hq">
+  <xacro:macro name="motor_wheel" params="prefix parent *origin">
 
     <!-- STEER -->
-    <joint name="${prefix}wheel_steer_joint" type="revolute">
-      <parent link="${parent}"/>
-      <child link="${prefix}wheel_steer_link"/>
+    <joint name="${prefix}steer_joint" type="revolute">
       <xacro:insert_block name="origin" />
+      <parent link="${parent}"/>
+      <child link="${prefix}steer_link"/>
       <axis xyz="0 0 1" rpy="0 0 0" />
-      <limit effort="${steer_joint_effort_limit}" velocity="${steer_joint_velocity_limit}" lower="-${steer_joint_position_limit}" upper="${steer_joint_position_limit}"/>/>
+      <limit effort="${steer_joint_effort_limit}" velocity="${steer_joint_velocity_limit}" lower="-${steer_joint_position_limit}" upper="${steer_joint_position_limit}"/>
       <dynamics damping="${steer_joint_damping}" friction="${steer_joint_friction}"/>
     </joint>
 
-    <link name="${prefix}wheel_steer_link">
+    <link name="${prefix}steer_link">
       <inertial>
         <mass value="${wheel_mass}" />
-        <origin xyz="${steer_origin}"/>
+        <origin xyz="0 0 0"/>
         <cylinder_inertia m="${wheel_mass}" r="${wheel_width}" h="${wheel_radius}" />
       </inertial>
     </link>
 
 
     <!-- TRACTION -->
-    <joint name="${prefix}wheel_traction_joint" type="continuous">
-      <parent link="${prefix}wheel_steer_link"/>
-      <child link="${prefix}wheel_traction_link"/>
-      <origin xyz="${traction_origin}" rpy="0 0 0" />
-      <axis xyz="0 -1 0" rpy="0 0 0" />
+    <joint name="${prefix}traction_joint" type="continuous">
+      <parent link="${prefix}steer_link"/>
+      <child link="${prefix}front_wheel_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" rpy="0 0 0" />
       <limit effort="${traction_joint_effort_limit}" velocity="${traction_joint_velocity_limit}" />
       <dynamics damping="${traction_joint_damping}" friction="${traction_joint_friction}"/>
     </joint>
 
 
-    <link name="${prefix}wheel_traction_link">
+    <link name="${prefix}front_wheel_link">
       <visual>
-        <xacro:if value="${hq}">
-          <origin xyz="0 0 -0.125" rpy="0 0 0" />
-          <geometry>
-            <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl" scale="1 -0.9 1"/>
-          </geometry>
-        </xacro:if>
-        <xacro:unless value="${hq}">
-          <origin xyz="0 0 -0.125" rpy="0 0 0" />
-          <geometry>
-            <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl" scale="1 -0.9 1"/>
-          </geometry>
-        </xacro:unless>
+        <!--origin xyz="0 0 0" rpy="${PI/2.0} 0 0" /-->
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl"/>
+          <!--cylinder length="${wheel_width}" radius="${0.12675}"/-->
+        </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 -0.125" rpy="0 0 0" />
-        <!--origin xyz="0 0 0" rpy="${PI/2.0} 0 0" /-->
+        <!--origin xyz="0 0 0" rpy="0 0 0" /-->
+        <origin xyz="0 0 0" rpy="${PI/2.0} 0 0" />
         <geometry>
-          <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl" scale="1 -0.9 1"/>
-          <!--cylinder length="${wheel_width}" radius="${0.125}"/-->
+          <!--mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl"/-->
+          <cylinder length="${wheel_width}" radius="${0.125}"/>
         </geometry>
       </collision>
       <inertial>
         <mass value="${wheel_mass}" />
-        <origin xyz="0 0 0"/>
-        <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}" />
+        <origin xyz="0.000063 0 0.000465"/>
+        <inertia ixx="0.0064" ixy="0.0" ixz="0.0" iyy="0.00496" iyz="0.0" izz="0.0064"/>  <!-- Multiplicar por la masa -->
       </inertial>
     </link>
 
@@ -101,9 +95,10 @@
     <!-- ***************** -->
 
     <!-- TRACTION LINK -->
-    <gazebo reference="${prefix}wheel_traction_link">
-      <mu1>3</mu1>
-      <mu2>2</mu2>
+    <gazebo reference="${prefix}front_wheel_link">
+      <mu1>1000</mu1>
+      <mu2>1000</mu2>
+      
       <material>Gazebo/Black</material>
     </gazebo>
 
@@ -114,22 +109,22 @@
     <!-- STEER -->
     <transmission name="${prefix}wheel_steer_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}wheel_steer_joint">
+      <joint name="${prefix}steer_joint">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="${prefix}wheel_steer_motor">
+      <actuator name="${prefix}steer_motor">
         <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
         <mechanicalReduction>${steer_mechanical_reduction}</mechanicalReduction>
       </actuator>
     </transmission>
 
   <!-- TRACTION -->
-    <transmission name="${prefix}wheel_traction">
+    <transmission name="${prefix}_traction">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}wheel_traction_joint">
+      <joint name="${prefix}traction_joint">
         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       </joint>
-      <actuator name="${prefix}wheel_traction_motor">
+      <actuator name="${prefix}traction_motor">
         <hardwareInterface>hardware_interface/VelocityActuatorInterface</hardwareInterface>
         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
       </actuator>

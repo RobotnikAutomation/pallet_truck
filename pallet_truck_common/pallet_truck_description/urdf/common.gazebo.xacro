@@ -5,7 +5,6 @@
 	<xacro:macro name="ros_control">
 	   <gazebo>
       <plugin name="ros_control" filename="libgazebo_ros_control.so">
-        <!--robotNamespace>/rb1</robotNamespace-->
         <robotParam>robot_description</robotParam>
         <controlPeriod>0.001</controlPeriod>
 	    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>

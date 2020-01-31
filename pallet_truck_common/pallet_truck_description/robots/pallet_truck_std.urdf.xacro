@@ -8,17 +8,23 @@
 
 	<!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
 
-	<!-- Import HR-RECYCLER base elements -->
+	<!-- Import PALLET-TRUCK base elements -->
   <xacro:include filename="$(find pallet_truck_description)/urdf/bases/pallet_truck.urdf.xacro" />
 
-	<!-- Import HR-RECYCLER wheels -->
+	<!-- Import PALLET-TRUCK wheels -->
 	<xacro:include filename="$(find pallet_truck_description)/urdf/wheels/motor_wheel.urdf.xacro" />
 
-  <!-- Import HR-RECYCLER additional wheels -->
-  <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/omni_wheel.urdf.xacro" />
+  <!-- Import PALLET-TRUCK additional wheels -->
+  <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/castor_wheel.urdf.xacro" />
 
-  <!-- Import HR-RECYCLER elevator -->
-  <xacro:include filename="$(find pallet_truck_description)/urdf/elevator/elevator.urdf.xacro" />
+  <!-- Import PALLET-TRUCK additional wheels -->
+  <xacro:include filename="$(find pallet_truck_description)/urdf/wheels/fork_wheel.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK elevator -->
+  <xacro:include filename="$(find pallet_truck_description)/urdf/bases/front_case.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK battery_case -->
+  <xacro:include filename="$(find pallet_truck_description)/urdf/bases/battery_case.urdf.xacro" />
 
 	<!-- Import sensors -->
 	<xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
@@ -31,23 +37,45 @@
 
 	<!-- Wheel parameters -->
   <!-- x,y,z in translation from base_link to the center of the wheel -->
-	<xacro:property name="wheel_offset_x" value="0.0"/>
+	<xacro:property name="wheel_offset_x" value="0.077"/>
 	<xacro:property name="wheel_offset_y" value="0.0"/>
-	<xacro:property name="wheel_offset_z" value="0.0"/>
+	<xacro:property name="wheel_offset_z" value="-0.59"/>
 
+  <!-- Fork wheel -->
+  <xacro:property name="fork_wheel_offset_x" value="0.0"/>
+  <xacro:property name="fork_wheel_offset_y" value="0.201"/>
+  <xacro:property name="fork_wheel_offset_z" value="0.0"/>
 
-	<!-- Flag to select the high or low quality model -->
-	<xacro:property name="hq" value="true" />
+  <!-- Battery_case -->
+  <xacro:property name="battery_case_offset_x" value="1.2975"/>
+  <xacro:property name="battery_case_offset_y" value="0.0"/>
+  <xacro:property name="battery_case_offset_z" value="0.674"/>
+
+  <!-- Front_case -->
+  <xacro:property name="front_case_offset_x" value="1.2982"/>
+  <xacro:property name="front_case_offset_y" value="0.0"/>
+  <xacro:property name="front_case_offset_z" value="0.671"/>
+
+  <!-- Front support wheel -->
+  <xacro:property name="front_support_wheel_offset_x" value="0.340"/>
+  <xacro:property name="front_support_wheel_offset_y" value="0.180"/>
+  <xacro:property name="front_support_wheel_offset_z" value="-0.6685"/>
 
 	<!--  FORK CAMERAS  -->
   <xacro:property name="fork_camera_x" value="1.545" />
   <xacro:property name="fork_camera_y" value="0.195" />
   <xacro:property name="fork_camera_z" value="0.375" />
 
-   <!-- FRONT LASER -->
- <xacro:property name="front_laser_x" value="-0.2529" />
- <xacro:property name="front_laser_y" value="0.000" />
- <xacro:property name="front_laser_z" value="-0.26" />
+  <!-- FRONT LASER -->
+  <xacro:property name="front_laser_x" value="0.391" />
+  <xacro:property name="front_laser_y" value="0.0" />
+  <xacro:property name="front_laser_z" value="-0.38735" />
+
+  <!-- RS_lIDAR -->
+  <xacro:property name="lidar_offset_x" value="0.085" />
+  <xacro:property name="lidar_offset_y" value="0.0" />
+  <xacro:property name="lidar_offset_z" value="0.205" />
+
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
@@ -56,56 +84,43 @@
 	<xacro:arg name="prefix" default="pallet_truck_"/>
   <xacro:property name="prefix" value="$(arg prefix)" />
 
-	<xacro:pallet_truck prefix="${prefix}" publish_bf="true" hq="${hq}" /> <!-- BASE -->
+	<xacro:pallet_truck prefix="${prefix}" publish_bf="true"/> <!-- BASE -->
 
-  <joint name="${prefix}central_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 3.1415926535897931" />
-    <parent link="${prefix}base_link"/>
-    <child link="${prefix}central_link" />
-  </joint>
-
-  <link name="${prefix}central_link">
-    <inertial>
-      <mass value="0.0001"/>
-      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
-    </inertial>
-  </link>
-
-	<xacro:motor_wheel prefix="${prefix}front_" parent="${prefix}central_link" hq="${hq}"> <!-- WHEEL -->
+	<xacro:motor_wheel prefix="${prefix}" parent="${prefix}front_case_link">
 			<origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
 	</xacro:motor_wheel>
 
-  <xacro:additional_wheel1 prefix="${prefix}front_left" parent="${prefix}central_link" hq="${hq}">
-      <origin xyz="-0.2 0.2 -0.4235" rpy="0 0 0"/>
-  </xacro:additional_wheel1>
+  <xacro:fork_wheel prefix="${prefix}left_fork_" parent="${prefix}base_link">
+      <origin xyz="${fork_wheel_offset_x} ${fork_wheel_offset_y} ${fork_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:fork_wheel>
 
-  <xacro:additional_wheel1 prefix="${prefix}front_right" parent="${prefix}central_link" hq="${hq}">
-      <origin xyz="-0.2 -0.2 -0.4235" rpy="0 0 0"/>
-  </xacro:additional_wheel1>
+  <xacro:fork_wheel prefix="${prefix}right_fork_" parent="${prefix}base_link">
+      <origin xyz="${fork_wheel_offset_x} -${fork_wheel_offset_y} ${fork_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:fork_wheel>
 
-  <!--xacro:additional_wheel prefix="${prefix}front_left" parent="${prefix}base_link" hq="${hq}">
-			<origin xyz="-0.2 0.2 -0.4235" rpy="0 0 0"/>
-	</xacro:additional_wheel>
+  <xacro:battery_case prefix="${prefix}" parent="${prefix}base_link">
+      <origin xyz="${battery_case_offset_x} -${battery_case_offset_y} ${battery_case_offset_z}" rpy="0 0 0"/>
+  </xacro:battery_case>
 
-  <xacro:additional_wheel prefix="${prefix}front_right" parent="${prefix}base_link" hq="${hq}">
-      <origin xyz="-0.2 -0.2 -0.4235" rpy="0 0 0"/>
-  </xacro:additional_wheel-->
+  <xacro:front_case prefix="${prefix}" parent="${prefix}base_link">
+    <origin xyz="${front_case_offset_x} -${front_case_offset_y} ${front_case_offset_z}" rpy="0 0 0"/>
+	</xacro:front_case>
 
-  <xacro:elevator prefix="${prefix}" parent="${prefix}central_link" hq="${hq}"> <!-- ELEVATOR -->
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:elevator>
+  <xacro:support_wheel prefix="${prefix}front_left_" parent="${prefix}front_case_link">
+      <origin xyz="${front_support_wheel_offset_x} ${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:support_wheel>
 
-  <xacro:sensor_sick_s300 prefix="${prefix}front_laser" parent="${prefix}central_link"> <!-- FRONT LIDAR -->
-      <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 ${PI}"/>
+  <xacro:support_wheel prefix="${prefix}front_right_" parent="${prefix}front_case_link">
+      <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:support_wheel>
+
+  <xacro:sensor_rplidar prefix="${prefix}_rplidar" parent="${prefix}front_case_link">
+      <origin xyz="${lidar_offset_x} ${lidar_offset_y} ${lidar_offset_z}" rpy="0 0 0"/>
+  </xacro:sensor_rplidar>
+
+  <xacro:sensor_sick_s300 prefix="${prefix}_sick" parent="${prefix}front_case_link">
+      <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
-
-  <xacro:sensor_r430 prefix="${prefix}right_fork" parent="${prefix}elevator_link" prefix_topic="right_fork_rgbd_camera">
-      <origin xyz="${fork_camera_x} ${fork_camera_y} -${fork_camera_z}" rpy="0 0 0"/>
-  </xacro:sensor_r430>
-
-  <xacro:sensor_r430 prefix="${prefix}left_fork" parent="${prefix}elevator_link" prefix_topic="left_fork_rgbd_camera">
-      <origin xyz="${fork_camera_x} -${fork_camera_y} -${fork_camera_z}" rpy="0 0 0"/>
-  </xacro:sensor_r430>
 
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control/>

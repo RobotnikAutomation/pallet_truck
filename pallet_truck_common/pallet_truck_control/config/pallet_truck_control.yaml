@@ -1,31 +1,23 @@
 mobile_controller:
   type: "ackermann_steering_controller/AckermannSteeringController"
-  rear_wheel: 'pallet_truck_front_wheel_traction_joint'
-  front_steer: 'pallet_truck_front_wheel_steer_joint'
+  rear_wheel: 'pallet_truck_traction_joint'
+  front_steer: 'pallet_truck_steer_joint'
   pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-  twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0] 
+  twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
   base_frame_id: pallet_truck_base_footprint
   odom_frame_id: pallet_truck_odom
   enable_odom_tf: true
-  wheel_separation_h : 1.3725
-  wheel_radius : 0.125
+  wheel_separation_h : 1.6375
+  wheel_radius : 0.122
   wheel_radius_multiplier: 1
 
 steer_controller:
   type: position_controllers/JointPositionController
-  joint: pallet_truck_front_wheel_steer_joint
+  joint: pallet_truck_steer_joint
 
 traction_controller:
   type: velocity_controllers/JointVelocityController
-  joint: pallet_truck_front_wheel_traction_joint
-
-right_elevator_wheel_controller:
-  type: velocity_controllers/JointVelocityController
-  joint: pallet_truck_right_wheel_joint
-
-left_elevator_wheel_controller:
-  type: velocity_controllers/JointVelocityController
-  joint: pallet_truck_left_wheel_joint
+  joint: pallet_truck_traction_joint
 
 elevator_controller:
   type: position_controllers/JointPositionController
@@ -34,5 +26,3 @@ elevator_controller:
 joint_read_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 100.0
-
-
