@@ -114,11 +114,11 @@
       <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
   </xacro:support_wheel>
 
-  <xacro:sensor_rplidar prefix="${prefix}_rplidar" parent="${prefix}front_case_link">
+  <xacro:sensor_rplidar prefix="${prefix}rplidar" parent="${prefix}front_case_link">
       <origin xyz="${lidar_offset_x} ${lidar_offset_y} ${lidar_offset_z}" rpy="0 0 0"/>
   </xacro:sensor_rplidar>
 
-  <xacro:sensor_sick_s300 prefix="${prefix}_sick" parent="${prefix}front_case_link">
+  <xacro:sensor_sick_s300 prefix="${prefix}sick" parent="${prefix}front_case_link">
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
