@@ -59,7 +59,7 @@
   <!-- Front support wheel -->
   <xacro:property name="front_support_wheel_offset_x" value="0.340"/>
   <xacro:property name="front_support_wheel_offset_y" value="0.180"/>
-  <xacro:property name="front_support_wheel_offset_z" value="-0.6685"/>
+  <xacro:property name="front_support_wheel_offset_z" value="-0.675"/>
 
 	<!--  FORK CAMERAS  -->
   <xacro:property name="fork_camera_x" value="1.545" />
