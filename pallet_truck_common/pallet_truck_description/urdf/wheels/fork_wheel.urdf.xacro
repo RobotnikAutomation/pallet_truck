@@ -4,13 +4,13 @@
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- Wheels -->
   <xacro:property name="fork_wheel_radius" value="0.040" />
-  <xacro:property name="fork_wheel_height" value="0.080" />
+  <xacro:property name="fork_wheel_length" value="0.080" />
   <xacro:property name="fork_wheel_mass" value="0.5" />
 
   <xacro:macro name="cylinder_inertia" params="m r h">
     <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
-              iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
-              izz="${m*r*r/2}"
+              iyy="${m*r*r/2}" iyz = "0"
+              izz="${m*(3*r*r+h*h)/12}"
      />
   </xacro:macro>
 
@@ -41,9 +41,9 @@
         </geometry>
       </collision>
       <inertial>
-        <mass value="${wheel_mass}" />
+        <mass value="${fork_wheel_mass}" />
         <origin xyz="0 0 0" />
-        <inertia  ixx="0.00064" ixy="0.0"  ixz="0.0"  iyy="0.00064"  iyz="0.0"  izz="0.00064" />
+        <cylinder_inertia  m="${fork_wheel_mass}" r="${fork_wheel_radius}" h="${fork_wheel_length}" />
       </inertial>
     </link>
 

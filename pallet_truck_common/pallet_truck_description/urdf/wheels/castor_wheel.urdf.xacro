@@ -3,9 +3,9 @@
 
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- Wheels -->
-  <xacro:property name="wheel_radius" value="0.040" />
-  <xacro:property name="wheel_height" value="0.080" />
-  <xacro:property name="wheel_mass" value="0.5" />
+  <xacro:property name="castor_wheel_radius" value="0.040" />
+  <xacro:property name="castor_wheel_height" value="0.080" />
+  <xacro:property name="castor_wheel_mass" value="0.5" />
 
   <xacro:macro name="cylinder_inertia" params="m r h">
     <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
@@ -31,17 +31,17 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
 				  <!--mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel_fake.dae"/-->
-          <sphere radius="${wheel_radius}"/>
+          <sphere radius="${castor_wheel_radius}"/>
         </geometry>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
         <geometry>
-          <sphere radius="${wheel_radius}"/>
+          <sphere radius="${castor_wheel_radius}"/>
         </geometry>
       </collision>
       <inertial>
-        <mass value="${wheel_mass}" />
+        <mass value="${castor_wheel_mass}" />
         <origin xyz="0 0 0" />
         <inertia  ixx="0.00064" ixy="0.0"  ixz="0.0"  iyy="0.00064"  iyz="0.0"  izz="0.00064" />
       </inertial>

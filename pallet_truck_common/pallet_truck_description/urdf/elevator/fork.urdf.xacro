@@ -20,8 +20,8 @@
 
      <link name="${prefix}fork_link">
        <inertial>
+         <origin xyz="-0.581270 0.00000 0.012941" />
          <mass value="${fork_mass}" />
-         <origin xyz="-0.581270 0.000014 0.012941" />
          <solid_cuboid_inertia m="${fork_mass}" h="${fork_width}" d="${fork_height}" w="${fork_length}"/>
        </inertial>
        <visual>
