@@ -32,9 +32,8 @@
   <!-- BASE LINK -->
   <link name="${prefix}base_link">
     <inertial>
-      <mass value="${base_mass}" />
-      <origin xyz="0 0 0" />
-      <solid_cuboid_inertia  m="${base_mass}" d="${base_length}" w="${base_length}" h="${base_length}"/>
+      <mass value="0.0001"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
     </inertial>
   </link>
 
