@@ -6,7 +6,7 @@
   <xacro:include filename="$(find pallet_truck_description)/urdf/elevator/fork.urdf.xacro" />
 
       <!-- Robot mechanical and motor parameters -->
-  <xacro:property name="battery_case_mass" value="10"/>
+  <xacro:property name="battery_case_mass" value="5"/>
 
   <xacro:property name="battery_case_size_x" value="0.38"/>
   <xacro:property name="battery_case_size_y" value="0.57"/>

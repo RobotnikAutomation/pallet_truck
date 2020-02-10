@@ -4,7 +4,7 @@
   <!-- Wheels -->
   <xacro:property name="wheel_radius" value="0.122" />
   <xacro:property name="wheel_width" value="0.1" />
-  <xacro:property name="wheel_mass" value="1" /><!-- in kg-->
+  <xacro:property name="wheel_mass" value="10" /><!-- in kg-->
 
   <!-- Steer wheel properties -->
   <xacro:property name="steer_joint_damping" value="1000" />
@@ -102,7 +102,7 @@
       <mu1>1</mu1>
       <mu2>1</mu2>
       <kp>100000000</kp>
-      <kd>10</kd>  
+      <kd>10</kd>
       <material>Gazebo/Black</material>
     </gazebo>
 
