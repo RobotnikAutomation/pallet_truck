@@ -76,6 +76,15 @@
   <xacro:property name="lidar_offset_y" value="0.0" />
   <xacro:property name="lidar_offset_z" value="0.205" />
 
+  <!-- REGISTERS -->
+  <xacro:property name="front_register_offset_x" value="0.452" />
+  <xacro:property name="front_register_offset_y" value="0.0" />
+  <xacro:property name="front_register_offset_z" value="-0.228" />
+
+  <xacro:property name="side_register_offset_x" value="0.1855" />
+  <xacro:property name="side_register_offset_y" value="0.276" />
+  <xacro:property name="side_register_offset_z" value="-0.228" />
+
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
@@ -122,8 +131,38 @@
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
-	<!-- Gazebo ros control pluggins -->
-	<xacro:ros_control/>
+  <!-- REGISTERS -->
+  <!-- Front -->
+  <joint name="${prefix}front_register_joint" type="fixed">
+     <origin xyz="${front_register_offset_x} ${front_register_offset_y} ${front_register_offset_z}" rpy="0 0 0"/>
+     <parent link="${prefix}front_case_link"/>
+     <child link="${prefix}front_register_link" />
+   </joint>
 
+   <link name="${prefix}front_register_link">
+   </link>
+
+   <!-- Right side -->
+   <joint name="${prefix}right_register_joint" type="fixed">
+     <origin xyz="${side_register_offset_x} -${side_register_offset_y} ${side_register_offset_z}" rpy="0 0 -${PI/2.0}"/>
+      <parent link="${prefix}front_case_link"/>
+      <child link="${prefix}right_register_link" />
+    </joint>
+
+    <link name="${prefix}right_register_link">
+    </link>
+
+   <!-- Left side -->
+   <joint name="${prefix}left_register_joint" type="fixed">
+      <origin xyz="${side_register_offset_x} ${side_register_offset_y} ${side_register_offset_z}" rpy="0 0 ${PI/2.0}"/>
+      <parent link="${prefix}front_case_link"/>
+      <child link="${prefix}left_register_link" />
+    </joint>
+
+    <link name="${prefix}left_register_link">
+    </link>
+
+	<!-- Gazebo ros control pluggins -->
+	<xacro:ros_control />
 
 </robot>
