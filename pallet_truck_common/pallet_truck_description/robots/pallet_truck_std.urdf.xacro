@@ -165,4 +165,24 @@
 	<!-- Gazebo ros control pluggins -->
 	<xacro:ros_control />
 
+	<xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
+		<origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+	</xacro:sensor_imu_hector>
+<gazebo>
+  <plugin name="ground_truth_controller" filename="librobotnik_gazebo_ground_truth_odom.so">
+    <alwaysOn>true</alwaysOn>
+    <updateRate>50.0</updateRate>
+    <bodyName>pallet_truck_base_link</bodyName> <!-- robot body to track, in gazebo -->
+    <frameName>pallet_truck_base_link_gt</frameName> <!-- frame name of robot body to be published in ros -->
+    <worldBodyName>world</worldBodyName> <!-- fixed body where body is tracked, in gazebo -->
+    <worldFrameName>pallet_truck_odom</worldFrameName> <!-- frame name of fixed body to be published in ros -->
+    <topicName>odom_gt</topicName>
+    <gaussianNoise>0.01</gaussianNoise>
+    <xyzOffsets>0 0 0</xyzOffsets>
+    <rpyOffsets>0 0 0</rpyOffsets>
+    <broadcastTF>True</broadcastTF>
+  </plugin>
+</gazebo>
+
+
 </robot>

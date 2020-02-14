@@ -1,15 +1,63 @@
 mobile_controller:
-  type: "ackermann_steering_controller/AckermannSteeringController"
-  rear_wheel: 'pallet_truck_traction_joint'
-  front_steer: 'pallet_truck_steer_joint'
-  pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-  twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-  base_frame_id: pallet_truck_base_footprint
-  odom_frame_id: pallet_truck_odom
-  enable_odom_tf: true
-  wheel_separation_h : 1.6375
-  wheel_radius : 0.122
-  wheel_radius_multiplier: 1
+  type: ackermann_drive_controller/AckermannDriveController
+  traction:
+    front_right:
+      joint_name: pallet_truck_traction_joint
+      max_speed: 20.0 # rad/s
+    front_left:
+      joint_name: front_left_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+    back_right:
+      joint_name: back_right_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+    back_left:
+      joint_name: back_left_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+  steer:
+    front_right:
+      joint_name: pallet_truck_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+    front_left:
+      joint_name: front_left_wheel_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+    back_right:
+      joint_name: back_right_wheel_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+    back_left:
+      joint_name: back_left_wheel_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+  linear_speed_limit: 0.8
+  linear_acceleration_limit: 1.0
+  angular_speed_limit: 2.0
+  angular_acceleration_limit: 2.0
+  odom_frame: pallet_truck_odom
+  robot_base_frame: pallet_truck_base_footprint
+  odom_broadcast_tf: true
+  odom_topic: odom
+  command_topic: cmd_vel
+  wheel_base: 1.375
+  track_width: 0.57
+  wheel_diameter: 0.242
+  cmd_watchdog_duration: 0.2
+  odom_publish_frequency: 100
+
+
+#mobile_controller:
+#  type: "ackermann_steering_controller/AckermannSteeringController"
+#  rear_wheel: 'pallet_truck_traction_joint'
+#  front_steer: 'pallet_truck_steer_joint'
+#  pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
+#  twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
+#  base_frame_id: pallet_truck_base_footprint
+#  odom_frame_id: pallet_truck_odom
+#  enable_odom_tf: true
+#  wheel_separation_h : 1.6375
+#  wheel_radius : 0.122
+#  wheel_radius_multiplier: 1
 
 steer_controller:
   type: position_controllers/JointPositionController
@@ -26,3 +74,9 @@ elevator_controller:
 joint_read_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 100.0
+
+
+joint_read_command_controller:
+  type: joint_read_command_controller/JointReadCommandController
+  publish_rate: 100.0
+

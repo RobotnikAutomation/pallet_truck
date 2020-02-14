@@ -15,7 +15,8 @@
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="mobile_controller
               elevator_controller
-              joint_read_state_controller">
+              joint_read_state_controller
+              joint_read_command_controller">
   </node>
 
 </launch>

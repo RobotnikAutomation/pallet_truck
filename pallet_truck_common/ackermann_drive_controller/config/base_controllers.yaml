@@ -1,0 +1,39 @@
+base_controller:
+  type: ackermann_drive_controller/AckermannDriveController
+  traction:
+    front_right:
+      joint_name: front_right_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+    front_left:
+      joint_name: front_left_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+    back_right:
+      joint_name: back_right_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+    back_left:
+      joint_name: back_left_wheel_traction_joint
+      max_speed: 20.0 # rad/s
+  steer:
+    front_right:
+      joint_name: front_right_wheel_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+    front_left:
+      joint_name: front_left_wheel_steer_joint
+      min_angle: -2.6 # rads
+      max_angle: 2.6
+  linear_speed_limit: 0.8
+  linear_acceleration_limit: 1.0
+  angular_speed_limit: 2.0
+  angular_acceleration_limit: 2.0 
+  odom_frame: odom
+  robot_base_frame: base_footprint
+  odom_broadcast_tf: true
+  odom_topic: /robot/robot_control/odom
+  command_topic: /robot/robot_control/cmd_ack
+  wheel_base: 0.6164
+  track_width: 0.57
+  wheel_diameter: 0.18512988951 # 0.185... calibrated, 0.186 from cad
+  cmd_watchdog_duration: 0.2
+  odom_publish_frequency: 100
+
