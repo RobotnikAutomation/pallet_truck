@@ -811,7 +811,6 @@ void AckermannDriveController::updateJointReferences()
   {
     a[0] = radnorm(atan2(vvy, vvx));
     q[0] = sqrt(vvx*vvx + vvy*vvy) / (wheel_diameter_/2.0);
-    std::cout << "a: " << a[0] << std::endl;
   }
 
   setJointPositionReferenceWithLessChange(q[0], a[0], joint_states_mean_[FRONT_RIGHT_TRACTION_JOINT],
