@@ -16,8 +16,8 @@ mobile_controller:
   steer:
     front_right:
       joint_name: pallet_truck_steer_joint
-      min_angle: -2.6 # rads
-      max_angle: 2.6
+      min_angle: -1.57 # rads
+      max_angle: 1.57
     front_left:
       joint_name: front_left_wheel_steer_joint
       min_angle: -2.6 # rads
@@ -30,7 +30,7 @@ mobile_controller:
       joint_name: back_left_wheel_steer_joint
       min_angle: -2.6 # rads
       max_angle: 2.6
-  linear_speed_limit: 0.8
+  linear_speed_limit: 1.0
   linear_acceleration_limit: 1.0
   angular_speed_limit: 2.0
   angular_acceleration_limit: 2.0
@@ -79,4 +79,3 @@ joint_read_state_controller:
 joint_read_command_controller:
   type: joint_read_command_controller/JointReadCommandController
   publish_rate: 100.0
-
