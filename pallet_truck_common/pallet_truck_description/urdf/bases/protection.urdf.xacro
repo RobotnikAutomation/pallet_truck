@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="pallet_truck" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="protection" params="prefix parent measurement *origin">
+
+   <joint name="${prefix}protection_joint" type="fixed">
+     <xacro:insert_block name="origin" />
+     <parent link="${parent}"/>
+     <child link="${prefix}protection_link" />
+   </joint>
+
+   <link name="${prefix}protection_link">
+     <collision>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <geometry>
+         <box size="${measurement}"/>
+       </geometry>
+     </collision>
+     <inertial>
+       <mass value="0.001" />
+       <origin xyz="0 0 0"/>
+       <solid_cuboid_inertia m="0.001" h="0.001" d="0.001" w="0.001"/>
+     </inertial>
+   </link>
+
+  </xacro:macro>
+</robot>

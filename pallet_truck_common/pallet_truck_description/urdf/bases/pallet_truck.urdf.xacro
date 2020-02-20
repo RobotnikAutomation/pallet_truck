@@ -5,11 +5,6 @@
 
 	<xacro:property name="PI" value="3.1415926535897931"/>
 
-  <!-- Robot mechanical and motor parameters -->
-  <xacro:property name="base_length" value="0.0001" />
-  <xacro:property name="base_width" value="0.0001" />
-  <xacro:property name="base_height" value="0.0001" />
-  <xacro:property name="base_mass" value="0.0001"/>
   <xacro:property name="base_link_origin" value="0 0 0.040" /> <!--base_link (0,0,fork_wheel_radius) RF-> Base_Footprint. Align with the centers of fork_wheels.-->
 
 
