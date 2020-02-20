@@ -896,6 +896,8 @@ void AckermannDriveController::updateOdometryFromEncoder()
   double vy = 0; // v1 * sin(a1);
   double w = v1 * sin(a1) / wheel_base_;
 
+  if (bYawSensor_)
+    w = imu_yaw_speed_;
 
   static const int n = 10;
   static double prev_vx[n] = {0,0,0,0,0,0,0,0,0,0};
@@ -934,7 +936,8 @@ void AckermannDriveController::updateOdometryFromEncoder()
   pose_encoder_.y +=
       sin(pose_encoder_.theta) * vx * fSamplePeriod + sin(M_PI_2 + pose_encoder_.theta) * vy * fSamplePeriod;
   pose_encoder_.theta += w * fSamplePeriod;
-
+  if (bYawSensor_)
+    pose_encoder_.theta = imu_yaw_;
   //w = imu_yaw_speed_;
   //double prev_theta = pose_encoder_.theta;
   //pose_encoder_.theta = (pose_encoder_.theta + imu_yaw_)/2.0;
