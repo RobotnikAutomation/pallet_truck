@@ -35,6 +35,12 @@
          <geometry>
            <mesh filename="package://pallet_truck_description/meshes/elevator/single_fork.stl"/>
          </geometry>
+         <friction>
+           <ode>
+             <mu>100</mu>
+             <mu2>100</mu2>
+           </ode>
+         </friction>
        </collision>
      </link>
 
@@ -55,8 +61,8 @@
 
      <!-- FORK LINK -->
      <gazebo reference="${prefix}fork_link">
-       <mu1>100000</mu1>
-       <mu2>100000</mu2>
+       <mu1>100</mu1>
+       <mu2>100</mu2>
        <material>Gazebo/Black</material>
      </gazebo>
 

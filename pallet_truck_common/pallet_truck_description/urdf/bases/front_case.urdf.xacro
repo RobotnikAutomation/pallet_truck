@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:property name="front_case_mass" value="5" />
+	<xacro:property name="front_case_mass" value="10" />
 
 	<xacro:property name="PI" value="3.1415926535897931"/>
   <xacro:macro name="solid_cuboid_inertia" params="m h d w">
@@ -26,7 +26,7 @@
      <link name="${prefix}front_case_link">
        <inertial>
          <mass value="${front_case_mass}" />
-         <origin xyz="0.226093 0.0 -0.31" />
+         <origin xyz="0.226093 0.0 -0.31"/>
 				 <solid_cuboid_inertia m="${front_case_mass}" h="${front_case_size_y}" d="${front_case_size_z}" w="${front_case_size_x}"/>
        </inertial>
        <visual>

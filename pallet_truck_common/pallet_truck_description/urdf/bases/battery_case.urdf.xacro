@@ -5,8 +5,10 @@
 
   <xacro:include filename="$(find pallet_truck_description)/urdf/elevator/fork.urdf.xacro" />
 
+  <xacro:include filename="$(find pallet_truck_description)/urdf/bases/protection.urdf.xacro" />
+
       <!-- Robot mechanical and motor parameters -->
-  <xacro:property name="battery_case_mass" value="5"/>
+  <xacro:property name="battery_case_mass" value="10"/>
 
   <xacro:property name="battery_case_size_x" value="0.38"/>
   <xacro:property name="battery_case_size_y" value="0.57"/>
@@ -31,7 +33,7 @@
     <parent link="${parent}"/>
     <child link="${prefix}battery_case_link" />
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="0" upper="0.106" velocity="1"/>
+    <limit effort="1000.0" lower="0" upper="0.106" velocity="0.1"/>
   </joint>
 
   <link name="${prefix}battery_case_link">
@@ -61,6 +63,11 @@
   <xacro:fork prefix="${prefix}right_" parent="${prefix}battery_case_link">
      <origin xyz="${fork_offset_x} -${fork_offset_y} ${fork_offset_z}" rpy="0 0 0" />
   </xacro:fork>
+
+  <xacro:protection prefix="${prefix}battery_case_" parent="${prefix}battery_case_link" measurement="0.001 0.52 0.5204">
+     <origin xyz="-0.439 0 -0.42" rpy="0 0 0" />
+  </xacro:protection>
+
 
   <!--gazebo reference="${prefix}battery_case_link">
     <mu1 value="1"/>
