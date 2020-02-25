@@ -43,13 +43,84 @@
        </collision>
      </link>
 
-		 <!--gazebo reference="${prefix}front_case_link">
-			 <mu1 value="1"/>
-			 <mu2 value="1"/>
-			 <kp>100000000.0</kp>
-			 <!- -kd value="10.0"/- ->
-			 <material>Gazebo/Black</material>
-		 </gazebo-->
+		 <gazebo>
+		   <model name='light_model'>
+		     <pose>1.5207 0.281 0.7 0 0 0</pose>
+		     <link name='light_link'>
+		       <visual name='light_source'>
+		         <pose>0 0 0 0 0 0</pose>
+		         <geometry>
+		           <box>
+		             <size>0.35 0.005 0.01</size>
+		           </box>
+		         </geometry>
+		         <material>
+		           <ambient>1 1 1 1</ambient>
+		           <diffuse>1 1 1 1</diffuse>
+		           <specular>1 1 1 1</specular>
+		           <emissive>0 0 0 1</emissive>
+		         </material>
+		       </visual>
+		       <light name='light_source' type='spot'>
+		         <pose>0 0 0 0 0 0</pose>
+		         <attenuation>
+		           <range>0.2</range>
+		           <!--linear>0.10</linear-->
+		         </attenuation>
+		         <diffuse>0 0 0 1</diffuse>
+		         <specular>0 0 0 1</specular>
+		       </light>
+
+			       <visual name='light_source2'>
+			         <pose>0 0 0 0 0 0</pose>
+			         <geometry>
+			           <box>
+			             <size>0.35 0.005 0.01</size>
+			           </box>
+			         </geometry>
+			         <material>
+			           <ambient>1 1 1 1</ambient>
+			           <diffuse>1 1 1 1</diffuse>
+			           <specular>1 1 1 1</specular>
+			           <emissive>0 0 0 1</emissive>
+			         </material>
+			       </visual>
+			       <light name='light_source2' type='spot'>
+			         <pose>0 -0.564 0 0 0 0</pose>
+			         <attenuation>
+			           <range>0.2</range>
+			           <!--linear>0.10</linear-->
+			         </attenuation>
+			         <diffuse>0 0 0 1</diffuse>
+			         <specular>0 0 0 1</specular>
+			       </light>
+		     </link>
+		     <plugin name='light_control' filename='libLedPlugin.so'>
+		 			<enable>true</enable>
+		       <light>
+		         <id>light_link/light_source</id>
+		         <enable>true</enable>
+		         <duration>1</duration>
+		         <interval>0.5</interval>
+		         <color>1 0 0</color>
+		       </light>
+					 <light>
+						 <id>light_link/light_source2</id>
+						 <enable>true</enable>
+						 <duration>1</duration>
+						 <interval>0.5</interval>
+						 <color>1 0 0</color>
+					 </light>
+		     </plugin>
+		   </model>
+		   </gazebo>
+
+		   <gazebo>
+		     <joint name='light_joint' type='fixed'>
+		       <parent>${prefix}front_case_link</parent>
+		       <child>light_model::light_link</child>
+		     </joint>
+		   </gazebo>
 
   </xacro:macro>
 </robot>
