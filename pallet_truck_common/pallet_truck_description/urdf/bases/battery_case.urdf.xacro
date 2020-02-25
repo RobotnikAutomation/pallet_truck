@@ -68,7 +68,6 @@
      <origin xyz="-0.439 0 -0.42" rpy="0 0 0" />
   </xacro:protection>
 
-
   <!--gazebo reference="${prefix}battery_case_link">
     <mu1 value="1"/>
     <mu2 value="1"/>
