@@ -27,10 +27,9 @@
   <run_depend>urdf</run_depend>
   <run_depend>xacro</run_depend>
   <run_depend>robotnik_sensors</run_depend>
+  <run_depend>gazebo_ros</run_depend>
 
-
- 
   <export>
-    
+      <gazebo_ros gazebo_media_path="path_to_your_image"/>
   </export>
 </package>
