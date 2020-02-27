@@ -68,6 +68,26 @@
      <origin xyz="-0.439 0 -0.42" rpy="0 0 0" />
   </xacro:protection>
 
+
+  		<!--joint name="${prefix}right_projector_joint" type="fixed">
+  			<origin xyz="1 -1 1" rpy="0 0 0"/>
+  			<parent link="${prefix}battery_case_link"/>
+  			<child link="${prefix}right_line_projector"/>
+  		</joint>
+
+  		<link name="${prefix}right_line_projector">
+  		</link>
+
+  		<gazebo reference="${prefix}right_line_projector">
+  			<projector name="projector_test_right">
+  	    	<pose>0 0 0 1.57 0 0</pose>
+  	    	<texture>red1.png</texture>
+  	    	<fov>0.95</fov>
+  	    	<near_clip>0.1</near_clip>
+        	<far_clip>10.0</far_clip>
+  			</projector>
+  		</gazebo-->
+
   <!--gazebo reference="${prefix}battery_case_link">
     <mu1 value="1"/>
     <mu2 value="1"/>
