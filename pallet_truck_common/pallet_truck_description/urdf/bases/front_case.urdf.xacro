@@ -43,7 +43,140 @@
        </collision>
      </link>
 
+
+
+
+		 <!--PROJECTOR -->
+
+		 <joint name="${prefix}projector_joint" type="fixed">
+				 <origin xyz="1 1 1" rpy="0 0 0"/>
+				 <parent link="${prefix}front_case_link"/>
+				 <child link="head"/>
+		</joint>
+
+		<link name="head">
+		    <visual>
+		        <origin xyz="0 0 0" rpy="0 0 0" />
+		        <geometry>
+							<box size="0.1 0.1 0.1"/>
+		        </geometry>
+		    </visual>
+
+		    <collision>
+		      <origin xyz="0 0 0" rpy="0 0 0" />
+		      <geometry>
+						<box size="0.1 0.1 0.1"/>
+		      </geometry>
+		    </collision>
+
+		    <inertial>
+		        <origin xyz="0 0 0" rpy="0 0 0" />
+		        <mass value="1" />
+		        <inertia
+		          ixx="1.0" ixy="0.0" ixz="0.0"
+		          iyy="1.0" iyz="0.0"
+		          izz="1.0" />
+		    </inertial>
+
+		</link>
+
+		<!-- this one doesn't work correctly because it is attached to a fixed link -->
+		<gazebo reference="head">
+		  <projector name="projector_test_head">
+		    <!-- none of the translations or rotations applied here have any effect -->
+		    <pose>0 0 0 1.57 0 0</pose>
+		    <texture>red.png</texture>
+		    <fov>0.95</fov>
+		    <near_clip>0.1</near_clip>
+		    <far_clip>10.0</far_clip>
+				<!--texture>stereo_projection_pattern_high_res_red.png</texture-->
+		  </projector>
+		</gazebo>
+
+		<!-- try putting a projector onto another link -->
+		<joint name="joint_projector_test_1" type="revolute">
+		  <parent link="head" />
+		  <child link="link_projector_test_1" />
+		  <origin xyz="0 0.23 0" rpy="0 0 0" />
+		  <axis xyz="0 1 0" />
+		  <limit effort="1000.0" upper="0.0001" lower="-0.0001" velocity="0.5" />
+		</joint>
+		<!-- this works fine because it is attached to a revolute jointed link-->
+		<link name="link_projector_test_1">
+		    <visual>
+		      <origin xyz="0 0 0" rpy="0 0 0" />
+		      <geometry>
+		        <box size="0.05 0.05 0.05"/>
+		      </geometry>
+		    </visual>
+
+		    <collision>
+		      <origin xyz="0 0 0" rpy="0 0 0" />
+		      <geometry>
+		        <box size="0.05 0.05 0.05"/>
+		      </geometry>
+		    </collision>
+
+		    <inertial>
+		        <origin xyz="0 0 0" rpy="0 0 0" />
+		        <mass value="1" />
+		        <inertia
+		          ixx="1.0" ixy="0.0" ixz="0.0"
+		          iyy="1.0" iyz="0.0"
+		          izz="1.0" />
+		    </inertial>
+		</link>
+
+		<gazebo reference="link_projector_test_1">
+		  <projector name="projector_test_1">
+		    <!-- setting the pose will produce glitches even when attached to a revolute joint -->
+		    <pose>0 0 0 0 1.57 0</pose>
+		    <texture>red.png</texture>
+		    <!--texture>stereo_projection_pattern_high_res_red.png</texture-->
+		    <fov>0.95</fov>
+		    <near_clip>0.1</near_clip>
+		    <far_clip>10.0</far_clip>
+		  </projector>
+		</gazebo>
+
+		 <!--PROJECTOR no funciona-->
+
+		 <!--joint name="${prefix}projector_joint" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${prefix}front_case_link"/>
+        <child link="${prefix}projector_link"/>
+				<limit effort="0.01" velocity="0.01" upper="0.0001" lower="-0.0001"/>
+      </joint>
+
+			<link name="${prefix}projector_link">
+			</link>
+
+		 <gazebo reference="${prefix}projector_link">
+			 <projector name="projector">
+				 <pose>0 0 0 0 0 0</pose>
+         <texture>red.png</texture>
+         <fov>0.95</fov>
+         <near_clip>0.1</near_clip>
+         <far_clip>10</far_clip>
+     	 </projector>
+		 </gazebo>
 		 <gazebo>
+     		<plugin name="projector" filename="libgazebo_ros_projector.so">
+         	<projector>${prefix}projector_link/projector</projector>
+         	<alwaysOn>true</alwaysOn>
+         	<updateRate>10.0</updateRate>
+					<textureName>red.png</textureName>
+					<filterTextureName>red.png</filterTextureName>
+         	<textureTopicName>/projector/image</textureTopicName>
+         	<projectorTopicName>/projector/projector</projectorTopicName>
+     		</plugin>
+			</gazebo-->
+
+
+
+
+<!-- LEDS -->
+		 <!--gazebo>
 		   <model name='light_model'>
 		     <pose>1.5207 0 0.68 0 0 0</pose>
 		     <link name='light_link'>
@@ -65,7 +198,7 @@
 		         <pose>0 0.35 0 0 0 0</pose>
 		         <attenuation>
 		           <range>20</range>
-		           <!--linear>0.10</linear-->
+		           <!- -linear>0.10</linear- ->
 		         </attenuation>
 		         <diffuse>0 0 0 1</diffuse>
 		         <specular>0 0 0 1</specular>
@@ -79,7 +212,7 @@
 		         <pose>0 -0.35 0 0 0 0</pose>
 		         <attenuation>
 		           <range>20</range>
-		           <!--linear>0.10</linear-->
+		           <!- -linear>0.10</linear- ->
 		         </attenuation>
 		         <diffuse>0 0 0 1</diffuse>
 		         <specular>0 0 0 1</specular>
@@ -138,14 +271,14 @@
 					 </light>
 		     </plugin>
 		   </model>
-		   </gazebo>
+		 </gazebo>
 
 		   <gazebo>
 		     <joint name='light_joint' type='fixed'>
 		       <parent>${prefix}front_case_link</parent>
 		       <child>light_model::light_link</child>
 		     </joint>
-		   </gazebo>
+		   </gazebo-->
 
   </xacro:macro>
 </robot>
