@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="line_projector" params="prefix parent *origin">
+
+    <!--PROJECTOR -->
+
+    <joint name="${prefix}projector_joint" type="fixed">
+        <xacro:insert_block name="origin" />
+        <parent link="${parent}"/>
+        <child link="${prefix}line_projector"/>
+   </joint>
+
+   <link name="${prefix}line_projector">
+   </link>
+
+   <!-- this one doesn't work correctly because it is attached to a fixed link -->
+   <gazebo reference="${prefix}line_projector">
+     <projector name="${prefix}projector_test">
+       <!-- none of the translations or rotations applied here have any effect -->
+       <pose>0 0 0 1.57 0 0</pose>
+       <texture>red1.png</texture>
+       <fov>1</fov>
+       <near_clip>0.1</near_clip>
+       <far_clip>2.0</far_clip>
+       <!--texture>stereo_projection_pattern_high_res_red.png</texture-->
+     </projector>
+   </gazebo>
+ </xacro:macro>
+</robot>
