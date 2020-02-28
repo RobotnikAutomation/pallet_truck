@@ -40,7 +40,7 @@
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-      <gazebo_ros gazebo_media_path="/home/raquel/WS/pallet_truck_ws/src/pallet_truck/pallet_truck_sim/pallet_truck_gazebo/models/media/materials/textures"/>
+      <gazebo_ros gazebo_media_path="${prefix}/models/media/materials/textures"/>
   </export>
 
 </package>
