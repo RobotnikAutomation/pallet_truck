@@ -85,6 +85,11 @@
   <xacro:property name="side_register_offset_y" value="0.276" />
   <xacro:property name="side_register_offset_z" value="-0.228" />
 
+  <!-- IMU -->
+  <xacro:property name="imu_offset_x" value="1.2982" />
+  <xacro:property name="imu_offset_y" value="0.0" />
+  <xacro:property name="imu_offset_z" value="0.671" />
+
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
@@ -166,23 +171,23 @@
 	<xacro:ros_control />
 
 	<xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
-		<origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+		<origin xyz="${imu_offset_x} -${imu_offset_y} ${imu_offset_z}" rpy="0 0 0"/>
 	</xacro:sensor_imu_hector>
-<gazebo>
-  <plugin name="ground_truth_controller" filename="librobotnik_gazebo_ground_truth_odom.so">
-    <alwaysOn>true</alwaysOn>
-    <updateRate>50.0</updateRate>
-    <bodyName>pallet_truck_base_link</bodyName> <!-- robot body to track, in gazebo -->
-    <frameName>pallet_truck_base_link_gt</frameName> <!-- frame name of robot body to be published in ros -->
-    <worldBodyName>world</worldBodyName> <!-- fixed body where body is tracked, in gazebo -->
-    <worldFrameName>pallet_truck_odom</worldFrameName> <!-- frame name of fixed body to be published in ros -->
-    <topicName>odom_gt</topicName>
-    <gaussianNoise>0.01</gaussianNoise>
-    <xyzOffsets>0 0 0</xyzOffsets>
-    <rpyOffsets>0 0 0</rpyOffsets>
-    <broadcastTF>True</broadcastTF>
-  </plugin>
-</gazebo>
 
+  <gazebo>
+    <plugin name="ground_truth_controller" filename="librobotnik_gazebo_ground_truth_odom.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>pallet_truck_base_link</bodyName> <!-- robot body to track, in gazebo -->
+      <frameName>pallet_truck_base_link_gt</frameName> <!-- frame name of robot body to be published in ros -->
+      <worldBodyName>world</worldBodyName> <!-- fixed body where body is tracked, in gazebo -->
+      <worldFrameName>pallet_truck_odom</worldFrameName> <!-- frame name of fixed body to be published in ros -->
+      <topicName>odom_gt</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <broadcastTF>True</broadcastTF>
+    </plugin>
+  </gazebo>
 
 </robot>
