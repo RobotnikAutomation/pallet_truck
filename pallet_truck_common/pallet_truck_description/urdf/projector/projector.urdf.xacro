@@ -16,7 +16,7 @@
 
    <!-- this one doesn't work correctly because it is attached to a fixed link -->
    <gazebo reference="${prefix}line_projector">
-     <projector name="${prefix}projector_test">
+     <projector name="${prefix}projector">
        <!-- none of the translations or rotations applied here have any effect -->
        <pose>0 0 0 1.57 0 0</pose>
        <texture>red1.png</texture>
@@ -24,7 +24,13 @@
        <near_clip>0.1</near_clip>
        <far_clip>2.0</far_clip>
        <!--texture>stereo_projection_pattern_high_res_red.png</texture-->
+       <plugin name="projector_controller" filename="libgazebo_ros_projector.so">
+         <projectorTopicName>projector</projectorTopicName>
+         <robotNamespace>pallet_truck</robotNamespace>
+         <projector>${prefix}line_projector/${prefix}projector</projector>
+       </plugin>
      </projector>
+
    </gazebo>
  </xacro:macro>
 </robot>
