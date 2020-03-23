@@ -20,7 +20,7 @@
 	<arg name="launch_base_hw_sim" default="false"/>
 	<arg name="launch_battery_estimator" default="false"/>
 	<arg name="launch_perception" default="false"/>
-	<arg name="launch_navigation" default="false"/>
+	<arg name="launch_navigation" default="true"/>
 	<arg name="launch_rlc" default="false"/>
 	<arg name="launch_rlc_rostful" default="false"/>
 	<arg name="rlc_rostful_host" default="localhost"/>

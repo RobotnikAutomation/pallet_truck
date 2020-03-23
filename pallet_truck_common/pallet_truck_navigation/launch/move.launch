@@ -4,6 +4,9 @@
   <arg name="id_robot" default="pallet_truck"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
 
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+
   <arg name="has_safety_controller" default="false"/>
   <arg name="cmd_vel_topic" default="move/cmd_vel"/>
   <arg name="differential_robot" default="true"/>

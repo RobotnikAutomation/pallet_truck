@@ -6,6 +6,8 @@
   <arg name="docking_qr" default="true"/>
   <arg name="docking_laser_reflectors" default="false"/>
 
+  <arg name="differential_robot" default="true"/>
+
   <!-- Docker frames -->
   <arg name="fixed_frame" default="$(arg prefix)odom"/>
   <arg name="robot_base_frame" default="$(arg prefix)base_footprint"/>
