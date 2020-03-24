@@ -4,7 +4,13 @@ scan_filter_chain:
   type: laser_filters/LaserScanRangeFilter
   params:
     use_message_range_limits: false
-    lower_threshold: 0.05
+    lower_thsccreshold: 0.05
     upper_threshold: 5.0
     lower_replacement_value: 0.05
     upper_replacement_value: 4.99
+
+- name: angle
+  type: laser_filters/LaserScanAngularBoundsFilter
+  params:
+    lower_angle: -2.35
+    upper_angle: 2.35

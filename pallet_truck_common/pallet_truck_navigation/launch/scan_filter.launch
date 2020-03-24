@@ -7,10 +7,10 @@
 	<arg name="input_scan" default="front_laser/scan"/>
 	<arg name="output_scan" default="front_laser/filtered_scan"/>
 
-	<!--node pkg="laser_filters" type="scan_to_scan_filter_chain" name="$(arg node_name)">
-		<rosparam command="load" file="$(find pallet_truck_navigation)/config/$(arg config_file)" />
+	<node pkg="laser_filters" type="scan_to_scan_filter_chain" name="$(arg node_name)">
+		<rosparam command="load" file="$(find pallet_truck_navigation)/config/$(arg config_file)" subst_value="true"/>
 		<remap from="scan" to="$(arg input_scan)"/>
 		<remap from="scan_filtered" to="$(arg output_scan)"/>
-	</node-->
+	</node>
 
 </launch>
