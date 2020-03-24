@@ -5,7 +5,7 @@
 	<arg name="debug" default="false"/>
 	<arg name="launch_rviz" default="true"/>
 	<arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck.world"/> <!-- located in pallet_truck_gazebo/worlds -->
-	<arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/pallet_truck_a.rviz"/>
+	<arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/rviz.rviz"/>
 
 	<!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">

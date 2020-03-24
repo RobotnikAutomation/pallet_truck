@@ -42,7 +42,7 @@
 		</node>
 
 		<!-- Spawner model into gazebo -->
-		<node name="urdf_spawner_summit_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-x $(arg x_init_pose) -y $(arg y_init_pose) -z $(arg z_init_pose) -urdf -param robot_description -model $(arg id_robot)" />
+		<node name="urdf_spawner_robot_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-x $(arg x_init_pose) -y $(arg y_init_pose) -z $(arg z_init_pose) -urdf -param robot_description -model $(arg id_robot)" />
 
 		<!-- start pallet_truck_control nodes -->
 		<include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">

@@ -7,8 +7,6 @@
   <arg name="cmd_vel_topic" default="move_base/cmd_vel"/>
   <arg name="odom_topic" default="mobile_controller/odom"/>
   <arg name="front_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_2D_SCAN front_laser/scan)"/>
-  <arg name="rear_scan_topic" default="$(optenv ROBOT_NAVIGATION_REAR_2D_SCAN rear_laser/scan)"/>
-  <arg name="front_rgbd_to_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_RGBD_TO_SCAN front_rgbd_camera/point_cloud_scan_filtered)"/>
 
   <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS true)"/>
   <arg if="$(arg differential_robot)" name="kinematics" value="diff"/>
@@ -22,8 +20,6 @@
     <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
     <arg name="odom_topic" value="$(arg odom_topic)"/>
     <arg name="front_scan_topic" value="$(arg front_scan_topic)"/>
-    <arg name="rear_scan_topic" value="$(arg rear_scan_topic)"/>
-    <arg name="front_rgbd_to_scan_topic" value="$(arg front_rgbd_to_scan_topic)"/>
 
     <arg name="kinematics" value="$(arg kinematics)"/>
 
