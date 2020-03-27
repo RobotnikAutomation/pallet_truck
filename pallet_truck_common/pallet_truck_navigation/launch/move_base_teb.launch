@@ -3,35 +3,26 @@
   <arg name="id_robot" default="pallet_truck"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
 
+  <arg name="overwrite_frames" default="false" />
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+
   <!-- Topics argumments -->
   <arg name="cmd_vel_topic" default="move_base/cmd_vel"/>
   <arg name="odom_topic" default="robotnik_base_control/odom"/>
-  <!--arg name="front_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_2D_SCAN front_laser/scan)"/-->
+
+  <arg name="config_folder" default="$(find pallet_truck_navigation)/config" />
+
+  <arg name="costmap_common_params" default="costmap_common_params.yaml" />
+  <arg name="global_costmap_params" default="global_costmap_params_nomap.yaml" />
+  <arg name="local_costmap_params" default="local_costmap_params.yaml" />
+  <arg name="global_planner_params" default="global_planner_params.yaml" />
+  <arg name="local_planner_params" default="teb_local_planner_diff_params.yaml" />
+
   <arg name="front_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_2D_SCAN front_laser/filtered_scan)"/>
+  <arg name="rear_scan_topic" default="$(optenv ROBOT_NAVIGATION_REAR_2D_SCAN rear_laser/scan)"/>
+  <arg name="front_rgbd_to_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_RGBD_TO_SCAN front_rgbd_camera/point_cloud_scan_filtered)"/>
 
-  <!--arg name="front_scan_topic" default="$(arg prefix)front_laser/scan"/-->
-
-  <arg name="kinematics" default="diff"/>
-
-  <!-- Run move_base -->
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base">
-  	<remap from="cmd_vel" to="$(arg cmd_vel_topic)" />
-	  <remap from="odom" to="$(arg odom_topic)" />
-
-	  <!-- Move base params -->
-    <rosparam file="$(find pallet_truck_navigation)/config/move_base_params.yaml" command="load" />
-
-   	<!-- Global costmap params-->
-	  <rosparam file="$(find pallet_truck_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" subst_value="true"/>
-	  <rosparam file="$(find pallet_truck_navigation)/config/global_costmap_params_map.yaml" command="load" subst_value="true"/>
-
-	  <!-- Local costmap params-->
-	  <rosparam file="$(find pallet_truck_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" subst_value="true"/>
-	  <rosparam file="$(find pallet_truck_navigation)/config/local_costmap_params.yaml" command="load" subst_value="true"/>
-
-	  <!-- Load local_planner diff or omni parameters -->
-	  <rosparam file="$(find pallet_truck_navigation)/config/teb_local_planner_$(arg kinematics)_params.yaml" command="load" subst_value="true"/>
-
-  </node>
+  <include file="$(find pallet_truck_navigation)/launch/move_base.launch" pass_all_args="true" />
 
 </launch>

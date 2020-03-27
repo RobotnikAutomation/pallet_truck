@@ -4,6 +4,7 @@
   <arg name="id_robot" default="pallet_truck"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
 
+  <arg name="overwrite_frames" default="false" />
   <arg name="odom_frame" default="$(arg prefix)odom"/>
   <arg name="base_frame" default="$(arg prefix)base_footprint"/>
 
@@ -12,10 +13,10 @@
   <arg name="differential_robot" default="true"/>
 
   <node name="move" pkg="robotnik_move" type="move_node" respawn="false" output="screen">
-    <param name="robot_base_frame" type="string" value="$(arg base_frame)" />
-    <param name="fixed_frame" type="string" value="$(arg odom_frame)" />
+    <rosparam command="load" file="$(find pallet_truck_navigation)/config/move.yaml" subst_value="true"/>
 
-    <rosparam command="load" file="$(find pallet_truck_navigation)/config/move.yaml"/>
+    <param if="$(arg overwrite_frames)" name="robot_base_frame" type="string" value="$(arg base_frame)" />
+    <param if="$(arg overwrite_frames)" name="fixed_frame" type="string" value="$(arg odom_frame)" />
 
     <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="~cmd_vel" />
     <remap if="$(arg has_safety_controller)" from="cmd_vel" to="~cmd_vel_unsafe" />
