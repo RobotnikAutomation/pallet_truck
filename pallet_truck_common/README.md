@@ -16,4 +16,4 @@ This package contains the launch and configuration files to spawn the joint cont
 ## Dependencies
 
 To use RSLidar Gazebo GPU accelerated simulation: https://github.com/RobotnikAutomation/velodyne_simulator
-
+To use Intel Realsense Gazebo simulation: https://github.com/pal-robotics/realsense_gazebo_plugin

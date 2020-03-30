@@ -136,6 +136,18 @@
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
+  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="left_fork_camera" use_nominal_extrinsics="true" > 
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="right_fork_camera"  use_nominal_extrinsics="true" > 
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
+    <origin xyz="${imu_offset_x} -${imu_offset_y} ${imu_offset_z}" rpy="0 0 0"/>
+  </xacro:sensor_imu_hector>
+
   <!-- REGISTERS -->
   <!-- Front -->
   <joint name="${prefix}front_register_joint" type="fixed">
@@ -169,10 +181,6 @@
 
   <!-- Gazebo ros control pluggins -->
   <xacro:ros_control />
-
-  <xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
-    <origin xyz="${imu_offset_x} -${imu_offset_y} ${imu_offset_z}" rpy="0 0 0"/>
-  </xacro:sensor_imu_hector>
 
   <gazebo>
     <plugin name="ground_truth_controller" filename="librobotnik_gazebo_ground_truth_odom.so">
