@@ -1,23 +1,37 @@
 <?xml version="1.0"?>
 <launch>
+    
+  <!-- Robot -->
   <arg name="id_robot" default="pallet_truck"/>
-  <arg name="prefix" value="$(arg id_robot)_"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
-  <arg name="differential_robot" default="true"/>
+  <!-- Robot configuration -->
+  <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
+  <arg name="has_safety_controller" default="false"/>
 
-  <!-- Docker frames -->
+  <!-- Topics -->
+  <arg name="cmd_vel_topic" default="~/cmd_vel"/>   
+  
+  <!-- Configuration folder, to store different configurations -->
+  <arg name="config_folder" default="$(find pallet_truck_navigation)/config/dockers" />
+  <arg name="config_file" default="$(arg kinematics)_docker.yaml" />
+  
+  <!-- Overwrite frames, should not be used unless reasonable exception -->
   <arg name="overwrite_frames" default="false" />
-  <arg name="fixed_frame" default="$(arg prefix)odom"/>
-  <arg name="robot_base_frame" default="$(arg prefix)base_footprint"/>
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+  <arg name="odom_frame_param_name" default="fixed_frame" />
+  <arg name="base_frame_param_name" default="robot_base_frame" />
 
   <!-- Dockers -->
-  <node name="diff_docker" pkg="robotnik_docker" type="diff_docker_node" respawn="false" output="screen">
-    <rosparam command="load" file="$(find pallet_truck_navigation)/config/dockers/diff_docker.yaml" subst_value="true"/>
+  <node name="docker" pkg="robotnik_docker" type="$(arg kinematics)_docker_node" respawn="false" output="screen">
+    <rosparam command="load" file="$(arg config_folder)/$(arg config_file)" subst_value="true"/>
 
-    <param if="$(arg overwrite_frames)" name="robot_base_frame" type="string" value="$(arg base_frame)" />
-    <param if="$(arg overwrite_frames)" name="fixed_frame" type="string" value="$(arg odom_frame)" />
-
-    <remap from="cmd_vel" to="docker/cmd_vel"/>
+    <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
+    <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
+    
+    <param if="$(arg overwrite_frames)" name="$(arg odom_frame_param_name)" value="$(arg odom_frame)" />
+    <param if="$(arg overwrite_frames)" name="$(arg base_frame_param_name)" value="$(arg base_frame)" />
   </node>
 
 </launch>

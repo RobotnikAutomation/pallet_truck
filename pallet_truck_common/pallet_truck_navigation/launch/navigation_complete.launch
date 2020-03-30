@@ -1,22 +1,26 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Robot -->
   <arg name="id_robot" default="pallet_truck"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
 
-  <!-- Docker frames -->
-  <arg name="overwrite_frames" default="false" />
-  <arg name="odom_frame" default="$(arg prefix)odom"/>
-  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
-
+  <!-- Robot configuration -->
+  <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
+  <arg name="has_safety_controller" default="false"/>
   <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS false)"/>
-
+  
   <!-- Dockers arguments -->
-  <arg name="has_docker" default="$(optenv ROBOT_HAS_DOCKER false)"/>
+  <arg name="has_docker" default="$(optenv ROBOT_HAS_DOCKER true)"/>
   <arg name="run_camera_docker" default="$(optenv ROBOT_DOCKER_RUN_CAMERA false)"/>
   <arg name="run_laser_docker" default="$(optenv ROBOT_DOCKER_RUN_LASER false)"/>
   <arg name="run_laser_filters" default="$(optenv ROBOT_RUN_LASER_FILTERS true)"/>
   
+  <!-- Move arguments -->
+  <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
+  
+  <!-- Frames -->
+  <arg name="publish_tf" default="false" />
   <!-- Camera frames -->
   <arg name="camera_dock_frame" default="$(arg prefix)docking_station_marker"/>
   <arg name="camera_contact_dock_frame" default="$(arg prefix)docking_station_marker_contact"/>
@@ -27,40 +31,33 @@
   <arg name="laser_contact_dock_frame" default="$(arg prefix)docking_station_laser_contact"/>
   <arg name="laser_contact_dock_frame_for_base" default="$(arg prefix)docking_station_laser_for_base_frame"/>
 
+  <!-- Overwrite frames, should not be used unless reasonable exception -->
+  <arg name="overwrite_frames" default="false" />
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+  <arg name="odom_frame_param_name" default="fixed_frame" />
+  <arg name="base_frame_param_name" default="robot_base_frame" />
+
   <group ns="$(arg id_robot)">
 
-    <include if="$(arg has_docker)" file="$(find pallet_truck_navigation)/launch/dockers.launch">
-      <arg name="id_robot" value="$(arg id_robot)"/>
-      <arg name="docking_qr" value="$(arg run_camera_docker)"/>
-      <arg name="docking_laser_reflectors" value="$(arg run_laser_docker)"/>
-      <arg name="differential_robot" value="$(arg differential_robot)"/>
-    </include>
+    <include if="$(arg has_docker)" file="$(find pallet_truck_navigation)/launch/dockers.launch"/>
 
-    <include file="$(find pallet_truck_navigation)/launch/move.launch">
-      <arg name="id_robot" value="$(arg id_robot)"/>
-      <arg name="differential_robot" value="$(arg differential_robot)"/>
+    <include if="$(arg has_move)" file="$(find pallet_truck_navigation)/launch/move.launch"/>
+
+    <include file="$(find pallet_truck_navigation)/launch/scan_filter.launch">
+      <arg name="laser_scan" default="front_laser"/>
     </include>
 
     <include file="$(find pallet_truck_navigation)/launch/scan_filter.launch">
-      <arg name="node_name" value="front_laser_scan_filter"/>
-      <arg name="input_scan" value="front_laser/scan"/>
-      <arg name="output_scan" value="front_laser/filtered_scan"/>
-	    <arg name="config_folder" value="$(find pallet_truck_navigation)/config" />
-      <arg name="config_file" value="scan_filter.yaml"/>
+      <arg name="laser_scan" default="rear_laser"/>
+    </include>
+
+    <include file="$(find pallet_truck_navigation)/launch/rgbd_to_laserscan.launch">
+      <arg name="camera" default="front_rgbd_camera" />
     </include>
 
     <!-- Static transforms -->
-    <include if="$(arg publish_tf") file="$(find pallet_truck_navigation)/launch/tf_publishers.launch">
-      <arg name="docking_qr" value="$(arg docking_qr)"/>
-      <arg name="camera_dock_frame" value="$(arg camera_dock_frame)"/>
-      <arg name="camera_contact_dock_frame" value="$(arg camera_contact_dock_frame)"/>
-      <arg name="camera_contact_dock_frame_for_base" value="$(arg camera_contact_dock_frame_for_base)"/>
-
-      <arg name="docking_laser_reflectors" value="$(arg docking_laser_reflectors)"/>
-      <arg name="laser_dock_frame" value="$(arg laser_dock_frame)"/>
-      <arg name="laser_contact_dock_frame" value="$(arg laser_contact_dock_frame)"/>
-      <arg name="laser_contact_dock_frame_for_base" value="$(arg laser_contact_dock_frame_for_base)"/>
-    </include>
+    <include if="$(arg publish_tf)" file="$(find pallet_truck_navigation)/launch/tf_publishers.launch" />
 
   </group>
 
