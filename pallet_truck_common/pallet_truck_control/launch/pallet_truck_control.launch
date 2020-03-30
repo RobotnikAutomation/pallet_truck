@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="sim" default="false"/>
-  <arg name="cmd_vel" default="/pallet_truck/mobile_controller/cmd_vel"/>
   <arg name="prefix" default="pallet_truck_"/>
   <arg name="id_robot" default="pallet_truck"/>
-  <arg name="launch_robot_localization" default="false"/>
-  <arg name="has_elevator" default="false"/>
+
+  <arg name="cmd_vel" default="mobile_controller/cmd_vel"/>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find pallet_truck_control)/config/pallet_truck_control.yaml" command="load"/>
