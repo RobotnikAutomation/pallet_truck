@@ -1,26 +1,39 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Robot -->
   <arg name="id_robot" default="pallet_truck"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
 
+  <!-- Robot configuration -->
+  <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
+  <arg name="differential_robot" default="true" />
+  <arg name="has_safety_controller" default="false"/>
+
+  <!-- Topics -->
+  <arg name="cmd_vel_topic" default="~/cmd_vel"/>
+  
+  <!-- Configuration folder, to store different configurations -->
+  <arg name="config_folder" default="$(find pallet_truck_navigation)/config/move" />
+  <arg name="config_file" default="$(arg kinematics)_move.yaml" />
+
+  <!-- Overwrite frames, should not be used unless reasonable exception -->
+  <arg name="overwrite_frames" default="false" />
   <arg name="odom_frame" default="$(arg prefix)odom"/>
   <arg name="base_frame" default="$(arg prefix)base_footprint"/>
-
-  <arg name="has_safety_controller" default="false"/>
-  <arg name="cmd_vel_topic" default="move/cmd_vel"/>
-  <arg name="differential_robot" default="true"/>
+  <arg name="odom_frame_param_name" default="fixed_frame" />
+  <arg name="base_frame_param_name" default="robot_base_frame" />
 
   <node name="move" pkg="robotnik_move" type="move_node" respawn="false" output="screen">
-    <param name="robot_base_frame" type="string" value="$(arg base_frame)" />
-    <param name="fixed_frame" type="string" value="$(arg odom_frame)" />
+    <rosparam command="load" file="$(arg config_folder)/$(arg config_file)" subst_value="true"/>
 
-    <rosparam command="load" file="$(find pallet_truck_navigation)/config/move.yaml"/>
-
-    <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="~cmd_vel" />
-    <remap if="$(arg has_safety_controller)" from="cmd_vel" to="~cmd_vel_unsafe" />
+    <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
+    <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
 
     <param name="differential_robot" value="$(arg differential_robot)" />
+
+    <param if="$(arg overwrite_frames)" name="$(arg odom_frame_param_name)" value="$(arg odom_frame)" />
+    <param if="$(arg overwrite_frames)" name="$(arg base_frame_param_name)" value="$(arg base_frame)" />
   </node>
 
 </launch>

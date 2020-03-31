@@ -1,3 +1,6 @@
+robot_base_frame: $(arg prefix)base_footprint
+fixed_frame: $(arg prefix)odom
+
 gain_linear_velocity_x: 0.5
 gain_linear_velocity_y: 1
 gain_angular_velocity_z: 0.5

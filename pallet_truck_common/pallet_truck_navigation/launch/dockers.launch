@@ -1,57 +1,37 @@
 <?xml version="1.0"?>
 <launch>
+    
+  <!-- Robot -->
   <arg name="id_robot" default="pallet_truck"/>
-  <arg name="prefix" value="$(arg id_robot)_"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
-  <arg name="docking_qr" default="true"/>
-  <arg name="docking_laser_reflectors" default="false"/>
+  <!-- Robot configuration -->
+  <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
+  <arg name="has_safety_controller" default="false"/>
 
-  <arg name="differential_robot" default="true"/>
-
-  <!-- Docker frames -->
-  <arg name="fixed_frame" default="$(arg prefix)odom"/>
-  <arg name="robot_base_frame" default="$(arg prefix)base_footprint"/>
-
-  <!-- Camera frames -->
-  <!--arg name="camera_dock_frame" default="$(arg prefix)docking_station_marker"/>
-  <arg name="camera_contact_dock_frame" default="$(arg prefix)docking_station_marker_contact"/>
-  <arg name="camera_contact_dock_frame_for_base" default="$(arg prefix)docking_station_marker_for_base_frame"/-->
-
-  <!-- Laser frames -->
-  <!--arg name="laser_dock_frame" default="$(arg prefix)docking_station_laser_filtered"/>
-  <arg name="laser_contact_dock_frame" default="$(arg prefix)docking_station_laser_contact"/>
-  <arg name="laser_contact_dock_frame_for_base" default="$(arg prefix)docking_station_laser_for_base_frame"/-->
-
-
-
-  <!-- Static transforms -->
-  <!--include file="$(find pallet_truck_navigation)/launch/tf_publishers.launch">
-    <arg name="docking_qr" value="$(arg docking_qr)"/>
-    <arg name="camera_dock_frame" value="$(arg camera_dock_frame)"/>
-    <arg name="camera_contact_dock_frame" value="$(arg camera_contact_dock_frame)"/>
-    <arg name="camera_contact_dock_frame_for_base" value="$(arg camera_contact_dock_frame_for_base)"/>
-
-    <arg name="docking_laser_reflectors" value="$(arg docking_laser_reflectors)"/>
-    <arg name="laser_dock_frame" value="$(arg laser_dock_frame)"/>
-    <arg name="laser_contact_dock_frame" value="$(arg laser_contact_dock_frame)"/>
-    <arg name="laser_contact_dock_frame_for_base" value="$(arg laser_contact_dock_frame_for_base)"/>
-  </include-->
+  <!-- Topics -->
+  <arg name="cmd_vel_topic" default="~/cmd_vel"/>   
+  
+  <!-- Configuration folder, to store different configurations -->
+  <arg name="config_folder" default="$(find pallet_truck_navigation)/config/dockers" />
+  <arg name="config_file" default="$(arg kinematics)_docker.yaml" />
+  
+  <!-- Overwrite frames, should not be used unless reasonable exception -->
+  <arg name="overwrite_frames" default="false" />
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+  <arg name="odom_frame_param_name" default="fixed_frame" />
+  <arg name="base_frame_param_name" default="robot_base_frame" />
 
   <!-- Dockers -->
-  <node name="diff_docker" pkg="robotnik_docker" type="diff_docker_node" respawn="false" output="screen">
-    <param name="robot_base_frame" type="string" value="$(arg robot_base_frame)" />
-    <param name="fixed_frame" type="string" value="$(arg fixed_frame)" />
+  <node name="docker" pkg="robotnik_docker" type="$(arg kinematics)_docker_node" respawn="false" output="screen">
+    <rosparam command="load" file="$(arg config_folder)/$(arg config_file)" subst_value="true"/>
 
-    <rosparam command="load" file="$(find pallet_truck_navigation)/config/docking/diff_docker.yaml"/>
-    <remap from="cmd_vel" to="docker/cmd_vel"/>
+    <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
+    <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
+    
+    <param if="$(arg overwrite_frames)" name="$(arg odom_frame_param_name)" value="$(arg odom_frame)" />
+    <param if="$(arg overwrite_frames)" name="$(arg base_frame_param_name)" value="$(arg base_frame)" />
   </node>
-
-  <!--node name="pp_docker" pkg="robotnik_docker" type="purepursuit_docker_node" respawn="false" output="screen">
-    <param name="robot_base_frame" type="string" value="$(arg robot_base_frame)" />
-    <param name="fixed_frame" type="string" value="$(arg fixed_frame)" />
-
-    <rosparam command="load" file="$(find pallet_truck_navigation)/config/docking/pp_docker.yaml"/>
-    <remap from="cmd_vel" to="docker/cmd_vel"/>
-  </node-->
 
 </launch>
