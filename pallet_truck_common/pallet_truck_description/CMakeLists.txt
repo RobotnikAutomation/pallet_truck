@@ -5,7 +5,6 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
   urdf
   xacro
-  robotnik_sensors
 )
 
 

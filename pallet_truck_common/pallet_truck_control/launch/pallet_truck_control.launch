@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="sim" default="false"/>
-  <arg name="cmd_vel" default="/pallet_truck/mobile_controller/cmd_vel"/>
-  <arg name="prefix" default="pallet_truck_"/>
   <arg name="id_robot" default="pallet_truck"/>
-  <arg name="launch_robot_localization" default="false"/>
-  <arg name="has_elevator" default="false"/>
+  <arg name="prefix" default="pallet_truck_"/>
+
+  <arg name="cmd_vel" default="robotnik_base_control/cmd_vel"/>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find pallet_truck_control)/config/pallet_truck_control.yaml" command="load"/>
+  <rosparam file="$(find pallet_truck_control)/config/pallet_truck_control.yaml" command="load" subst_value="true" />
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-        args="mobile_controller
+        args="robotnik_base_control
               elevator_controller
               joint_read_state_controller
               joint_read_command_controller">

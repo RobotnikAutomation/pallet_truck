@@ -65,6 +65,14 @@
        <mu2>100</mu2>
        <material>Gazebo/Black</material>
      </gazebo>
+    
+    <joint name="${prefix}fork_sensor_joint" type="fixed">
+       <!-- xyz is estimated, not from cad -->
+       <origin xyz="-1.05 0.00000 0.012941" rpy="0 0 3.14159" />
+       <parent link="${prefix}fork_link"/>
+       <child link="${prefix}fork_sensor_link" />
+     </joint>
+    <link name="${prefix}fork_sensor_link" />
 
   </xacro:macro>
 </robot>
