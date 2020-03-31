@@ -3,7 +3,7 @@
   <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
 
   <!-- arg to config the launch file-->
-  <arg name="id_robot" default="$(optenv ROBOT_ID pallet_truck)"/>
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
   <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>

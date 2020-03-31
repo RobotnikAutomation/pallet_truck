@@ -2,7 +2,7 @@
 <launch>
 
   <!-- arg to config the launch file-->
-  <arg name="id_robot" default="$(optenv ROBOT_ID pallet_truck)"/>
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" value="$(arg id_robot)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
   <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
@@ -36,11 +36,11 @@
   <!-- Launch robot -->
   <group if="$(arg run_robot)" ns="$(arg id_robot)">
 
-    <!-- Load the URDF into the ROS Parameter Server (this could be replaced by pall -->
+    <!-- Load the URDF into the ROS Parameter Server -->
     <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
       <arg name="id_robot" value="$(arg id_robot)" />
       <arg name="prefix" value="$(arg prefix)" />
-      <arg name="version" value="$(arg xacro_robot)" />
+      <arg name="xacro_robot" value="$(arg xacro_robot)" />
     </include>
 
     <!-- Spawn robot, as we would do in a real robot -->
