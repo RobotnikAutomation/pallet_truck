@@ -8,23 +8,33 @@
   <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
   <!-- Robot configuration -->
+  <arg name="run_robot" default="true" /> <!-- just in case we want to run the simulation environment only -->
   <arg name="x_init_pose" default="0"/>
   <arg name="y_init_pose" default="0"/>
   <arg name="z_init_pose" default="0"/>
   <arg name="launch_base_hw_sim" default="false"/>
   <arg name="launch_battery_estimator" default="false"/>
 
-  <!-- Gazebo arguments -->
-  <arg name="launch_gazebo" default="true" />
+  <!-- Simulation arguments -->
+  <arg name="run_simulation_environment" default="true" /> <!-- may set to false if simulation environment is already running -->
   <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
   <arg name="debug" default="false"/>
-  <arg name="paused" value="false"/>
-  <arg name="headless" value="false"/>
-  <arg name="gui" value="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="gui" default="true"/>
 
   <!-- Launch gazebo -->
-  <include if="$(arg launch_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(arg world)"/>
+  <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
+  <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch" >
+    <!-- robot related args -->
+    <arg name="run_robot" value="$(arg run_robot)" />
+    <arg name="id_robot" value="$(arg id_robot)"/>
+    <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+    <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+    <arg name="z_init_pose" value="$(arg z_init_pose)"/>
+    <!-- environment related args -->
+    <arg name="run_simulation_environment" value="$(arg run_simulation_environment)" />
+    <arg name="world" value="$(arg world)"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)" />
     <arg name="headless" value="$(arg headless)"/>
@@ -32,7 +42,7 @@
   </include>
 
   <!-- Launch robot -->
-  <group ns="$(arg id_robot)">
+  <group if="$(arg run_robot)" ns="$(arg id_robot)">
 
     <!-- Load the URDF into the ROS Parameter Server (this could be replaced by pall -->
     <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
@@ -40,10 +50,6 @@
       <arg name="prefix" value="$(arg prefix)" />
       <arg name="version" value="$(arg xacro_robot)" />
     </include>
-
-    <!-- Spawner model into gazebo -->
-    <node name="urdf_spawner_robot_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
-        args="-x $(arg x_init_pose) -y $(arg y_init_pose) -z $(arg z_init_pose) -urdf -param robot_description -model $(arg id_robot)" />
 
     <!-- start pallet_truck_control nodes -->
     <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">
