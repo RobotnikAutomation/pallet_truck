@@ -25,15 +25,7 @@
 
   <!-- Launch gazebo -->
   <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
-  <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch" >
-    <!-- robot related args -->
-    <arg name="run_robot" value="$(arg run_robot)" />
-    <arg name="id_robot" value="$(arg id_robot)"/>
-    <arg name="x_init_pose" value="$(arg x_init_pose)"/>
-    <arg name="y_init_pose" value="$(arg y_init_pose)"/>
-    <arg name="z_init_pose" value="$(arg z_init_pose)"/>
-    <!-- environment related args -->
-    <arg name="run_simulation_environment" value="$(arg run_simulation_environment)" />
+  <include if="$(arg run_simulation_environment)" file="$(find pallet_truck_gazebo)/launch/spawn_simulation.launch" >
     <arg name="world" value="$(arg world)"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)" />
@@ -51,10 +43,12 @@
       <arg name="version" value="$(arg xacro_robot)" />
     </include>
 
-    <!-- start pallet_truck_control nodes -->
-    <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">
+    <!-- Spawn robot -->
+    <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch" >
       <arg name="id_robot" value="$(arg id_robot)"/>
-      <arg name="prefix" value="$(arg prefix)"/>
+      <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+      <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+      <arg name="z_init_pose" value="$(arg z_init_pose)"/>
     </include>
 
     <!-- base_hw_sim -->
