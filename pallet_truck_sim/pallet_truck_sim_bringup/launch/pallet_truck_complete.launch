@@ -43,13 +43,20 @@
       <arg name="version" value="$(arg xacro_robot)" />
     </include>
 
-    <!-- Spawn robot -->
+    <!-- Spawn robot, as we would do in a real robot -->
     <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch" >
       <arg name="id_robot" value="$(arg id_robot)"/>
       <arg name="x_init_pose" value="$(arg x_init_pose)"/>
       <arg name="y_init_pose" value="$(arg y_init_pose)"/>
       <arg name="z_init_pose" value="$(arg z_init_pose)"/>
     </include>
+
+    <!-- Start control nodes -->
+    <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">
+      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+
 
     <!-- base_hw_sim -->
     <include if="$(arg launch_base_hw_sim)" file="$(find robotnik_base_hw_sim)/launch/pallet_truck_hw_sim.launch">
