@@ -268,7 +268,7 @@ bool AckermannDriveController::initController(ros::NodeHandle root_nh, ros::Node
 
   joint_limits_.resize(NUMBER_OF_JOINTS);
 
-  joint_states_history_size_ = 1;
+  joint_states_history_size_ = 10;
   joint_states_history_.resize(NUMBER_OF_JOINTS);
   for (size_t i = 0; i < NUMBER_OF_JOINTS; i++)
   {
@@ -855,13 +855,15 @@ void AckermannDriveController::updateOdometryFromEncoder()
 {
   // Linear speed of each wheel
   double v1, v2, v3, v4;
-  v1 = joint_states_[FRONT_RIGHT_TRACTION_JOINT];
+  //v1 = joint_states_[FRONT_RIGHT_TRACTION_JOINT];
+  v1 = joint_states_mean_[FRONT_RIGHT_TRACTION_JOINT];
   //v2 = joint_states_[FRONT_LEFT_TRACTION_JOINT];
   //v3 = joint_states_[BACK_LEFT_TRACTION_JOINT];
   //v4 = -joint_states_[BACK_RIGHT_TRACTION_JOINT];
   // Angular pos of each wheel
   double a1, a2, a3, a4;
-  a1 = joint_states_[FRONT_RIGHT_DIRECTION_JOINT];
+  //a1 = joint_states_[FRONT_RIGHT_DIRECTION_JOINT];
+  a1 = joint_states_mean_[FRONT_RIGHT_DIRECTION_JOINT];
   //a2 = joint_states_[FRONT_LEFT_DIRECTION_JOINT];
   a3 = 0;  // joint_states_[BACK_LEFT_DIRECTION_JOINT];
   a4 = 0;  // joint_states_[BACK_RIGHT_DIRECTION_JOINT];
@@ -898,24 +900,6 @@ void AckermannDriveController::updateOdometryFromEncoder()
 
   if (bYawSensor_)
     w = imu_yaw_speed_;
-
-  static const int n = 10;
-  static double prev_vx[n] = {0,0,0,0,0,0,0,0,0,0};
-  double mean_x = 0;
-  for (int i = 0; i < n-1; i++) {
-    prev_vx[i] = prev_vx[i+1];
-    mean_x += prev_vx[i];
-  }
-  prev_vx[n-1] = vx;
-  vx = (mean_x + vx)/n;
-  static double prev_vy[n] = {0,0,0,0,0,0,0,0,0,0};
-  double mean_y = 0;
-  for (int i = 0; i < n-1; i++) {
-    prev_vy[i] = prev_vy[i+1];
-    mean_y += prev_vy[i];
-  }
-  prev_vy[n-1] = vy;
-  vy = (mean_y + vy)/n;
 
 //  double prev_vx = vx;
 //  vx = (vx+prev_vx)/2.0;
