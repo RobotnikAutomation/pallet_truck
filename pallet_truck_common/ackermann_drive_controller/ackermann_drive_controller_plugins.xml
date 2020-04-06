@@ -1,9 +1,0 @@
-<library path="lib/libackermann_drive_controller">
-
-  <class name="ackermann_drive_controller/AckermannDriveController" type="ackermann_drive_controller::AckermannDriveController" base_class_type="controller_interface::ControllerBase">
-    <description>
-      The OmniDriveController tracks velocity commands. It expects 2 VelocityJointInterface and 2 PositionJointInterface type of hardware interfaces.
-    </description>
-  </class>
-
-</library>
