@@ -127,6 +127,7 @@ bool AckermannDriveController::initController(ros::NodeHandle root_nh, ros::Node
   bool everything_ok = true;
 
   controller_name_ = controller_nh.getNamespace();
+
   // the topics are hardcoded, the way to change them is by using the remap option
   command_topic_ = "cmd_vel";
   odom_topic_ = "odom";
@@ -735,85 +736,26 @@ void AckermannDriveController::updateJointReferences()
   // in the code, the constraints are checked in reversed order, so the more constraining (1) is checked at the end
 
   std::vector<double> q, a;
-  q.resize(4);
-  a.resize(4);
-/*
-  if (active_kinematic_mode_ == KinematicMode::MODE_SINGLE_ACKERMANN)
-  {
-    // for now we just forward the command to the drives
-    q[0] = q[1] = q[2] = q[3] = vx;
-    a[0] = a[1] = w;
-    // constraint (1)
-    // setJointPositionReferenceBetweenMotorWheelLimits(q[0], a[0], FRONT_RIGHT_DIRECTION_JOINT);
-    // setJointPositionReferenceBetweenMotorWheelLimits(q[1], a[1], FRONT_LEFT_DIRECTION_JOINT);
-    // setJointPositionReferenceBetweenMotorWheelLimits(q[2], a[2], BACK_LEFT_DIRECTION_JOINT);
-    // setJointPositionReferenceBetweenMotorWheelLimits(q[3], a[3], BACK_RIGHT_DIRECTION_JOINT);
+  q.resize(1);
+  a.resize(1);
 
-    // joint velocity references are scaled so each wheel does not exceed it's maximum velocity
-    setJointVelocityReferenceBetweenLimits(q);
-  }
-*/
-
-   double x1 = L; double y1 = W/2.0;
-   double x2 = L; double y2 = W/2.0;
-   double y3 = W/2.0;
-   double y4 = W/2.0;
-
-   double wx1 = fabs(vx) + w * y1;
-   double wy1 = w * x1;
-   //q[0] = - sign(wx1) * sqrt( wx1*wx1 + wy1*wy1 ); // m/s
-   q[0] = - sign(vx) * sqrt( wx1*wx1 + wy1*wy1 ); // m/s
-   q[0] = q[0] / (wheel_diameter_/2.0); // convert to rad/s
-
-   double wx2 = fabs(vx) - w * y2;
-   double wy2 = w * x2;
-   // q[1] = sign(wx2) * sqrt( wx2*wx2 + wy2*wy2 ); // m/s
-   q[1] = sign(vx) * sqrt( wx2*wx2 + wy2*wy2 ); // m/s
-   q[1] = q[1] / (wheel_diameter_/2.0); // convert to rad/s
-
-   // Remove sign(vx) to use w as angle.
-   if (vx>=0)
-   	a[0] = radnorm( atan2( wy1,wx1 )); //
-   else
-   	a[0] = -radnorm( atan2 ( wy2,wx2 )); //
-
-   // Remove sign(vx) to use w as angle.
-   if (vx>=0)
-   	a[1] = radnorm( atan2 ( wy2,wx2 )); //
-   else
-   	a[1] = -radnorm( atan2 ( wy1,wx1 ));
-
-   double wx3 = vx - w * y3;
-   double wy3 = 0.0;
-   q[2] = sign(wx3)*sqrt( wx3*wx3 + wy3*wy3 ); // m/s
-   q[2] = q[2] / (wheel_diameter_/2.0); // convert to rad/s
-   a[2] = 0.0;
-
-   double wx4 = vx + w * y4;
-   double wy4 = 0.0;
-   q[3] = -sign(wx4)*sqrt( wx4*wx4 + wy4*wy4 ); // m/s
-   q[3] = q[3] / (wheel_diameter_/2.0); // convert to rad/s
-   a[3] = 0.0;
-
-    // joint velocity references are scaled so each wheel does not exceed it's maximum velocity
-    setJointVelocityReferenceBetweenLimits(q);
-
-
+  // velocities at wheel pose
   double vvx = vx;
   double vvy = w * wheel_base_;
 
-  if (vx == 0 and vvy == 0)
+  if (vvx == 0 and vvy == 0)
   {
     a[0] = 0;
     q[0] = 0;
   }
   else
   {
-    a[0] = radnorm(atan2(vvy, vvx));
-    q[0] = sqrt(vvx*vvx + vvy*vvy) / (wheel_diameter_/2.0);
+    a[0] = atan2(vvy, vvx);
+    a[0] = radnormHalf(a[0]);
+    q[0] = sign(vvx) * sqrt(vvx*vvx + vvy*vvy) / (wheel_diameter_/2.0);
   }
 
-  setJointPositionReferenceWithLessChange(q[0], a[0], joint_states_mean_[FRONT_RIGHT_TRACTION_JOINT],
+/*  setJointPositionReferenceWithLessChange(q[0], a[0], joint_states_mean_[FRONT_RIGHT_TRACTION_JOINT],
                                           joint_references_[FRONT_RIGHT_DIRECTION_JOINT]);
 
 
@@ -837,7 +779,7 @@ void AckermannDriveController::updateJointReferences()
   setJointPositionReferenceBetweenMotorWheelLimits(q[0], a[0], FRONT_RIGHT_DIRECTION_JOINT);
 
   setJointVelocityReferenceBetweenLimits(q);
-
+*/
   // Motor control actions
   // Axis are not reversed in the ackermann (swerve) configuration
   joint_references_[FRONT_RIGHT_TRACTION_JOINT] = q[0];
@@ -857,6 +799,8 @@ void AckermannDriveController::updateOdometryFromEncoder()
   double v1, v2, v3, v4;
   //v1 = joint_states_[FRONT_RIGHT_TRACTION_JOINT];
   v1 = joint_states_mean_[FRONT_RIGHT_TRACTION_JOINT];
+  ROS_INFO_STREAM_NAMED(controller_name_, controller_name_);
+  ROS_INFO_STREAM("v1:" << v1);
   //v2 = joint_states_[FRONT_LEFT_TRACTION_JOINT];
   //v3 = joint_states_[BACK_LEFT_TRACTION_JOINT];
   //v4 = -joint_states_[BACK_RIGHT_TRACTION_JOINT];
@@ -864,6 +808,7 @@ void AckermannDriveController::updateOdometryFromEncoder()
   double a1, a2, a3, a4;
   //a1 = joint_states_[FRONT_RIGHT_DIRECTION_JOINT];
   a1 = joint_states_mean_[FRONT_RIGHT_DIRECTION_JOINT];
+  ROS_INFO_STREAM("a1:" << a1);
   //a2 = joint_states_[FRONT_LEFT_DIRECTION_JOINT];
   a3 = 0;  // joint_states_[BACK_LEFT_DIRECTION_JOINT];
   a4 = 0;  // joint_states_[BACK_RIGHT_DIRECTION_JOINT];
@@ -895,8 +840,10 @@ void AckermannDriveController::updateOdometryFromEncoder()
   //double vy = (C + D) / 2.0;
 
   double vx = v1 * cos(a1);
+  ROS_INFO_STREAM("vx:" << vx);
   double vy = 0; // v1 * sin(a1);
   double w = v1 * sin(a1) / wheel_base_;
+  ROS_INFO_STREAM("w:" << w);
 
   if (bYawSensor_)
     w = imu_yaw_speed_;
