@@ -6,7 +6,7 @@
 
 `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch`
 
-`roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch id_robot:=pallet_truck_2 x_init_pose:=-5 launch_gazebo:=false`
+`roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch id_robot:=pallet_truck_2 x_init_pose:=-5 run_simulation_environment:=false`
 
 ### Launch simulation environment and two robots independently:
 
