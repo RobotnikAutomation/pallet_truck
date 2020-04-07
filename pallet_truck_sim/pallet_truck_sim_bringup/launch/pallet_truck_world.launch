@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Simulation arguments -->
+  <arg name="run_simulation_environment" default="true" /> <!-- may set to false if simulation environment is already running -->
+  <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
+  <arg name="debug" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="gui" default="true"/>
+
+  <!-- Rviz arguments -->
+  <arg name="launch_rviz" default="$(optenv RUN_RVIZ true)"/>
+  <arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/Rviz.rviz"/>
+
+  <!-- Launch gazebo -->
+  <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
+  <include if="$(arg run_simulation_environment)" file="$(find pallet_truck_gazebo)/launch/spawn_simulation.launch" >
+    <arg name="world" value="$(arg world)"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- Run rviz -->
+  <node if="$(arg launch_rviz)" name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(arg rviz_config_file)"/>
+
+</launch>
