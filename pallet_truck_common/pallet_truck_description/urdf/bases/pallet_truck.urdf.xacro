@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="pallet_truck" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="pallet_truck" xmlns:xacro="http://wiki.ros.org/xacro">
 
   <xacro:include filename="$(find pallet_truck_description)/urdf/inertia.urdf.xacro" />
 
