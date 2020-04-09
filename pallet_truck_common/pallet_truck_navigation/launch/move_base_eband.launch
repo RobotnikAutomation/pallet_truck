@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="id_robot" default="robot"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
@@ -21,7 +21,7 @@
   <arg name="costmap_common_params" default="costmap_common_params.yaml" />
   <arg name="global_costmap_params" default="global_costmap_params_nomap.yaml" />
   <arg name="local_costmap_params" default="local_costmap_params.yaml" />
-  
+
   <!-- Planners configuration -->
   <arg name="global_planner" default="$(optenv ROBOT_MOVE_BASE_GLOBAL_PLANNER global)" />
   <arg name="global_planner_params" default="$(arg global_planner)_planner_params.yaml" />

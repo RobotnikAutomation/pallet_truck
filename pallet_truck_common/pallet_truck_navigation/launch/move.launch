@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="id_robot" default="robot"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
@@ -12,7 +12,7 @@
 
   <!-- Topics -->
   <arg name="cmd_vel_topic" default="~/cmd_vel"/>
-  
+
   <!-- Configuration folder, to store different configurations -->
   <arg name="config_folder" default="$(find pallet_truck_navigation)/config/move" />
   <arg name="config_file" default="$(arg kinematics)_move.yaml" />

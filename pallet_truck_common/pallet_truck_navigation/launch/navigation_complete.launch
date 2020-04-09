@@ -2,23 +2,23 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="id_robot" default="robot"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
   <arg name="has_safety_controller" default="false"/>
   <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS false)"/>
-  
+
   <!-- Dockers arguments -->
   <arg name="has_docker" default="$(optenv ROBOT_HAS_DOCKER true)"/>
   <arg name="run_camera_docker" default="$(optenv ROBOT_DOCKER_RUN_CAMERA false)"/>
   <arg name="run_laser_docker" default="$(optenv ROBOT_DOCKER_RUN_LASER false)"/>
   <arg name="run_laser_filters" default="$(optenv ROBOT_RUN_LASER_FILTERS true)"/>
-  
+
   <!-- Move arguments -->
   <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
-  
+
   <!-- Frames -->
   <arg name="publish_tf" default="false" />
   <!-- Camera frames -->
@@ -38,7 +38,7 @@
   <arg name="odom_frame_param_name" default="fixed_frame" />
   <arg name="base_frame_param_name" default="robot_base_frame" />
 
-  <group ns="$(arg robot_id)">
+  <group ns="$(arg id_robot)">
 
     <include if="$(arg has_docker)" file="$(find pallet_truck_navigation)/launch/dockers.launch"/>
 

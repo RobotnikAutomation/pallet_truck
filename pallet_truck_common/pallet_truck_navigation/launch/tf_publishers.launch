@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" value="$(arg robot_id)_"/>
+  <arg name="id_robot" default="robot"/>
+  <arg name="prefix" value="$(arg id_robot)_"/>
 
   <arg name="docking_qr" default="true"/>
   <arg name="docking_laser_reflectors" default="false"/>

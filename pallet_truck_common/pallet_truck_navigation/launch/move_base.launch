@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="id_robot" default="robot"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
@@ -18,12 +18,12 @@
 
   <!-- Configuration folder, to store different configurations -->
   <arg name="config_folder" default="$(find pallet_truck_navigation)/config" />
-  
+
   <!-- Maps configuration -->
   <arg name="costmap_common_params" default="costmap_common_params.yaml" />
   <arg name="global_costmap_params" default="global_costmap_params_nomap.yaml" />
   <arg name="local_costmap_params" default="local_costmap_params.yaml" />
-  
+
   <!-- Planners configuration -->
   <arg name="global_planner" default="$(optenv ROBOT_MOVE_BASE_GLOBAL_PLANNER global)" />
   <arg name="global_planner_params" default="$(arg global_planner)_planner_params.yaml" />
@@ -36,13 +36,13 @@
   <arg name="base_frame" default="$(arg prefix)base_footprint"/>
   <arg name="odom_frame_param_name" default="" /> <!-- this depends on planners used -->
   <arg name="base_frame_param_name" default="" /> <!-- this depends on planners used -->
-  
+
   <!-- Run move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <!-- Topics -->
     <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
     <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
-    
+
 	<remap from="odom" to="$(arg odom_topic)" />
 
 	<!-- Move base params -->
