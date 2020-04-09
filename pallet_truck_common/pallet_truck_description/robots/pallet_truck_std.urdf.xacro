@@ -130,7 +130,7 @@
       <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
   </xacro:support_wheel>
 
-  <xacro:sensor_rslidar_16 prefix="${prefix}top_lidar" parent="${prefix}front_case_link" prefix_topic="top_lidar" gpu="true">
+  <xacro:sensor_rslidar_16 prefix="${prefix}top_lidar" parent="${prefix}front_case_link" prefix_topic="top_lidar" gpu="false">
       <origin xyz="${top_lidar_offset_x} ${top_lidar_offset_y} ${top_lidar_offset_z}" rpy="0 0 0"/>
   </xacro:sensor_rslidar_16>
 
@@ -138,11 +138,11 @@
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
-  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${id_robot}/left_fork_camera" use_nominal_extrinsics="true" > 
+  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${id_robot}/left_fork_camera" use_nominal_extrinsics="true" >
         <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:sensor_intel_d435>
 
-  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${id_robot}/right_fork_camera" use_nominal_extrinsics="true" > 
+  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${id_robot}/right_fork_camera" use_nominal_extrinsics="true" >
         <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:sensor_intel_d435>
 
