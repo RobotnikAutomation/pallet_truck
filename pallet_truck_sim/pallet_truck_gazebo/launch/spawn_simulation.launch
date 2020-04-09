@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
 
   <!-- arg to config the launch file-->
   <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
@@ -8,20 +7,21 @@
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
   <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
-  <!-- Gazebo arguments -->
-  <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
-  <arg name="debug" default="false"/>
-  <arg name="paused" default="false"/>
-  <arg name="headless" default="false"/>
-  <arg name="gui" default="true"/>
+ <!-- Simulation arguments -->
+ <arg name="run_simulation_environment" default="true" /> <!-- may set to false if simulation environment is already running -->
+ <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
+ <arg name="debug" default="false"/>
+ <arg name="paused" default="false"/>
+ <arg name="headless" default="false"/>
+ <arg name="gui" default="true"/>
 
-  <!-- Launch gazebo -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(arg world)"/>
-    <arg name="debug" value="$(arg debug)" />
-    <arg name="paused" value="$(arg paused)" />
-    <arg name="headless" value="$(arg headless)"/>
-    <arg name="gui" value="$(arg gui)"/>
-  </include>
+ <!-- Launch gazebo -->
+ <include file="$(find gazebo_ros)/launch/empty_world.launch">
+   <arg name="world_name" value="$(arg world)"/>
+   <arg name="debug" value="$(arg debug)" />
+   <arg name="paused" value="$(arg paused)" />
+   <arg name="headless" value="$(arg headless)"/>
+   <arg name="gui" value="$(arg gui)"/>
+ </include>
 
 </launch>
