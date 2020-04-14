@@ -216,11 +216,15 @@ If a new simulator is used (VREP, Stage, etc), a `pallet_truck_SIMULATOR` packag
 
 Arguments for simulation should match and be remapped to existing arguments. For example, if new simulator receives world file through an argument called `environment`, then `spawn_simulation.launch` should receive it through the already existing argument `world`, but internally call the simulator with the `environment` argument.
 
+Update README files accordingly.
+
 Current existing arguments are derived from Gazebo, because it is the simulator we use now.
 
 ### New configuration
 
 If an specific configuration for a project is required, then a `pallet_truck_SIMULATOR_PROJECT` package must be created with the required simulation files, such as `world, models, etc.` folders. Launch files are not required.
+
+Update README files accordingly.
 
 ## TODO
 

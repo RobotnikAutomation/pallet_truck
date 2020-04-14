@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- Run simulation environment and spawn model into it. This file maybe splitted further in both actions-->
-
   <!-- arg to config the launch file-->
   <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
