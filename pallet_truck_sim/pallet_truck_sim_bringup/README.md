@@ -8,8 +8,10 @@ This configuration allows to spawn one or several robots, in one or several simu
 It has to be noted that this launch package does not launch any configuration for localization, navigation, perception, etc. as this has to be done at a higher level so integration with real robots is easier.
 
 This README file is splitted in the following sections:
+
 1. Rationale, explains the meaning of each launch file.
 1. Launch files explained, details the arguments of each launch file.
+1. Environment variables, lists which environtment variables are used.
 1. Examples, shows how to use this package.
 1. How to extend, gives the rationale of how this package and related packages should be extended.
 1. TODO, future work, with a brief explanation of what and why is needed and a hint for the implementation.
@@ -155,6 +157,16 @@ RViz config file to be loaded, as relative path to config_package argument
 
 RViz config file to be loaded, as an absolute path in the file system, used to override `rviz_config` argument
 
+## Environment variables
+
+Lists which environtment variables are used by this configuration package.
+
+* `SIMULATION_PACKAGE`, which package has the basic launch files for each simulator
+* `SIMULATION_CONFIG_PACKAGE`, specfies the package with the configuration to be used, normally would have the same value as `SIMULATION_PACKAGE`.
+* `ROBOT_ID`, id of the robot to be spawned.
+* `ROBOT_MODEL`, robot model in case several exist (e.g. Pallet Truck, Pallet Truck Steel).
+* `ROBOT_XACRO`, XACRO robot definition.
+
 ## Examples
 
 #### Launch standard simulation with one robot and its visualization:
@@ -212,4 +224,5 @@ If an specific configuration for a project is required, then a `pallet_truck_SIM
 
 ## TODO
 
-RViz configuration for different robots. Difficult to have due to frame names, topics and parameters are stored in the configuration. Likely a WON'T DO.
+1. Resolve some inconsistency between ROBOT_XX (optenv ROBOT_MODEL, translated to argument robot_model) and XX_ROBOT (optenv ROBOT_ID, translated to argument id_robot)
+1. RViz configuration for different robots. Difficult to have due to frame names, topics and parameters are stored in the configuration. Likely a WON'T DO.
