@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- What simulator to use -->
+  <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
+
   <!-- arg to config the launch file-->
   <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
@@ -17,7 +20,7 @@
   <!-- Launch robot (simulation specific software) -->
   <group ns="$(arg id_robot)">
     <!-- spawn robot in simulator -->
-    <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch">
+    <include file="$(eval find(simulation_package) + '/launch/spawn_robot.launch')">
       <arg name="id_robot" value="$(arg id_robot)"/>
       <arg name="x_init_pose" value="$(arg x_init_pose)"/>
       <arg name="y_init_pose" value="$(arg y_init_pose)"/>

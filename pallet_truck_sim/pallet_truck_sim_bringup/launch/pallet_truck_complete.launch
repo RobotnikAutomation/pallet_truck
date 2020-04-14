@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- What simulator config package to use -->
+  <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
+  
   <!-- What to execute -->
-  <arg name="spawn_robot" value="true"/>
-  <arg name="spawn_simulation" value="true"/>
+  <arg name="spawn_simulation" default="true"/>
+  <arg name="spawn_robot" default="true"/>  
   <arg name="spawn_rviz" default="true"/>
 
   <!-- Simulation configuration -->
-  <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
+  <arg name="world" default="worlds/pallet_truck_epal.world" />
   <arg name="debug" default="false"/>
   <arg name="paused" default="false"/>
   <arg name="headless" default="false"/>
