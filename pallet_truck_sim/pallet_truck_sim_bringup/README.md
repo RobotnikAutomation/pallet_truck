@@ -47,17 +47,17 @@ These arguments are common to all launch files in this package.
 
 ``` simulation_package, default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)" ```
 
-Defines which package has the configuration for the simulation. Possibilities:
+Defines which package has the launch files for the simulation. Possibilities:
 
-1. Different simulators. There should be one for each simulator.
+1. pallet_truck_gazebo, has a configuration for Gazebo simulator
+1. pallet_truck_stage, has a configuration for Stage simulator.
 
-    1. pallet_truck_gazebo, has a configuration for Gazebo simulator
-    1. pallet_truck_stage, has a configuration for Stage simulator.
+``` config_package, default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)" ```
+
+Defines which package has the launch configuration files for the simulation. Possibilities:
     
-1. Different configuration for a simulator.
-
-    1. pallet_truck_gazebo, has standard configuration for Gazebo simulator.
-    1. pallet_truck_gazebo_fancy, has the configuration for Gazebo simulator related to the Fancy project.
+1. pallet_truck_gazebo, has standard configuration for Gazebo simulator.
+1. pallet_truck_gazebo_fancy, has the configuration for Gazebo simulator related to the Fancy project.
 
 ### pallet_truck_complete.launch
 
@@ -81,9 +81,9 @@ This launch file received arguments to set up the simulation environment.
 
 * ``` world, default="worlds/pallet_truck_epal.world" ```
 
-World file to be loaded, as relative path to simulation_package argument 
+World file to be loaded, as relative path to config_package argument 
 
-* ``` world_file, default="$(eval find(simulation_package) + '/' + world)"/>" ```
+* ``` world_file, default="$(eval find(config_package) + '/' + world)"/>" ```
 
 World file to be loaded, as an absolute path in the file system, used to override `world` argument
 
@@ -149,9 +149,9 @@ If RViz should be spawned for this robot. See spawn_rviz section on the paramete
 
 * ``` rviz_config", default="rviz/rviz.rviz" ```
 
-RViz config file to be loaded, as relative path to simulation_package argument 
+RViz config file to be loaded, as relative path to config_package argument 
 
-* ``` rviz_config_file, default="$(eval find(simulation_package) + '/' + rviz_config) ```
+* ``` rviz_config_file, default="$(eval find(config_package) + '/' + rviz_config) ```
 
 RViz config file to be loaded, as an absolute path in the file system, used to override `rviz_config` argument
 
@@ -193,6 +193,8 @@ or:
 
 ## How to extend
 
+The most important thing is to maintain compatibility and reuse existing structures.
+
 ### New simulator
 
 If a new simulator is used (VREP, Stage, etc), a `pallet_truck_SIMULATOR` package must be created with at least two launch files:
@@ -206,12 +208,7 @@ Current existing arguments are derived from Gazebo, because it is the simulator 
 
 ### New configuration
 
-If an specific configuration for a project is required, then a `pallet_truck_SIMULATOR_PROJECT` package must be created with at least two launch files:
-
-1. spawn_simulation.launch, which will load the simulation environment.
-2. spawn_robot.launch, which will spawn a robot into that simulation environemt.
-
-This files will just forward the arguments to the files in the `pallet_truck_SIMULATOR` package.
+If an specific configuration for a project is required, then a `pallet_truck_SIMULATOR_PROJECT` package must be created with the required simulation files, such as `world, models, etc.` folders. Launch files are not required.
 
 ## TODO
 

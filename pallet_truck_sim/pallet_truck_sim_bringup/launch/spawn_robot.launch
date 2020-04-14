@@ -3,7 +3,8 @@
 
   <!-- What simulator to use -->
   <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
-
+  <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)"/>
+  
   <!-- arg to config the launch file-->
   <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
@@ -22,7 +23,7 @@
   
   <!-- RViz configuration -->
   <arg name="rviz_config" default="rviz/rviz.rviz"/>
-  <arg name="rviz_config_file" default="$(eval find(simulation_package) + '/' + rviz_config)"/>
+  <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
   
   <!-- Launch robot (simulation specific software) -->
   <group ns="$(arg id_robot)">

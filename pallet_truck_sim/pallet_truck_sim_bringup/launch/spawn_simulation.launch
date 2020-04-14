@@ -3,10 +3,11 @@
 
  <!-- What simulator to use -->
  <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
-
+ <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)"/>
+  
  <!-- Simulation arguments -->
- <arg name="world" default="worlds/pallet_truck_epal.world" /> <!-- relative path to simulation_package -->
- <arg name="world_file" default="$(eval find(simulation_package) + '/' + world)"/> <!-- absolute path -->
+ <arg name="world" default="worlds/pallet_truck_epal.world" /> <!-- relative path to config_package -->
+ <arg name="world_file" default="$(eval find(config_package) + '/' + world)"/> <!-- absolute path -->
  <arg name="debug" default="false"/>
  <arg name="paused" default="false"/>
  <arg name="headless" default="false"/>
