@@ -19,10 +19,10 @@
   <arg name="gui" default="true"/>
 
   <!-- Robot configuration -->
-  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
-  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
   <arg name="x_init_pose" default="0"/>
   <arg name="y_init_pose" default="0"/>
   <arg name="z_init_pose" default="0"/>
@@ -50,7 +50,7 @@
     <arg name="simulation_package" value="$(arg simulation_package)"/>
     <arg name="config_package" value="$(arg config_package)"/>
     
-    <arg name="id_robot" value="$(arg id_robot)"/>
+    <arg name="robot_id" value="$(arg robot_id)"/>
     <arg name="prefix" value="$(arg prefix)" />
     <arg name="x_init_pose" value="$(arg x_init_pose)"/>
     <arg name="y_init_pose" value="$(arg y_init_pose)"/>

@@ -6,10 +6,10 @@
   <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)"/>
   
   <!-- arg to config the launch file-->
-  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/> <!-- If different models should exist (pallet_truck, pallet_truck_steel...) -->
-  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
   <!-- Robot configuration -->
   <arg name="x_init_pose" default="0"/>
@@ -26,10 +26,10 @@
   <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
   
   <!-- Launch robot (simulation specific software) -->
-  <group ns="$(arg id_robot)">
+  <group ns="$(arg robot_id)">
     <!-- spawn robot in simulator -->
     <include file="$(eval find(simulation_package) + '/launch/spawn_robot.launch')">
-      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="robot_id" value="$(arg robot_id)"/>
       <arg name="x_init_pose" value="$(arg x_init_pose)"/>
       <arg name="y_init_pose" value="$(arg y_init_pose)"/>
       <arg name="z_init_pose" value="$(arg z_init_pose)"/>
@@ -37,18 +37,18 @@
   </group>
 
   <!-- Launch robot (simulation independent software) -->
-  <group ns="$(arg id_robot)">
+  <group ns="$(arg robot_id)">
 
     <!-- Load the URDF into the ROS Parameter Server -->
     <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
-      <arg name="id_robot" value="$(arg id_robot)" />
+      <arg name="robot_id" value="$(arg robot_id)" />
       <arg name="prefix" value="$(arg prefix)" />
-      <arg name="xacro_robot" value="$(arg xacro_robot)" />
+      <arg name="robot_xacro" value="$(arg robot_xacro)" />
     </include>
 
     <!-- Start control nodes -->
     <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">
-      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="robot_id" value="$(arg robot_id)"/>
       <arg name="prefix" value="$(arg prefix)"/>
     </include>
 
@@ -77,7 +77,7 @@
   </group>
 
   <!-- launch rviz -->
-  <include if="$(arg spawn_rviz)" ns="$(arg id_robot)" file="$(find pallet_truck_sim_bringup)/launch/spawn_rviz.launch">
+  <include if="$(arg spawn_rviz)" ns="$(arg robot_id)" file="$(find pallet_truck_sim_bringup)/launch/spawn_rviz.launch">
     <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
   </include>
   

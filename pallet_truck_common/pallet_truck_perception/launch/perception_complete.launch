@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
 
   <!-- Camera locator arguments -->
   <arg name="run_ar_locator" default="$(optenv ROBOT_RUN_AR_LOCATOR false)"/>
@@ -19,11 +19,11 @@
   <arg name="docking_station_tag_distance" default="$(optenv ROBOT_DOCKING_STATION_TAG_DISTANCE 0.3)"/>
   <arg name="docking_station_tag_max_distance_detection" default="$(optenv ROBOT_DOCKING_STATION_TAG_MAX_DISTANCE_DETECTION 3.5)"/>
 
-  <group ns="$(arg id_robot)">
+  <group ns="$(arg robot_id)">
 
     <!-- Launch AR locator to detect markers -->
     <include if="$(arg run_ar_locator)" file="$(find summit_xl_perception)/launch/ar_locator.launch">
-      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="robot_id" value="$(arg robot_id)"/>
       <arg name="camera_topic_name" value="$(arg camera_topic)" />
       <arg name="camera_info_topic_name" default="$(arg camera_info_topic)" />
     </include>
@@ -31,7 +31,7 @@
     <group if="$(arg run_reflector_locator)">
       <!-- Intensity filter from scan to cloud -->
       <include file="$(find summit_xl_perception)/launch/scan_to_cloud.launch">
-        <arg name="id_robot" value="$(arg id_robot)"/>
+        <arg name="robot_id" value="$(arg robot_id)"/>
         <arg name="source_topic" value="$(arg scan_topic)"/>
         <arg name="filter_config_file" value="$(arg filter_config_file)"/>
         <arg name="target_topic" value="$(arg cloud_topic)"/>
@@ -40,7 +40,7 @@
 
       <!-- Launch laser locator to detect charger using reflectors -->
       <include file="$(find summit_xl_perception)/launch/two_tags_locator.launch">
-        <arg name="id_robot" value="$(arg id_robot)"/>
+        <arg name="robot_id" value="$(arg robot_id)"/>
         <arg name="two_tag_locator_node_name" value="$(arg two_tag_locator_node_name)"/>
       	<arg name="object_frame" value="$(arg object_frame)"/>
       	<arg name="input_topic_name" value="$(arg cloud_topic)"/>

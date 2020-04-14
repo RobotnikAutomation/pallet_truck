@@ -95,9 +95,9 @@
   <!-- *************** -->
   <!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
-  <xacro:arg name="id_robot" default="pallet_truck"/>
+  <xacro:arg name="robot_id" default="pallet_truck"/>
   <xacro:arg name="prefix" default="$(arg prefix)_"/>
-  <xacro:property name="id_robot" value="$(arg id_robot)" />
+  <xacro:property name="robot_id" value="$(arg robot_id)" />
   <xacro:property name="prefix" value="$(arg prefix)" />
 
   <xacro:pallet_truck prefix="${prefix}" publish_bf="true"/> <!-- BASE -->
@@ -138,11 +138,11 @@
       <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
   </xacro:sensor_sick_s300>
 
-  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${id_robot}/left_fork_camera" use_nominal_extrinsics="true" >
+  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${robot_id}/left_fork_camera" use_nominal_extrinsics="true" >
         <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:sensor_intel_d435>
 
-  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${id_robot}/right_fork_camera" use_nominal_extrinsics="true" >
+  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${robot_id}/right_fork_camera" use_nominal_extrinsics="true" >
         <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:sensor_intel_d435>
 

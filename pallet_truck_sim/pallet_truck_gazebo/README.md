@@ -34,11 +34,11 @@ Spawns a robot in a running simulation environment. It only spawns the robot in 
 
 This launch has the following arguments:
 
-* ``` id_robot, default="$(optenv ROBOT_ID robot)"  ```
+* ``` robot_id, default="$(optenv ROBOT_ID robot)"  ```
 
 Robot id.
 
-* ``` prefix, default="$(arg id_robot)_"  ```
+* ``` prefix, default="$(arg robot_id)_"  ```
 
 Prefix of spawned robot.
 
@@ -46,7 +46,7 @@ Prefix of spawned robot.
 
 If different models should exist (pallet_truck, pallet_truck_steel...)
 
-* ``` xacro_robot, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
+* ``` robot_xacro, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
 
 Specifies XACRO to be loaded as robot_description
 

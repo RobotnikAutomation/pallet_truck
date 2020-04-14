@@ -111,11 +111,11 @@ If simulator should show its GUI.
 
 ### spawn_robot.launch
 
-* ``` id_robot, default="$(optenv ROBOT_ID robot)"  ```
+* ``` robot_id, default="$(optenv ROBOT_ID robot)"  ```
 
 Robot id.
 
-* ``` prefix, default="$(arg id_robot)_"  ```
+* ``` prefix, default="$(arg robot_id)_"  ```
 
 Prefix of spawned robot.
 
@@ -123,7 +123,7 @@ Prefix of spawned robot.
 
 If different models should exist (pallet_truck, pallet_truck_steel...)
 
-* ``` xacro_robot, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
+* ``` robot_xacro, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
 
 Specifies XACRO to be loaded as robot_description
 
@@ -185,11 +185,11 @@ First:
 
 Then: 
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch id_robot:=robot_2 x_init_pose:=5 spawn_simulation:=false spawn_rviz:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 spawn_simulation:=false spawn_rviz:=false`
     
 or:
     
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch id_robot:=robot_2 x_init_pose:=5`
+* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot_2 x_init_pose:=5`
 
 #### Launch simulation environment and two robots independently, with rviz for only one robot:
 
@@ -199,13 +199,13 @@ Then:
 
 * `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch spawn_simulation:=false`
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch id_robot:=robot_2 x_init_pose:=5 spawn_simulation:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 spawn_simulation:=false`
 
 or:
 
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch id_robot:=robot x_init_pose:=0 spawn_rviz:=true`
+* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot x_init_pose:=0 spawn_rviz:=true`
 
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch id_robot:=robot_2 x_init_pose:=5 spawn_rviz:=false`
+* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot_2 x_init_pose:=5 spawn_rviz:=false`
 
 ## How to extend
 
@@ -234,5 +234,5 @@ Update README files accordingly.
 
 ## TODO
 
-1. Resolve some inconsistency between ROBOT_XX (optenv ROBOT_MODEL, translated to argument robot_model) and XX_ROBOT (optenv ROBOT_ID, translated to argument id_robot)
+1. ~~Resolve some inconsistency between ROBOT_XX (optenv ROBOT_MODEL, translated to argument robot_model) and XX_ROBOT (optenv ROBOT_ID, translated to argument id_robot)~~
 1. RViz configuration for different robots. Difficult to have due to frame names, topics and parameters are stored in the configuration. Likely a WON'T DO.

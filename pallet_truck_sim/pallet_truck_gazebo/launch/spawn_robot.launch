@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
   <!-- arg to config the launch file-->
-  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
-  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
   <!-- Robot configuration -->
   <arg name="x_init_pose" default="0"/>
@@ -13,6 +13,6 @@
 
   <!-- Spawn model into gazebo -->
   <node name="urdf_spawner_robot_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-      args="-x $(arg x_init_pose) -y $(arg y_init_pose) -z $(arg z_init_pose) -urdf -param robot_description -model $(arg id_robot)" />
+      args="-x $(arg x_init_pose) -y $(arg y_init_pose) -z $(arg z_init_pose) -urdf -param robot_description -model $(arg robot_id)" />
 
 </launch>

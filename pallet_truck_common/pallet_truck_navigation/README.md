@@ -15,11 +15,11 @@ This package contains the configuration for running the Navigation stack of the 
 
 ### Robot configuration
 
-* id_robot (string, default: robot)
+* robot_id (string, default: robot)
 
 Name of spawned robot to connect
 
-* prefix (string, default: $(arg id_robot)_)
+* prefix (string, default: $(arg robot_id)_)
 
 Prefix of spawned robot to connect
 
