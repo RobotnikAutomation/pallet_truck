@@ -10,7 +10,8 @@
   <arg name="spawn_rviz" default="true"/>
 
   <!-- Simulation configuration -->
-  <arg name="world" default="worlds/pallet_truck_epal.world" />
+  <arg name="world" default="worlds/pallet_truck_epal.world" /> <!-- relative path to simulation_package -->
+  <arg name="world_file" default="$(eval find(simulation_package) + '/' + world)"/> <!-- absolute path -->
   <arg name="debug" default="false"/>
   <arg name="paused" default="false"/>
   <arg name="headless" default="false"/>
@@ -28,11 +29,12 @@
   <arg name="launch_battery_estimator" default="false"/>
 
   <!-- RViz configuration -->
-  <arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/rviz.rviz"/>
+  <arg name="rviz_config" default="rviz/rviz.rviz"/>
+  <arg name="rviz_config_file" default="$(eval find(simulation_package) + '/' + rviz_config)"/>
 
   <!-- launch simulation -->
   <include if="$(arg spawn_simulation)" file="$(find pallet_truck_sim_bringup)/launch/spawn_simulation.launch">
-    <arg name="world" value="$(arg world)"/>
+    <arg name="world" value="$(arg world_file)"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)" />
     <arg name="headless" value="$(arg headless)"/>

@@ -7,7 +7,7 @@
   <!-- arg to config the launch file-->
   <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg id_robot)_"/>
-  <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
+  <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/> <!-- If different models should exist (pallet_truck, pallet_truck_steel...) -->
   <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
   <!-- Robot configuration -->
@@ -17,6 +17,13 @@
   <arg name="launch_base_hw_sim" default="false"/>
   <arg name="launch_battery_estimator" default="false"/>
 
+  <!-- If Rviz should be spawned here -->
+  <arg name="spawn_rviz" default="false"/>
+  
+  <!-- RViz configuration -->
+  <arg name="rviz_config" default="rviz/rviz.rviz"/>
+  <arg name="rviz_config_file" default="$(eval find(simulation_package) + '/' + rviz_config)"/>
+  
   <!-- Launch robot (simulation specific software) -->
   <group ns="$(arg id_robot)">
     <!-- spawn robot in simulator -->
@@ -68,5 +75,10 @@
     </group>
   </group>
 
+  <!-- launch rviz -->
+  <include if="$(arg spawn_rviz)" ns="$(arg id_robot)" file="$(find pallet_truck_sim_bringup)/launch/spawn_rviz.launch">
+    <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
+  </include>
+  
 </launch>
 
