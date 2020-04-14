@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Rviz arguments -->
+  <arg name="spawn_rviz" default="$(optenv SPAWN_RVIZ true)"/>
+  <arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/rviz.rviz"/>
+
+  <!-- Run rviz -->
+  <node if="$(arg spawn_rviz)" name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(arg rviz_config_file)"/>
+
+</launch>

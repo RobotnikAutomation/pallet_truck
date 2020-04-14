@@ -1,21 +1,55 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- Arguments -->
+  <!-- What to execute -->
   <arg name="spawn_robot" value="true"/>
   <arg name="spawn_simulation" value="true"/>
-  <arg name="run_rviz" default="true"/>
+  <arg name="spawn_rviz" default="true"/>
 
-  <!-- launch robot -->
-  <include if="$(arg spawn_robot)" file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch">
-  </include>
+  <!-- Simulation configuration -->
+  <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
+  <arg name="debug" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="gui" default="true"/>
+
+  <!-- Robot configuration -->
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
+  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+  <arg name="x_init_pose" default="0"/>
+  <arg name="y_init_pose" default="0"/>
+  <arg name="z_init_pose" default="0"/>
+  <arg name="launch_base_hw_sim" default="false"/>
+  <arg name="launch_battery_estimator" default="false"/>
+
+  <!-- RViz configuration -->
+  <arg name="rviz_config_file" default="$(find pallet_truck_gazebo)/rviz/rviz.rviz"/>
 
   <!-- launch simulation -->
-  <include if="$(arg spawn_simulation)" file="$(find pallet_truck_gazebo)/launch/spawn_simulation.launch">
+  <include if="$(arg spawn_simulation)" file="$(find pallet_truck_sim_bringup)/launch/spawn_simulation.launch">
+    <arg name="world" value="$(arg world)"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- launch robot -->
+  <include if="$(arg spawn_robot)" file="$(find pallet_truck_sim_bringup)/launch/spawn_robot.launch">
+    <arg name="id_robot" value="$(arg id_robot)"/>
+    <arg name="prefix" value="$(arg prefix)" />
+    <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+    <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+    <arg name="z_init_pose" value="$(arg z_init_pose)"/>
+    <arg name="launch_base_hw_sim" value="$(arg launch_base_hw_sim)"/>
+    <arg name="launch_battery_estimator" value="$(arg launch_battery_estimator)"/>
   </include>
 
   <!-- launch rviz -->
-  <include if="$(arg run_rviz)" file="$(find pallet_truck_gazebo)/launch/run_rviz.launch">
+  <include if="$(arg spawn_rviz)" file="$(find pallet_truck_sim_bringup)/launch/spawn_rviz.launch">
+    <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
   </include>
 
 </launch>

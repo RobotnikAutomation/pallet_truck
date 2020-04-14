@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- arg to config the launch file-->
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
+  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+
+  <!-- Robot configuration -->
+  <arg name="x_init_pose" default="0"/>
+  <arg name="y_init_pose" default="0"/>
+  <arg name="z_init_pose" default="0"/>
+  <arg name="launch_base_hw_sim" default="false"/>
+  <arg name="launch_battery_estimator" default="false"/>
+
+  <!-- Launch robot (simulation specific software) -->
+  <group ns="$(arg id_robot)">
+    <!-- spawn robot in simulator -->
+    <include file="$(find pallet_truck_gazebo)/launch/spawn_robot.launch">
+      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+      <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+      <arg name="z_init_pose" value="$(arg z_init_pose)"/>
+    </include>
+  </group>
+
+  <!-- Launch robot (simulation independent software) -->
+  <group ns="$(arg id_robot)">
+
+    <!-- Load the URDF into the ROS Parameter Server -->
+    <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
+      <arg name="id_robot" value="$(arg id_robot)" />
+      <arg name="prefix" value="$(arg prefix)" />
+      <arg name="xacro_robot" value="$(arg xacro_robot)" />
+    </include>
+
+    <!-- Start control nodes -->
+    <include file="$(find pallet_truck_control)/launch/pallet_truck_control.launch">
+      <arg name="id_robot" value="$(arg id_robot)"/>
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+
+    <!-- base_hw_sim -->
+    <include if="$(arg launch_base_hw_sim)" file="$(find robotnik_base_hw_sim)/launch/pallet_truck_hw_sim.launch">
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+
+    <group if="$(arg launch_battery_estimator)">
+      <!-- start dock_manager node -->
+      <include file="$(find charge_manager)/launch/charge_manager.launch">
+        <arg name="docker_mode" value="manual_sw"/>
+        <arg name="inverted_contact_relay_input" value="false"/>
+        <arg name="contact_relay_input_number" value="2"/>
+        <arg name="charger_relay_output_number" value="1"/>
+      </include>
+
+      <!-- start battery_estimation node -->
+      <include file="$(find battery_estimation)/launch/table_battery.launch">
+        <arg name="battery_voltage" value="48"/>
+        <arg name="read_voltage_from_analog_input" value="true"/>
+        <arg name="voltage_analog_input_number" value="1" />
+        <arg name="current_analog_input_number" value="2" />
+      </include>
+    </group>
+  </group>
+
+</launch>
+
