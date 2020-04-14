@@ -5,6 +5,8 @@ Launch files are splitted so one can spawn the simulation environment, a robot a
 
 This configuration allows to spawn one or several robots, in one or several simulator environments (either different instances of the same simulator, or instances of different simulators) and an easy switching from simulation to real robot.
 
+It has to be remembered the concept of spawning: creating a robot in the simulation environment, but not running it's low-level software (i.e. control). Spawning is done at a low-level, but running software (even if it is the control of the robot) is at higher-level (control is somehow medium-level).
+
 It has to be noted that this launch package does not launch any configuration for localization, navigation, perception, etc. as this has to be done at a higher level so integration with real robots is easier.
 
 This README file is splitted in the following sections:
@@ -35,7 +37,9 @@ Spawns the simulation environment.
 
 ### spawn_robot.launch
 
-Spawns a robot in an already running simulation environment. This file spawns the robot related software, as well as spawns an instance of the robot in the simulator. It can also spawn an RViz instance connected to this robot.
+Spawns a robot in an already running simulation environment. However, this launch also runs the basic related software for a robot (i.e. control), so this is a medium-level spawner (read introduction to clarify this concept).
+
+It can also spawn an RViz instance connected to this robot.
 
 ### spawn_rviz.launch
 
@@ -209,10 +213,12 @@ The most important thing is to maintain compatibility and reuse existing structu
 
 ### New simulator
 
-If a new simulator is used (VREP, Stage, etc), a `pallet_truck_SIMULATOR` package must be created with at least two launch files:
+If a new simulator is used (VREP, Stage, etc), a `pallet_truck_SIMULATOR` package must be created with at least two low-level launch files:
 
 1. spawn_simulation.launch, which will load the simulation environment.
 2. spawn_robot.launch, which will spawn a robot into that simulation environemt.
+
+Remember that this package should only spawn a low-level robot, without spawning it's software (i.e. control), which is done at a higher-level, in this case, in the `pallet_truck_sim_bringup/spawn_robot.launch`.
 
 Arguments for simulation should match and be remapped to existing arguments. For example, if new simulator receives world file through an argument called `environment`, then `spawn_simulation.launch` should receive it through the already existing argument `world`, but internally call the simulator with the `environment` argument.
 

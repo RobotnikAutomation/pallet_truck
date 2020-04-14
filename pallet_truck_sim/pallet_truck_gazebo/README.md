@@ -30,7 +30,9 @@ If simulator should show its GUI.
 
 #### spawn_robot.launch
 
-Spawns a robot in a running simulation environment. Has the following arguments:
+Spawns a robot in a running simulation environment. It only spawns the robot in the environement, it does not spawn any of the required software for the robot (e.g. control, navigation, etc.). This is done in the pallet_truck_sim_bringup package.
+
+This launch has the following arguments:
 
 * ``` id_robot, default="$(optenv ROBOT_ID robot)"  ```
 
