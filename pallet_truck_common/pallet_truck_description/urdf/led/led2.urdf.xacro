@@ -5,59 +5,197 @@
 
   <gazebo>
 
-    <joint name="${prefix}led_joint" type="fixed">
+    <joint name='left_light_joint' type='fixed'>
       <parent>${prefix}front_case_link</parent>
-      <child>light_model::${prefix}light_link</child>
+      <child>left_led_model::left_light_link</child>
     </joint>
 
-    <model name="light_model">
-      <pose>1.5207 0 0.68 0 0 0</pose>
-      <link name="${prefix}light_link">
-        <visual name="${prefix}led_light">
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>0.35 0.568 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>1 1 1 1</specular>
-            <emissive>0 0 0 1</emissive>
-          </material>
-        </visual>
-        <light name="${prefix}led_light" type="point">
-          <pose>0 0 0 0 0 0</pose>
-          <attenuation>
-            <range>20</range>
-            <!--linear>0.10</linear-->
-          </attenuation>
-          <diffuse>0 0 0 1</diffuse>
-          <specular>0 0 0 1</specular>
-          <spot>
-            <inner_angle>0.1</inner_angle>
-            <outer_angle>0.15</outer_angle>
-            <falloff>1</falloff>
-          </spot>
-        </light>
-      </link>
-      <!--plugin name='light_control' filename='libLedPlugin.so'>
-       <enable>true</enable>
-        <light>
-          <id>light_link/light_source</id>
-            <enable>true</enable>
-            <duration>1</duration>
-            <interval>0.5</interval>
-            <color>1 0 0</color>
-            <attenuation>
-               <range>20</range>
-               <linear>0.10</linear>
-            </attenuation>
-        </light>
-      </plugin-->
-    </model>
-  </gazebo>
+    <joint name='right_light_joint' type='fixed'>
+      <parent>${prefix}front_case_link</parent>
+      <child>right_led_model::right_light_link</child>
+    </joint>
+    
+    <joint name='front_light_joint' type='fixed'>
+      <parent>${prefix}front_case_link</parent>
+      <child>front_led_model::front_light_link</child>
+    </joint>
+
+    <model name='left_led_model'>
+		     <pose>1.5207 0.28 0.68 0 0 0</pose>
+		     <link name='left_light_link'>
+		       <visual name='left_led'>
+		         <pose>0 0 0 0 0 0</pose>
+		         <geometry>
+		           <box>
+		             <size>0.35 0.008 0.01</size>
+		           </box>
+		         </geometry>
+		         <material>
+		           <ambient>1 1 1 1</ambient>
+		           <diffuse>1 1 1 1</diffuse>
+		           <specular>1 1 1 1</specular>
+		           <emissive>0 0 0 1</emissive>
+		         </material>
+		       </visual>
+		       <light name='left_led' type='point'>
+		         <pose>0 0.276 0 0 0 0</pose>
+		         <attenuation>
+		           <range>20</range>
+		           <!--linear>0.10</linear-->
+		         </attenuation>
+		         <diffuse>0 0 0 1</diffuse>
+		         <specular>0 0 0 1</specular>
+						 <spot>
+							 <inner_angle>0.1</inner_angle>
+							 <outer_angle>0.15</outer_angle>
+							 <falloff>1</falloff>
+						 </spot>
+		       </light>
+		     </link>
+		     <plugin name='light_control' filename='libRosLedPlugin.so'>
+		 			<main_switch_srvs>/gazebo/left_light/enable</main_switch_srvs>
+		       <light>
+		         <id>left_light_link/left_led</id>
+						 <block>
+							 <enable>true</enable>
+						 	 <duration>1</duration>
+						 	 <interval>0.5</interval>
+						 	 <!--color>1 0 0</color-->
+						 	 <attenuation>
+						 	 		<range>20</range>
+						 	 		<linear>0.10</linear>
+						 	 </attenuation>
+						 </block>
+						 <block>
+						 	 <duration>1</duration>
+						 	 <interval>0.5</interval>
+						   <!--color>1 0 0</color-->
+						 	 <attenuation>
+						 			 <range>20</range>
+						 			 <linear>0.10</linear>
+						 	 </attenuation>
+						  </block>
+					 </light>
+		     </plugin>
+		   </model>
+		   <model name='right_led_model'>
+		     <pose>1.5207 -0.28 0.68 0 0 0</pose>
+		     <link name='right_light_link'>
+		       <visual name='right_led'>
+		         <pose>0 0 0 0 0 0</pose>
+		         <geometry>
+		           <box>
+		             <size>0.35 0.008 0.01</size>
+		           </box>
+		         </geometry>
+		         <material>
+		           <ambient>1 1 1 1</ambient>
+		           <diffuse>1 1 1 1</diffuse>
+		           <specular>1 1 1 1</specular>
+		           <emissive>0 0 0 1</emissive>
+		         </material>
+		       </visual>
+					 <light name='right_led' type='point'>
+		         <pose>0 -0.276 0 0 0 0</pose>
+		         <attenuation>
+		           <range>20</range>
+		         </attenuation>
+		         <diffuse>0 0 0 1</diffuse>
+		         <specular>0 0 0 1</specular>
+						 <spot>
+							 <inner_angle>0.1</inner_angle>
+							 <outer_angle>0.15</outer_angle>
+							 <falloff>1</falloff>
+						 </spot>
+		       </light>
+		     </link>
+		     <plugin name='light_control' filename='libRosLedPlugin.so'>
+		 			<main_switch_srvs>/gazebo/right_light/enable</main_switch_srvs>
+		    
+					 <light>
+						 <id>right_light_link/right_led</id>
+						 <block>
+							 <enable>true</enable>
+							 <duration>1</duration>
+							 <interval>0.5</interval>
+							 <!--color>1 0 0</color-->
+							 <attenuation>
+									<range>20</range>
+									<linear>0.10</linear>
+							 </attenuation>
+						 </block>
+						 <block>
+							 <duration>1</duration>
+							 <interval>0.5</interval>
+							 <!--color>1 0 0</color-->
+							 <attenuation>
+									 <range>20</range>
+									 <linear>0.10</linear>
+							 </attenuation>
+							</block>
+					 </light>
+		     </plugin>
+		   </model>
+
+       <model name='front_led_model'>
+		     <pose>1.755 0.0 0.68 0 0 0</pose>
+		     <link name='front_light_link'>
+		       <visual name='front_led'>
+		         <pose>0 0 0 0 0 0</pose>
+		         <geometry>
+		           <box>
+		             <size>0.008 0.35 0.01</size>
+		           </box>
+		         </geometry>
+		         <material>
+		           <ambient>1 1 1 1</ambient>
+		           <diffuse>1 1 1 1</diffuse>
+		           <specular>1 1 1 1</specular>
+		           <emissive>0 0 0 1</emissive>
+		         </material>
+		       </visual>
+					 <light name='front_led' type='point'>
+		         <pose>0.276 0 0 0 0 0</pose>
+		         <attenuation>
+		           <range>20</range>
+		         </attenuation>
+		         <diffuse>0 0 0 1</diffuse>
+		         <specular>0 0 0 1</specular>
+						 <spot>
+							 <inner_angle>0.1</inner_angle>
+							 <outer_angle>0.15</outer_angle>
+							 <falloff>1</falloff>
+						 </spot>
+		       </light>
+		     </link>
+		     <plugin name='light_control' filename='libRosLedPlugin.so'>
+		 			<main_switch_srvs>/gazebo/front_light/enable</main_switch_srvs>
+					 <light>
+						 <id>front_light_link/front_led</id>
+						 <block>
+							 <enable>true</enable>
+							 <duration>1</duration>
+							 <interval>0.5</interval>
+							 <!--color>1 0 0</color-->
+							 <attenuation>
+									<range>20</range>
+									<linear>0.10</linear>
+							 </attenuation>
+						 </block>
+						 <block>
+							 <duration>1</duration>
+							 <interval>0.5</interval>
+							 <!--color>1 0 0</color-->
+							 <attenuation>
+									 <range>20</range>
+									 <linear>0.10</linear>
+							 </attenuation>
+							</block>
+					 </light>
+		     </plugin>
+		   </model>
+
+    </gazebo>
 
   </xacro:macro>
 </robot>
