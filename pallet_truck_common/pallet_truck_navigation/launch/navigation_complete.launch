@@ -10,11 +10,15 @@
   <arg name="has_safety_controller" default="false"/>
   <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS false)"/>
 
+  <!-- What navigation config package to use -->
+  <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
+
   <!-- Dockers arguments -->
   <arg name="has_docker" default="$(optenv ROBOT_HAS_DOCKER true)"/>
   <arg name="run_camera_docker" default="$(optenv ROBOT_DOCKER_RUN_CAMERA false)"/>
   <arg name="run_laser_docker" default="$(optenv ROBOT_DOCKER_RUN_LASER false)"/>
   <arg name="run_laser_filters" default="$(optenv ROBOT_RUN_LASER_FILTERS true)"/>
+  <arg name="docker_file" default="launch/dockers.launch"/>
 
   <!-- Move arguments -->
   <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
@@ -40,24 +44,24 @@
 
   <group ns="$(arg id_robot)">
 
-    <include if="$(arg has_docker)" file="$(find pallet_truck_navigation)/launch/dockers.launch"/>
+    <include if="$(arg has_docker)" file="$(eval find(navigation_package) + '/' + docker_file)"/>
 
-    <include if="$(arg has_move)" file="$(find pallet_truck_navigation)/launch/move.launch"/>
+    <include if="$(arg has_move)" file="$(eval find(navigation_package) + '/launch/move.launch')"/>
 
-    <include file="$(find pallet_truck_navigation)/launch/scan_filter.launch">
+    <include file="$(eval find(navigation_package) + '/launch/scan_filter.launch')">
       <arg name="laser_scan" default="front_laser"/>
     </include>
 
-    <include file="$(find pallet_truck_navigation)/launch/scan_filter.launch">
+    <include file="$(eval find(navigation_package) + '/launch/scan_filter.launch')">
       <arg name="laser_scan" default="rear_laser"/>
     </include>
 
-    <include file="$(find pallet_truck_navigation)/launch/rgbd_to_laserscan.launch">
+    <include file="$(eval find(navigation_package) + '/launch/rgbd_to_laserscan.launch')">
       <arg name="camera" default="front_rgbd_camera" />
     </include>
 
     <!-- Static transforms -->
-    <include if="$(arg publish_tf)" file="$(find pallet_truck_navigation)/launch/tf_publishers.launch" />
+    <include if="$(arg publish_tf)" file="$(eval find(navigation_package) + 'launch/tf_publishers.launch')" />
 
   </group>
 
