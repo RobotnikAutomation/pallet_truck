@@ -20,7 +20,7 @@
   <arg name="launch_battery_estimator" default="false"/>
 
   <!-- If Rviz should be spawned here -->
-  <arg name="spawn_rviz" default="false"/>
+  <arg name="run_rviz" default="false"/>
   
   <!-- RViz configuration -->
   <arg name="rviz_config" default="rviz/rviz.rviz"/>
@@ -79,7 +79,7 @@
   </group>
 
   <!-- launch rviz -->
-  <include if="$(arg spawn_rviz)" ns="$(arg robot_id)" file="$(find pallet_truck_sim_bringup)/launch/spawn_rviz.launch">
+  <include if="$(arg run_rviz)" ns="$(arg robot_id)" file="$(find pallet_truck_sim_bringup)/launch/run_rviz.launch">
     <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
   </include>
   

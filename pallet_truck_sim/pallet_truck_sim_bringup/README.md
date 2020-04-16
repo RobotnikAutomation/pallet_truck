@@ -1,11 +1,11 @@
 # pallet_truck_sim_bringup
 
 Launch and config files that launch the complete simulation of the robot, being simulator independent.
-Launch files are splitted so one can spawn the simulation environment, a robot and rviz independently.
+Launch files are splitted so one can run the simulation environment, a robot and rviz independently.
 
-This configuration allows to spawn one or several robots, in one or several simulator environments (either different instances of the same simulator, or instances of different simulators) and an easy switching from simulation to real robot.
+This configuration allows to run one or several robots, in one or several simulator environments (either different instances of the same simulator, or instances of different simulators) and an easy switching from simulation to real robot.
 
-It has to be remembered the concept of spawning: creating a robot in the simulation environment, but not running it's low-level software (i.e. control). Spawning is done at a low-level, but running software (even if it is the control of the robot) is at higher-level (control is somehow medium-level).
+It has to be remembered the concept of running and spawning a robot. Spawning if the process of creating a robot in the simulation environment, but not running it's low-level software (i.e. control). Running a robot consist of spawning a robot and executing its low-level software (i.e. control).
 
 It has to be noted that this launch package does not launch any configuration for localization, navigation, perception, etc. as this has to be done at a higher level so integration with real robots is easier.
 
@@ -23,27 +23,27 @@ This README file is splitted in the following sections:
 There are four launch files. They are explained from high-level to low-level.
 
 1. pallet_truck_complete.launch
-1. spawn_simulation.launch
-1. spawn_robot.launch
-1. spawn_rviz.launch
+1. run_simulation.launch
+1. run_robot.launch
+1. run_rviz.launch
 
 ### pallet_truck_complete.launch
 
-Single file that can spawn the simulation environment, a single robot and an RViz instance to visualize that robot. What is spawned is controlled through arguments, and uses the launch files described in this list.
+Single file that can run the simulation environment, a single robot and an RViz instance to visualize that robot. What is runned is controlled through arguments, and uses the launch files described in this list.
 
-### spawn_simulation.launch
+### run_simulation.launch
 
-Spawns the simulation environment. 
+runs the simulation environment. 
 
-### spawn_robot.launch
+### run_robot.launch
 
-Spawns a robot in an already running simulation environment. However, this launch also runs the basic related software for a robot (i.e. control), so this is a medium-level spawner (read introduction to clarify this concept).
+Runs a robot in an already running simulation environment. That means it spawns a robot and runs it's low-level software.
 
-It can also spawn an RViz instance connected to this robot.
+It can also run an RViz instance connected to this robot.
 
-### spawn_rviz.launch
+### run_rviz.launch
 
-Spawns an RViz instance to visualize an already spawned robot.
+Runs an RViz instance to visualize an already running robot.
 
 ## Launch files explained.
 
@@ -67,26 +67,25 @@ Defines which package has the launch configuration files for the simulation. Pos
 
 ` use_gpu_for_simulation, default="$(optenv SIMULATION_USE_GPU true)" `
 
-Defines if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes.
-
+Defines if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes. At the time of this writing this only affects the XACRO/URDF, which is the one that specifies which plugins are loaded (so you can say if they are GPU based or not).
 
 ### pallet_truck_complete.launch
 
 This launch file receives and forwards the arguments for the low-level launch files, which are described later, as well as the following:
 
-* ` spawn_robot, default="true" `
+* ` run_robot, default="true" `
 
-If robot should be spawned
+If robot should be runed
 
-* ` spawn_simulation, default="true" `
+* ` run_simulation, default="true" `
 
-If simulation environment should be spawned
+If simulation environment should be runed
 
-* ` spawn_rviz, default="true" `
+* ` run_rviz, default="true" `
 
-If RViz should be spawned
+If RViz should be runed
 
-### spawn_simulation.launch
+### run_simulation.launch
 
 This launch file received arguments to set up the simulation environment.
 
@@ -114,7 +113,7 @@ If simulator should start in headless mode
 
 If simulator should show its GUI.
 
-### spawn_robot.launch
+### run_robot.launch
 
 * ` robot_id, default="$(optenv ROBOT_ID robot)"  `
 
@@ -122,7 +121,7 @@ Robot id.
 
 * ` prefix, default="$(arg robot_id)_"  `
 
-Prefix of spawned robot.
+Prefix of runed robot.
 
 * ` robot_model, default="$(optenv ROBOT_MODEL pallet_truck)"  `
 
@@ -152,11 +151,11 @@ If base_hw simulator should be loaded
 
 If battery estimator should be loaded
 
-* ` spawn_rviz", default="false" `
+* ` run_rviz", default="false" `
 
-If RViz should be spawned for this robot. See spawn_rviz section on the parameters
+If RViz should be runed for this robot. See run_rviz section on the parameters
 
-### spawn_rviz.launch
+### run_rviz.launch
 
 * ` rviz_config", default="rviz/rviz.rviz" `
 
@@ -174,7 +173,7 @@ Lists which environtment variables are used by this configuration package.
 * `SIMULATION_CONFIG_PACKAGE`, specfies the package with the configuration to be used, normally would have the same value as `SIMULATION_PACKAGE`.
 * `SIMULATION_USE_GPU`, specifies if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes.
 
-* `ROBOT_ID`, id of the robot to be spawned.
+* `ROBOT_ID`, id of the robot to be runed.
 * `ROBOT_MODEL`, robot model in case several exist (e.g. Pallet Truck, Pallet Truck Steel).
 * `ROBOT_XACRO`, XACRO robot definition.
 
@@ -184,7 +183,7 @@ Lists which environtment variables are used by this configuration package.
 
 * `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch`
 
-#### Launch standard simulation with one robot and its visualization and spawn another one called "robot_2" in start pose (5, 0, 0) without visualization
+#### Launch standard simulation with one robot and its visualization and run another one called "robot_2" in start pose (5, 0, 0) without visualization
 
 First:
 
@@ -192,27 +191,27 @@ First:
 
 Then: 
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 spawn_simulation:=false spawn_rviz:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 run_simulation:=false run_rviz:=false`
     
 or:
     
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot_2 x_init_pose:=5`
+* `roslaunch pallet_truck_sim_bringup run_robot.launch robot_id:=robot_2 x_init_pose:=5`
 
 #### Launch simulation environment and two robots independently, with rviz for only one robot:
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch spawn_robot:=false spawn_rviz:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch run_robot:=false run_rviz:=false`
 
 Then:
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch spawn_simulation:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch run_simulation:=false`
 
-* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 spawn_simulation:=false`
+* `roslaunch pallet_truck_sim_bringup pallet_truck_complete.launch robot_id:=robot_2 x_init_pose:=5 run_simulation:=false`
 
 or:
 
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot x_init_pose:=0 spawn_rviz:=true`
+* `roslaunch pallet_truck_sim_bringup run_robot.launch robot_id:=robot x_init_pose:=0 run_rviz:=true`
 
-* `roslaunch pallet_truck_sim_bringup spawn_robot.launch robot_id:=robot_2 x_init_pose:=5 spawn_rviz:=false`
+* `roslaunch pallet_truck_sim_bringup run_robot.launch robot_id:=robot_2 x_init_pose:=5 run_rviz:=false`
 
 ## How to extend
 
@@ -225,7 +224,7 @@ If a new simulator is used (VREP, Stage, etc), a `pallet_truck_SIMULATOR` packag
 1. spawn_simulation.launch, which will load the simulation environment.
 2. spawn_robot.launch, which will spawn a robot into that simulation environemt.
 
-Remember that this package should only spawn a low-level robot, without spawning it's software (i.e. control), which is done at a higher-level, in this case, in the `pallet_truck_sim_bringup/spawn_robot.launch`.
+Remember that this package should only spawn a low-level robot, without running it's software (i.e. control), which is done at a higher-level, in this case, in the `pallet_truck_sim_bringup/run_robot.launch`.
 
 Arguments for simulation should match and be remapped to existing arguments. For example, if new simulator receives world file through an argument called `environment`, then `spawn_simulation.launch` should receive it through the already existing argument `world`, but internally call the simulator with the `environment` argument.
 
