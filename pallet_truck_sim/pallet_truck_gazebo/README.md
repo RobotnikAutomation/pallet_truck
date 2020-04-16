@@ -42,13 +42,6 @@ Robot id.
 
 Prefix of spawned robot.
 
-* ``` robot_model, default="$(optenv ROBOT_MODEL pallet_truck)"  ```
-
-If different models should exist (pallet_truck, pallet_truck_steel...)
-
-* ``` robot_xacro, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
-
-Specifies XACRO to be loaded as robot_description
 
 * ``` x_init_pose, default="0"  ```
 

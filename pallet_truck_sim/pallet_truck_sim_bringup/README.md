@@ -65,6 +65,11 @@ Defines which package has the launch configuration files for the simulation. Pos
 1. pallet_truck_gazebo, has standard configuration for Gazebo simulator.
 1. pallet_truck_gazebo_fancy, has the configuration for Gazebo simulator related to the Fancy project.
 
+``` use_gpu_for_simulation, default="$(optenv SIMULATION_USE_GPU true)" ```
+
+Defines if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes.
+
+
 ### pallet_truck_complete.launch
 
 This launch file receives and forwards the arguments for the low-level launch files, which are described later, as well as the following:
@@ -167,6 +172,8 @@ Lists which environtment variables are used by this configuration package.
 
 * `SIMULATION_PACKAGE`, which package has the basic launch files for each simulator
 * `SIMULATION_CONFIG_PACKAGE`, specfies the package with the configuration to be used, normally would have the same value as `SIMULATION_PACKAGE`.
+* `SIMULATION_USE_GPU`, specifies if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes.
+
 * `ROBOT_ID`, id of the robot to be spawned.
 * `ROBOT_MODEL`, robot model in case several exist (e.g. Pallet Truck, Pallet Truck Steel).
 * `ROBOT_XACRO`, XACRO robot definition.

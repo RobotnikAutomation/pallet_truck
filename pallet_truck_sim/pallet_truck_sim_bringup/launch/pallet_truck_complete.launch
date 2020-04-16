@@ -4,6 +4,7 @@
   <!-- What simulator config package to use -->
   <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
   <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)"/>
+  <arg name="use_gpu_for_simulation" default="$(optenv SIMULATION_USE_GPU true)"/>
 
   <!-- What to execute -->
   <arg name="spawn_simulation" default="true"/>
@@ -28,7 +29,7 @@
   <arg name="z_init_pose" default="0"/>
   <arg name="launch_base_hw_sim" default="false"/>
   <arg name="launch_battery_estimator" default="false"/>
-
+  
   <!-- RViz configuration -->
   <arg name="rviz_config" default="rviz/rviz.rviz"/>
   <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
@@ -57,6 +58,7 @@
     <arg name="z_init_pose" value="$(arg z_init_pose)"/>
     <arg name="launch_base_hw_sim" value="$(arg launch_base_hw_sim)"/>
     <arg name="launch_battery_estimator" value="$(arg launch_battery_estimator)"/>
+    <arg name="use_gpu_for_simulation" default="$(arg use_gpu_for_simulation)" />
   </include>
 
   <!-- launch rviz -->

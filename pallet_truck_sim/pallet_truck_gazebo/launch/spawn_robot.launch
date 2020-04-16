@@ -3,8 +3,6 @@
   <!-- arg to config the launch file-->
   <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
-  <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
-  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
 
   <!-- Robot configuration -->
   <arg name="x_init_pose" default="0"/>

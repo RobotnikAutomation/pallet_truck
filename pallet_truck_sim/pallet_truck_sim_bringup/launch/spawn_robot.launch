@@ -4,7 +4,8 @@
   <!-- What simulator to use -->
   <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)"/>
   <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)"/>
-  
+  <arg name="use_gpu_for_simulation" default="$(optenv SIMULATION_USE_GPU true)"/>
+
   <!-- arg to config the launch file-->
   <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
@@ -44,6 +45,7 @@
       <arg name="robot_id" value="$(arg robot_id)" />
       <arg name="prefix" value="$(arg prefix)" />
       <arg name="robot_xacro" value="$(arg robot_xacro)" />
+      <arg name="use_gpu_for_simulation" default="$(arg use_gpu_for_simulation)" />
     </include>
 
     <!-- Start control nodes -->
