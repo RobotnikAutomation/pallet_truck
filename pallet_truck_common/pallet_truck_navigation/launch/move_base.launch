@@ -9,6 +9,9 @@
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
   <arg name="has_safety_controller" default="false"/>
 
+  <!-- What navigation config package to use -->
+  <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
+
   <!-- Topics argumments -->
   <arg name="cmd_vel_topic" default="move_base/cmd_vel"/>
   <arg name="odom_topic" default="robotnik_base_control/odom"/>
@@ -17,8 +20,11 @@
   <arg name="front_rgbd_to_scan_topic" default="$(optenv ROBOT_NAVIGATION_FRONT_RGBD_TO_SCAN front_rgbd_camera/point_cloud_scan_filtered)"/>
 
   <!-- Configuration folder, to store different configurations -->
-  <arg name="config_folder" default="$(find pallet_truck_navigation)/config" />
-
+  <arg name="config_folder" default="$(eval find(navigation_package) + '/config')" />
+  <arg name="costmap_folder" default="costmaps"/>                 <!-- Config_folder / costmap_folder / costmap_config_file -->
+  <arg name="global_planner_folder" default="global_planners"/>   <!-- Config_folder / local or global planner_folder / planner_config_file depending of type -->
+  <arg name="local_planner_folder" default="local_planners"/>     <!--               / local planner folder /(teb, eband, ..)_local_planner_(diff, omni, ..)_params.yaml-->
+                                                                  <!--               / global planner folder / (global,sbpl, ..)_global_planner_params.yaml  -->
   <!-- Maps configuration -->
   <arg name="costmap_common_params" default="costmap_common_params.yaml" />
   <arg name="global_costmap_params" default="global_costmap_params_nomap.yaml" />
@@ -26,7 +32,7 @@
 
   <!-- Planners configuration -->
   <arg name="global_planner" default="$(optenv ROBOT_MOVE_BASE_GLOBAL_PLANNER global)" />
-  <arg name="global_planner_params" default="$(arg global_planner)_planner_params.yaml" />
+  <arg name="global_planner_params" default="$(arg global_planner)_global_planner_params.yaml" />
   <arg name="local_planner" default="$(optenv ROBOT_MOVE_BASE_LOCAL_PLANNER teb)" />
   <arg name="local_planner_params" default="$(arg local_planner)_local_planner_$(arg kinematics)_params.yaml" />
 
@@ -49,17 +55,17 @@
 	<rosparam file="$(arg config_folder)/move_base_params.yaml" command="load" subst_value="true"/>
 
 	<!-- Global costmap params-->
-	<rosparam file="$(arg config_folder)/costmaps/$(arg costmap_common_params)" command="load" ns="global_costmap" subst_value="true"/>
-	<rosparam file="$(arg config_folder)/costmaps/$(arg global_costmap_params)" command="load" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg costmap_folder)/$(arg costmap_common_params)" command="load" ns="global_costmap" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg costmap_folder)/$(arg global_costmap_params)" command="load" subst_value="true"/>
 
 	<!-- Local costmap params-->
-	<rosparam file="$(arg config_folder)/costmaps/$(arg costmap_common_params)" command="load" ns="local_costmap" subst_value="true"/>
-	<rosparam file="$(arg config_folder)/costmaps/$(arg local_costmap_params)" command="load" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg costmap_folder)/$(arg costmap_common_params)" command="load" ns="local_costmap" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg costmap_folder)/$(arg local_costmap_params)" command="load" subst_value="true"/>
 
 	<!-- Global planner params-->
-	<rosparam file="$(arg config_folder)/global_planners/$(arg global_planner_params)" command="load" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg global_planner_folder)/$(arg global_planner_params)" command="load" subst_value="true"/>
 	<!-- Local planner params-->
-	<rosparam file="$(arg config_folder)/local_planners/$(arg local_planner_params)" command="load" subst_value="true"/>
+	<rosparam file="$(arg config_folder)/$(arg local_planner_folder)/$(arg local_planner_params)" command="load" subst_value="true"/>
 
     <!-- Overwrite frames, should not be used unless reasonable reason -->
     <param if="$(arg overwrite_frames)" name="$(arg odom_frame_param_name)" value="$(arg odom_frame)" />
