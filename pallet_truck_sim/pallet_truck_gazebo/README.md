@@ -8,23 +8,23 @@ Package for the simulation of the Autonomous Pallet Truck in the Gazebo simulato
 
 Spawns the simulation environment, without robots. Has the following arguments:
 
-* ``` world, default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world" ```
+* ` world, default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world" `
 
 World file to be loaded, as an absolute path in the file system.
 
-* ``` debug, default="false" ```
+* ` debug, default="false" `
 
 If simulator should output debug information
 
-* ``` paused, default="false" ```
+* ` paused, default="false" `
 
 If simulator should start paused
 
-* ``` headless, default="false" ```
+* ` headless, default="false" `
 
 If simulator should start in headless mode
 
-* ``` gui, default="true" ```
+* ` gui, default="true" `
 
 If simulator should show its GUI.
 
@@ -34,23 +34,22 @@ Spawns a robot in a running simulation environment. It only spawns the robot in 
 
 This launch has the following arguments:
 
-* ``` robot_id, default="$(optenv ROBOT_ID robot)"  ```
+* ` robot_id, default="$(optenv ROBOT_ID robot)"  `
 
 Robot id.
 
-* ``` prefix, default="$(arg robot_id)_"  ```
+* ` prefix, default="$(arg robot_id)_"  `
 
 Prefix of spawned robot.
 
-
-* ``` x_init_pose, default="0"  ```
+* ` x_init_pose, default="0"  `
 
 Initial X pose in world 
 
-* ``` y_init_pose, default="0"  ```
+* ` y_init_pose, default="0"  `
 
 Initial Y pose in world 
 
-* ``` z_init_pose, default="0"  ```
+* ` z_init_pose, default="0"  `
 
 Initial Z pose in world 

@@ -51,21 +51,21 @@ Spawns an RViz instance to visualize an already spawned robot.
 
 These arguments are common to all launch files in this package.
 
-``` simulation_package, default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)" ```
+` simulation_package, default="$(optenv SIMULATION_PACKAGE pallet_truck_gazebo)" `
 
 Defines which package has the launch files for the simulation. Possibilities:
 
 1. pallet_truck_gazebo, has a configuration for Gazebo simulator
 1. pallet_truck_stage, has a configuration for Stage simulator.
 
-``` config_package, default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)" ```
+` config_package, default="$(optenv SIMULATION_CONFIG_PACKAGE pallet_truck_gazebo)" `
 
 Defines which package has the launch configuration files for the simulation. Possibilities:
     
 1. pallet_truck_gazebo, has standard configuration for Gazebo simulator.
 1. pallet_truck_gazebo_fancy, has the configuration for Gazebo simulator related to the Fancy project.
 
-``` use_gpu_for_simulation, default="$(optenv SIMULATION_USE_GPU true)" ```
+` use_gpu_for_simulation, default="$(optenv SIMULATION_USE_GPU true)" `
 
 Defines if simulation use GPU accelerated plugins or not. If true, simulation should run faster but with problems sometimes.
 
@@ -74,15 +74,15 @@ Defines if simulation use GPU accelerated plugins or not. If true, simulation sh
 
 This launch file receives and forwards the arguments for the low-level launch files, which are described later, as well as the following:
 
-* ``` spawn_robot, default="true" ```
+* ` spawn_robot, default="true" `
 
 If robot should be spawned
 
-* ``` spawn_simulation, default="true" ```
+* ` spawn_simulation, default="true" `
 
 If simulation environment should be spawned
 
-* ``` spawn_rviz, default="true" ```
+* ` spawn_rviz, default="true" `
 
 If RViz should be spawned
 
@@ -90,79 +90,79 @@ If RViz should be spawned
 
 This launch file received arguments to set up the simulation environment.
 
-* ``` world, default="worlds/pallet_truck_epal.world" ```
+* ` world, default="worlds/pallet_truck_epal.world" `
 
 World file to be loaded, as relative path to config_package argument 
 
-* ``` world_file, default="$(eval find(config_package) + '/' + world)"/>" ```
+* ` world_file, default="$(eval find(config_package) + '/' + world)"/>" `
 
 World file to be loaded, as an absolute path in the file system, used to override `world` argument
 
-* ``` debug, default="false" ```
+* ` debug, default="false" `
 
 If simulator should output debug information
 
-* ``` paused, default="false" ```
+* ` paused, default="false" `
 
 If simulator should start paused
 
-* ``` headless, default="false" ```
+* ` headless, default="false" `
 
 If simulator should start in headless mode
 
-* ``` gui, default="true" ```
+* ` gui, default="true" `
 
 If simulator should show its GUI.
 
 ### spawn_robot.launch
 
-* ``` robot_id, default="$(optenv ROBOT_ID robot)"  ```
+* ` robot_id, default="$(optenv ROBOT_ID robot)"  `
 
 Robot id.
 
-* ``` prefix, default="$(arg robot_id)_"  ```
+* ` prefix, default="$(arg robot_id)_"  `
 
 Prefix of spawned robot.
 
-* ``` robot_model, default="$(optenv ROBOT_MODEL pallet_truck)"  ```
+* ` robot_model, default="$(optenv ROBOT_MODEL pallet_truck)"  `
 
 If different models should exist (pallet_truck, pallet_truck_steel...)
 
-* ``` robot_xacro, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  ```
+* ` robot_xacro, default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"  `
 
 Specifies XACRO to be loaded as robot_description
 
-* ``` x_init_pose, default="0"  ```
+* ` x_init_pose, default="0"  `
 
 Initial X pose in world 
 
-* ``` y_init_pose, default="0"  ```
+* ` y_init_pose, default="0"  `
 
 Initial Y pose in world 
 
-* ``` z_init_pose, default="0"  ```
+* ` z_init_pose, default="0"  `
 
 Initial Z pose in world 
 
-* ``` launch_base_hw_sim, default="false"  ```
+* ` launch_base_hw_sim, default="false"  `
 
 If base_hw simulator should be loaded
 
-* ``` launch_battery_estimator, default="false"  ```
+* ` launch_battery_estimator, default="false"  `
 
 If battery estimator should be loaded
 
-* ``` spawn_rviz", default="false" ```
+* ` spawn_rviz", default="false" `
 
 If RViz should be spawned for this robot. See spawn_rviz section on the parameters
 
 ### spawn_rviz.launch
 
-* ``` rviz_config", default="rviz/rviz.rviz" ```
+* ` rviz_config", default="rviz/rviz.rviz" `
 
 RViz config file to be loaded, as relative path to config_package argument 
 
-* ``` rviz_config_file, default="$(eval find(config_package) + '/' + rviz_config) ```
+* ` rviz_config_file, default="$(eval find(config_package) + '/' + rviz_config) `
 
 RViz config file to be loaded, as an absolute path in the file system, used to override `rviz_config` argument
 
