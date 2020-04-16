@@ -10,11 +10,14 @@
   <arg name="differential_robot" default="true" />
   <arg name="has_safety_controller" default="false"/>
 
+  <!-- What navigation config package to use -->
+  <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
+
   <!-- Topics -->
   <arg name="cmd_vel_topic" default="~/cmd_vel"/>
 
   <!-- Configuration folder, to store different configurations -->
-  <arg name="config_folder" default="$(find pallet_truck_navigation)/config/move" />
+  <arg name="config_folder" default="$(eval find(navigation_package) + '/config/move')" />
   <arg name="config_file" default="$(arg kinematics)_move.yaml" />
 
   <!-- Overwrite frames, should not be used unless reasonable exception -->
