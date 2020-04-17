@@ -1,21 +1,25 @@
 <?xml version="1.0"?>
 <launch>
-    
+
   <!-- Robot -->
-  <arg name="robot_id" default="pallet_truck"/>
+  <arg name="robot_id" default="robot"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
+
+  <!-- What navigation config package to use -->
+  <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
   <arg name="has_safety_controller" default="false"/>
 
   <!-- Topics -->
-  <arg name="cmd_vel_topic" default="~/cmd_vel"/>   
-  
+  <arg name="cmd_vel_topic" default="~/cmd_vel"/>
+
   <!-- Configuration folder, to store different configurations -->
-  <arg name="config_folder" default="$(find pallet_truck_navigation)/config/dockers" />
+  <arg name="config_folder" default="$(eval find(navigation_package) + '/config/dockers')" />
   <arg name="config_file" default="$(arg kinematics)_docker.yaml" />
-  
+  <arg name="docker_file" default="$(arg config_folder)/$(arg config_file)"/>
+
   <!-- Overwrite frames, should not be used unless reasonable exception -->
   <arg name="overwrite_frames" default="false" />
   <arg name="odom_frame" default="$(arg prefix)odom"/>
@@ -25,11 +29,11 @@
 
   <!-- Dockers -->
   <node name="docker" pkg="robotnik_docker" type="$(arg kinematics)_docker_node" respawn="false" output="screen">
-    <rosparam command="load" file="$(arg config_folder)/$(arg config_file)" subst_value="true"/>
+    <rosparam command="load" file="$(arg docker_file)" subst_value="true"/>
 
     <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
     <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
-    
+
     <param if="$(arg overwrite_frames)" name="$(arg odom_frame_param_name)" value="$(arg odom_frame)" />
     <param if="$(arg overwrite_frames)" name="$(arg base_frame_param_name)" value="$(arg base_frame)" />
   </node>

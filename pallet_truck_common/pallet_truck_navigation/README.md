@@ -8,7 +8,7 @@ This package contains the configuration for running the Navigation stack of the 
 - Launch arguments should load the proper YAML config file, not overwrite parameters.
 - New launch files can be created for default loading of some YAML config files, only reasonable exceptions are accepted.
 - Add new arguments and parameters to main launch file, and just add arguments to derived ones, only reasonable exceptions are accepted.
-- Follor similar rules when creating files, folders, parameters and arguments to the ones already existing.
+- Follow similar rules when creating files, folders, parameters and arguments to the ones already existing.
 - Use argument _pass_all_args="true"_ with _include_ launch files and pass all existing arguments and avoid verbosity.
 
 # Common arguments
@@ -27,7 +27,7 @@ Prefix of spawned robot to connect
 
 Kinematics of robot.
 
-* has_safety_controller (bool, default: false)
+* has_safety_controller (bool, default: HAS_SAFETY_CONTROLLER false)
 
 If robot has software-based safety controller. If true "_unsafe" is appended to cmd_vel_topic output
 
@@ -85,9 +85,13 @@ Topic for projected pointcloud from rgbd camera (if exists)
 
 ### Configuration
 
-* config_folder (string, default: $(find pallet_truck_navigation)/config)
+* navigation_package (string, default: $(optenv NAVIGATION_PACKAGE pallet_truck_navigation)
+
+* config_folder (string, default: $(find navigation_package)/config)
 
 Folder where configuration is stored. Can be used to store different configurations. No need to be in the same package.
+
+* costmap_folder (string, default: costmaps)
 
 * costmap_common_params (string, default: costmap_common_params.yaml)
 
@@ -105,7 +109,7 @@ Default config file for local costmap parameters
 
 Default global planner (yes, global is a global planner).
 
-* global_planner_params (string, default: $(arg global_planner)_planner_params.yaml)
+* global_planner_params (string, default: $(arg global_planner)_global_planner_params.yaml)
 
 Config file for global planner parameters. Should not be overwritten unless you want load a config file does not follow rules of PLANNERNAME_planner_params.yaml
 
@@ -123,7 +127,9 @@ There is one basic configuration of docker algorithms
 
 ### Configuration
 
-* config_folder (string, default: $(find pallet_truck_navigation)/config/dockers)
+* navigation_package (string, default: $(optenv NAVIGATION_PACKAGE pallet_truck_navigation)
+
+* config_folder (string, default: $(find navigation_package)/config/dockers)
 
 Folder where configuration is stored. Can be used to store different configurations. No need to be in the same package.
 
@@ -137,7 +143,9 @@ There is one basic configuration of move algorithms
 
 ### Configuration
 
-* config_folder (string, default: $(find pallet_truck_navigation)/config/move)
+* navigation_package (string, default: $(optenv NAVIGATION_PACKAGE pallet_truck_navigation)
+
+* config_folder (string, default: $(find navigation_package)/config/move)
 
 Folder where configuration is stored. Can be used to store different configurations. No need to be in the same package.
 
@@ -157,7 +165,7 @@ LaserScan to be filtered. Different filtered scans should be children of this na
 * node_name (string, default: $(arg laser_scan)_filter)
 
 Name of filtering node
-  
+
 ### Topics
 
 * input_scan (string, default: $(arg laser_scan)/scan)
@@ -170,7 +178,9 @@ Output topic for result of scan filtering
 
 ### Configuration
 
-* config_folder (string, default: $(find pallet_truck_navigation)/config/dockers)
+* navigation_package (string, default: $(optenv NAVIGATION_PACKAGE pallet_truck_navigation)
+
+* config_folder (string, default: $(find navigation_package)/config/dockers)
 
 Folder where configuration is stored. Can be used to store different configurations. No need to be in the same package.
 
