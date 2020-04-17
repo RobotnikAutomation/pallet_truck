@@ -8,7 +8,6 @@
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
   <arg name="has_safety_controller" default="$(optenv HAS_SAFETY_CONTROLLER false)"/>
-  <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS false)"/>
 
   <!-- What navigation config package to use -->
   <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
@@ -24,10 +23,10 @@
   <arg name="docker_file" default="$(eval find(navigation_package) + '/launch/dockers.launch')"/>
   <arg name="rgbd_to_laserscan_file" default="$(eval find(navigation_package) + '/launch/rgbd_to_laserscan.launch')"/>
   <arg name="publish_tf_file" default="$(eval find(navigation_package) + 'launch/tf_publishers.launch')"/>
+  <arg name="move_file" default="$(eval find(navigation_package) + '/launch/move.launch')"/>
 
   <!-- Move arguments -->
   <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
-  <arg name="move_file" default="$(eval find(navigation_package) + '/launch/move.launch')"/>
 
   <!-- Frames -->
   <arg name="publish_tf" default="false" />
