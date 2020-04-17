@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="id_robot" default="robot"/>
+  <arg name="robot_id" default="robot"/>
   <arg name="filter_config_file" default="default_intensity_filter"/>
   <arg name="config_path" default="$(find summit_xl_perception)/config/laser/$(arg filter_config_file).yaml"/>
   <arg name="apply_filter" default="true"/>
   <arg name="source_topic" default="front_laser/scan" />
   <arg name="target_topic" default="front_laser/cloud_filtered_scan" />
-  <arg name="target_frame" default="$(arg id_robot)_base_footprint"/>
+  <arg name="target_frame" default="$(arg robot_id)_base_footprint"/>
   <arg name="node_name" default="scan_to_cloud_filter"/>
 
   <node pkg="laser_filters" type="scan_to_cloud_filter_chain" name="$(arg node_name)" clear_params="true">

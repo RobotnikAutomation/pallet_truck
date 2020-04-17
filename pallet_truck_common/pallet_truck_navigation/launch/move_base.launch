@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="id_robot" default="pallet_truck"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="pallet_truck"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>

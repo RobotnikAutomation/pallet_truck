@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
   <arg name="robot_model" default="$(optenv ROBOT_MODEL pallet_truck)"/>
-  <arg name="xacro_robot" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
-
-  <param name="robot_description" command="$(find xacro)/xacro '$(find pallet_truck_description)/robots/$(arg xacro_robot)' id_robot:=$(arg id_robot) prefix:=$(arg prefix) --inorder" />
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO pallet_truck_std.urdf.xacro)"/>
+  <arg name="use_gpu_for_simulation" default="true" />
+  
+  <param name="robot_description" command="$(find xacro)/xacro '$(find pallet_truck_description)/robots/$(arg robot_xacro)' robot_id:=$(arg robot_id) prefix:=$(arg prefix) use_gpu_for_simulation:=$(arg use_gpu_for_simulation) --inorder" />
 
   <!-- publish tfs through the robot_state_publisher -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
