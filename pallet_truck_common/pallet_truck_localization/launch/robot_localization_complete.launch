@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- roslaunch arguments -->
-  <arg name="debug" default="false"/>
-  <arg name="gui" default="true"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
   <arg name="wait_for_datum" default="false" />
-  <arg name="prefix" default="pallet_truck_a_"/>
 
   <!-- Transform from odom to base_footprint (IMU and odometry) -->
   <include file="$(find pallet_truck_localization)/launch/robot_localization_odom.launch">

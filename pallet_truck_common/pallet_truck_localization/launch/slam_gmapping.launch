@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-	<arg name="prefix" default="pallet_truck_"/>
+    <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+    <arg name="prefix" default="$(arg robot_id)_"/>
 	<arg name="scan_topic" default="front_laser/scan"/>
 	<arg name="map_frame" default="$(arg prefix)map"/>
 	<arg name="odom_frame" default="$(arg prefix)odom"/>

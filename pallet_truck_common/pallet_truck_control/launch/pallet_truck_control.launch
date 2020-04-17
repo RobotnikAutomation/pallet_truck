@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_id" default="pallet_truck"/>
-  <arg name="prefix" default="pallet_truck_"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
 
   <arg name="cmd_vel" default="robotnik_base_control/cmd_vel"/>
 

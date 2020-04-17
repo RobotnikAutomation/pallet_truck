@@ -2,7 +2,7 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="robot_id" default="robot"/>
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
 
   <!-- Robot configuration -->
