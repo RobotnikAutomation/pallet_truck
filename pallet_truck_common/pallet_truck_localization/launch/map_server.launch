@@ -4,7 +4,7 @@
   <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
   <!-- maps inside the folder pallet_truck_navigation/maps -->
-  <arg name="map_file" default="map1/map1.yaml"/>
+  <arg name="map_file" default="map/map.yaml"/>
   <arg name="frame_id" default="$(arg prefix)map"/>
 
   <!-- Run the map server -->
