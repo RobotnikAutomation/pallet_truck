@@ -11,6 +11,9 @@
 
   <!-- What navigation config package to use -->
   <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
+  
+  <!-- MoveBase arguments -->
+  <arg name="has_move_base" default="$(optenv ROBOT_HAS_MOVE_BASE true)"/>
 
   <!-- Dockers arguments -->
   <arg name="has_docker" default="$(optenv ROBOT_HAS_DOCKER true)"/>
@@ -19,11 +22,12 @@
   <arg name="run_laser_filters" default="$(optenv ROBOT_RUN_LASER_FILTERS true)"/>
 
   <!-- Files -->
-  <arg name="scan_filter_file" default="$(eval find(navigation_package) + '/launch/scan_filter.launch')"/>
+  <arg name="move_base_file" default="$(eval find(navigation_package) + '/launch/move_base.launch')"/>
   <arg name="docker_file" default="$(eval find(navigation_package) + '/launch/dockers.launch')"/>
+  <arg name="move_file" default="$(eval find(navigation_package) + '/launch/move.launch')"/>
+  <arg name="scan_filter_file" default="$(eval find(navigation_package) + '/launch/scan_filter.launch')"/>
   <arg name="rgbd_to_laserscan_file" default="$(eval find(navigation_package) + '/launch/rgbd_to_laserscan.launch')"/>
   <arg name="publish_tf_file" default="$(eval find(navigation_package) + 'launch/tf_publishers.launch')"/>
-  <arg name="move_file" default="$(eval find(navigation_package) + '/launch/move.launch')"/>
 
   <!-- Move arguments -->
   <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
@@ -49,6 +53,10 @@
   <arg name="base_frame_param_name" default="robot_base_frame" />
 
   <group ns="$(arg robot_id)">
+
+    <include if="$(arg has_move_base)" file="$(arg move_base_file)">
+      <arg name="has_safety_controller" value="$(arg has_safety_controller)"/>
+    </include>
 
     <include if="$(arg has_docker)" file="$(arg docker_file)">
       <arg name="has_safety_controller" value="$(arg has_safety_controller)"/>

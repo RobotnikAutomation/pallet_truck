@@ -7,7 +7,7 @@
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
-  <arg name="has_safety_controller" default="false"/>
+  <arg name="has_safety_controller" default="$(optenv HAS_SAFETY_CONTROLLER false)"/>
 
   <!-- What navigation config package to use -->
   <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
@@ -68,20 +68,20 @@
     <remap unless="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)" />
     <remap if="$(arg has_safety_controller)" from="cmd_vel" to="$(arg cmd_vel_topic)_unsafe" />
 
-	  <remap from="odom" to="$(arg odom_topic)" />
+    <remap from="odom" to="$(arg odom_topic)" />
 
-	  <!-- Move base params -->
-	  <rosparam file="$(arg move_base_params_file)" command="load" subst_value="true"/>
+    <!-- Move base params -->
+    <rosparam file="$(arg move_base_params_file)" command="load" subst_value="true"/>
 
-	  <!-- Global costmap params-->
+    <!-- Global costmap params-->
     <rosparam file="$(arg costmap_common_params_file)" command="load" ns="global_costmap" subst_value="true"/>
-	  <rosparam file="$(arg global_costmap_params_file)" command="load" subst_value="true"/>
+    <rosparam file="$(arg global_costmap_params_file)" command="load" subst_value="true"/>
 
-	  <!-- Local costmap params-->
-	  <rosparam file="$(arg costmap_common_params_file)" command="load" ns="local_costmap" subst_value="true"/>
-	  <rosparam file="$(arg local_costmap_params_file)" command="load" subst_value="true"/>
+    <!-- Local costmap params-->
+    <rosparam file="$(arg costmap_common_params_file)" command="load" ns="local_costmap" subst_value="true"/>
+    <rosparam file="$(arg local_costmap_params_file)" command="load" subst_value="true"/>
 
-	  <!-- Global planner params-->
+    <!-- Global planner params-->
     <rosparam file="$(arg global_planner_params_file)" command="load" subst_value="true"/>
 
     <!-- Local planner params-->
