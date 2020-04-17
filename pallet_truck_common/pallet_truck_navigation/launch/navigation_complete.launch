@@ -7,7 +7,7 @@
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
-  <arg name="has_safety_controller" default="false"/>
+  <arg name="has_safety_controller" default="$(optenv HAS_SAFETY_CONTROLLER false)"/>
   <arg name="differential_robot" default="$(optenv ROBOT_DIFFERENTIAL_KINEMATICS false)"/>
 
   <!-- What navigation config package to use -->
@@ -18,13 +18,20 @@
   <arg name="run_camera_docker" default="$(optenv ROBOT_DOCKER_RUN_CAMERA false)"/>
   <arg name="run_laser_docker" default="$(optenv ROBOT_DOCKER_RUN_LASER false)"/>
   <arg name="run_laser_filters" default="$(optenv ROBOT_RUN_LASER_FILTERS true)"/>
-  <arg name="docker_file" default="launch/dockers.launch"/>
+
+  <!-- Files -->
+  <arg name="scan_filter_file" default="$(eval find(navigation_package) + '/launch/scan_filter.launch')"/>
+  <arg name="docker_file" default="$(eval find(navigation_package) + '/launch/dockers.launch')"/>
+  <arg name="rgbd_to_laserscan_file" default="$(eval find(navigation_package) + '/launch/rgbd_to_laserscan.launch')"/>
+  <arg name="publish_tf_file" default="$(eval find(navigation_package) + 'launch/tf_publishers.launch')"/>
 
   <!-- Move arguments -->
   <arg name="has_move" default="$(optenv ROBOT_HAS_MOVE true)"/>
+  <arg name="move_file" default="$(eval find(navigation_package) + '/launch/move.launch')"/>
 
   <!-- Frames -->
   <arg name="publish_tf" default="false" />
+
   <!-- Camera frames -->
   <arg name="camera_dock_frame" default="$(arg prefix)docking_station_marker"/>
   <arg name="camera_contact_dock_frame" default="$(arg prefix)docking_station_marker_contact"/>
@@ -44,24 +51,28 @@
 
   <group ns="$(arg id_robot)">
 
-    <include if="$(arg has_docker)" file="$(eval find(navigation_package) + '/' + docker_file)"/>
-
-    <include if="$(arg has_move)" file="$(eval find(navigation_package) + '/launch/move.launch')"/>
-
-    <include file="$(eval find(navigation_package) + '/launch/scan_filter.launch')">
-      <arg name="laser_scan" default="front_laser"/>
+    <include if="$(arg has_docker)" file="$(arg docker_file)">
+      <arg name="has_safety_controller" value="$(arg has_safety_controller)"/>
     </include>
 
-    <include file="$(eval find(navigation_package) + '/launch/scan_filter.launch')">
-      <arg name="laser_scan" default="rear_laser"/>
+    <include if="$(arg has_move)" file="$(arg move_file)">
+      <arg name="has_safety_controller" value="$(arg has_safety_controller)"/>
     </include>
 
-    <include file="$(eval find(navigation_package) + '/launch/rgbd_to_laserscan.launch')">
-      <arg name="camera" default="front_rgbd_camera" />
+    <include if="$(arg run_laser_filters)" file="$(arg scan_filter_file)">
+      <arg name="laser_scan" value="front_laser"/>
+    </include>
+
+    <include if="$(arg run_laser_filters)" file="$(arg scan_filter_file)">
+      <arg name="laser_scan" value="rear_laser"/>
+    </include>
+
+    <include if="$(arg run_camera_docker)" file="$(arg rgbd_to_laserscan_file)">
+      <arg name="camera" value="front_rgbd_camera" />
     </include>
 
     <!-- Static transforms -->
-    <include if="$(arg publish_tf)" file="$(eval find(navigation_package) + 'launch/tf_publishers.launch')" />
+    <include if="$(arg publish_tf)" file="$(arg publish_tf_file)" />
 
   </group>
 
