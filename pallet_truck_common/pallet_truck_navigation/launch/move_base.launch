@@ -47,6 +47,9 @@
   <arg name="local_planner" default="$(optenv ROBOT_MOVE_BASE_LOCAL_PLANNER teb)" />
   <arg name="local_planner_params" default="$(arg local_planner)_local_planner_$(arg kinematics)_params.yaml" />
 
+  <!-- Move_base path -->
+  <arg name="move_base_params_file" default="$(arg config_folder)/move_base_params.yaml"/>
+
   <!-- Planners path -->
   <arg name="global_planner_params_file" default="$(eval config_folder + '/' + global_planner_folder + '/' + global_planner_params)" />
   <arg name="local_planner_params_file" default="$(eval config_folder + '/' + local_planner_folder + '/' + local_planner_params)" />
@@ -68,7 +71,7 @@
 	  <remap from="odom" to="$(arg odom_topic)" />
 
 	  <!-- Move base params -->
-	  <rosparam file="$(arg config_folder)/move_base_params.yaml" command="load" subst_value="true"/>
+	  <rosparam file="$(arg move_base_params_file)" command="load" subst_value="true"/>
 
 	  <!-- Global costmap params-->
     <rosparam file="$(arg costmap_common_params_file)" command="load" ns="global_costmap" subst_value="true"/>
