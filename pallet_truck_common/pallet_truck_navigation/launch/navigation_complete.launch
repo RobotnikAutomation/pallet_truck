@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="id_robot" default="robot"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="robot"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
 
   <!-- Robot configuration -->
   <arg name="kinematics" default="$(optenv ROBOT_KINEMATICS diff)"/>
@@ -48,7 +48,7 @@
   <arg name="odom_frame_param_name" default="fixed_frame" />
   <arg name="base_frame_param_name" default="robot_base_frame" />
 
-  <group ns="$(arg id_robot)">
+  <group ns="$(arg robot_id)">
 
     <include if="$(arg has_docker)" file="$(arg docker_file)">
       <arg name="has_safety_controller" value="$(arg has_safety_controller)"/>

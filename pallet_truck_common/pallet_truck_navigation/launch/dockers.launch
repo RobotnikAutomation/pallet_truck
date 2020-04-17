@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Robot -->
-  <arg name="id_robot" default="robot"/>
-  <arg name="prefix" default="$(arg id_robot)_"/>
+  <arg name="robot_id" default="robot"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
 
   <!-- What navigation config package to use -->
   <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
