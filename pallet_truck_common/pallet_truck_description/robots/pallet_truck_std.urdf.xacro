@@ -81,6 +81,10 @@
   <xacro:property name="front_register_offset_y" value="0.0" />
   <xacro:property name="front_register_offset_z" value="-0.228" />
 
+  <xacro:property name="rear_register_offset_x" value="-0.452" />
+  <xacro:property name="rear_register_offset_y" value="0.0" />
+  <xacro:property name="rear_register_offset_z" value="-0.228" />
+
   <xacro:property name="side_register_offset_x" value="0.1855" />
   <xacro:property name="side_register_offset_y" value="0.276" />
   <xacro:property name="side_register_offset_z" value="-0.228" />
@@ -140,11 +144,15 @@
   </xacro:sensor_sick_s300>
 
   <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${robot_id}/left_fork_camera" use_nominal_extrinsics="true" >
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 -${5.0*PI/180.0} 0"/>
   </xacro:sensor_intel_d435>
 
   <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${robot_id}/right_fork_camera" use_nominal_extrinsics="true" >
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 -${5.0*PI/180.0} 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_intel_d435 prefix="${prefix}rear_camera" parent="${prefix}rear_register_link" prefix_topic="${robot_id}/rear_camera" use_nominal_extrinsics="true" >
+        <origin xyz="0 0 0" rpy="0 ${5.0*PI/180.0} 0"/>
   </xacro:sensor_intel_d435>
 
   <xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
@@ -160,6 +168,16 @@
   </joint>
 
   <link name="${prefix}front_register_link">
+  </link>
+
+  <!-- Rear -->
+  <joint name="${prefix}rear_register_joint" type="fixed">
+    <origin xyz="${rear_register_offset_x} ${rear_register_offset_y} ${rear_register_offset_z}" rpy="0 0 -${PI}"/>
+    <parent link="${prefix}front_case_link"/>
+    <child link="${prefix}rear_register_link" />
+  </joint>
+
+  <link name="${prefix}rear_register_link">
   </link>
 
   <!-- Right side -->
