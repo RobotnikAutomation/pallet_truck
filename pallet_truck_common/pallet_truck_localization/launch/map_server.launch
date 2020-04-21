@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <launch>
-  
+
   <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
   <arg name="prefix" default="$(arg robot_id)_"/>
-  <!-- maps inside the folder pallet_truck_navigation/maps -->
-  <arg name="map_file" default="map/map.yaml"/>
+
+  <!-- What localization config package to use -->
+  <arg name="localization_package" default="$(optenv LOCALIZATION_PACKAGE pallet_truck_localization)"/>
+  <arg name="config_folder" default="$(eval find(localization_package)+'/maps')" />
+
+  <!-- maps inside the folder localization_package/maps -->
+  <arg name="map_file" default="empty/map_empty.yaml"/>
   <arg name="frame_id" default="$(arg prefix)map"/>
+  <arg name="map_server_path" default="$(eval config_folder + '/' + map_file)"/>
 
   <!-- Run the map server -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find pallet_truck_localization)/maps/$(arg map_file)">
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_server_path)">
     <param name="frame_id" value="$(arg frame_id)"/>
   </node>
 
