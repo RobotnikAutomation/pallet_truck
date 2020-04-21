@@ -11,7 +11,7 @@
 
   <!-- What navigation config package to use -->
   <arg name="navigation_package" default="$(optenv NAVIGATION_PACKAGE pallet_truck_navigation)"/>
-  
+
   <!-- MoveBase arguments -->
   <arg name="has_move_base" default="$(optenv ROBOT_HAS_MOVE_BASE true)"/>
 
@@ -68,10 +68,6 @@
 
     <include if="$(arg run_laser_filters)" file="$(arg scan_filter_file)">
       <arg name="laser_scan" value="front_laser"/>
-    </include>
-
-    <include if="$(arg run_laser_filters)" file="$(arg scan_filter_file)">
-      <arg name="laser_scan" value="rear_laser"/>
     </include>
 
     <include if="$(arg run_camera_docker)" file="$(arg rgbd_to_laserscan_file)">
