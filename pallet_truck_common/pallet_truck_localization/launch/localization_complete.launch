@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Robot -->
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="localization_system" default="amcl" />
+
+  <!-- What localization config package to use -->
+  <arg name="localization_package" default="$(optenv LOCALIZATION_PACKAGE pallet_truck_localization)"/>
+
+  <!-- Files -->
+  <arg name="localization_system_file" default="$(eval find (localization_package) + '/launch/amcl.launch')"/>
+  <arg name="map_server_file" default="$(eval find (localization_package) + '/launch/map_server.launch')"/>
+
+  <!-- Robot initial position -->
+  <arg name="x_init_pose" default="0"/>
+  <arg name="y_init_pose" default="0"/>
+  <arg name="z_init_pose" default="0"/>
+
+  <!-- Amcl topics -->
+  <arg name="scan_topic" default="$(optenv ROBOT_LOCALIZATION_SCAN_TOPIC front_laser/scan)"/>
+  <arg name="map_topic" default="map"/>
+
+  <!-- Frames -->
+  <arg name="global_frame" default="$(arg prefix)map"/>
+  <arg name="odom_frame" default="$(arg prefix)odom"/>
+  <arg name="base_frame" default="$(arg prefix)base_footprint"/>
+
+  <group ns="$(arg robot_id)">
+
+    <include file="$(arg localization_system_file)"/>
+
+    <include file="$(arg map_server_file)"/>
+
+  </group>
+</launch>
