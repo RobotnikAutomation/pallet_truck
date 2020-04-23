@@ -13,7 +13,10 @@ The urdf, meshes, and other elements needed in the description are contained her
 
 This package contains the launch and configuration files to spawn the joint controllers with the ROS controller_manager. Basic controllers are an ackermann_steering_controller and elevator_controller.
 
-## Dependencies
+### pallet_truck_navigation
 
-To use RSLidar Gazebo GPU accelerated simulation: https://github.com/RobotnikAutomation/velodyne_simulator
-To use Intel Realsense Gazebo simulation: https://github.com/pal-robotics/realsense_gazebo_plugin
+This package contains the configuration for running the Navigation stack of the pallet_truck robot (ROS Navigation, Robotnik Navigation, etc) (Read pallet_truck_navigation/README.md)
+
+### pallet_truck_localization
+
+This package contains the configuration for running AMCL and map_server.
