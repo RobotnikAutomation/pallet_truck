@@ -7,6 +7,6 @@
 [submodule "modules/hector_gazebo"]
 	path = modules/hector_gazebo
 	url = https://github.com/tu-darmstadt-ros-pkg/hector_gazebo.git
-[submodule "realsense_gazebo_plugin"]
-	path = realsense_gazebo_plugin
+[submodule "modules/realsense_gazebo_plugin"]
+	path = modules/realsense_gazebo_plugin
 	url = https://github.com/RobotnikAutomation/realsense_gazebo_plugin.git
