@@ -1,0 +1,3 @@
+[submodule "modules/velodyne_simulator"]
+	path = modules/velodyne_simulator
+	url = https://github.com/RobotnikAutomation/velodyne_simulator.git
