@@ -25,9 +25,9 @@ laser_model_type: likelihood_field
 laser_likelihood_max_dist: 2.0
 update_min_d: 0.2
 update_min_a: 0.5
-odom_frame_id: $(arg odom_frame)
-base_frame_id: $(arg base_frame)
-global_frame_id: $(arg global_frame)
+odom_frame_id: $(arg prefix)odom
+base_frame_id: $(arg prefix)base_footprint
+global_frame_id: $(arg prefix)map
 resample_interval: 1
 transform_tolerance: 0.1
 recovery_alpha_slow: 0.0
