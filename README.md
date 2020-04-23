@@ -21,6 +21,10 @@ Install external dependencies, located at [pallet_truck/binaries](pallet_truck/b
 
 ` sudo dpkg -i binaries/ros-kinetic-robotnik-navigation-msgs_0.0.0-0xenial_amd64.deb `
 
-Install submodules.
+Install with submodules.
 
 ` git clone --recurse-submodules https://github.com/RobotnikAutomation/pallet_truck.git `
+
+Remove this folder
+` pallet_truck/modules/hector_gazebo/hector_gazebo_thermal_camera `
+or add a CATKIN_IGNORE file inside. 
