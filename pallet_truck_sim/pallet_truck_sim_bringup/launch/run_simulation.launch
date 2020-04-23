@@ -15,7 +15,7 @@
  <arg name="gui" default="true"/>
 
  <!-- Launch gazebo -->
- <include file="$(find gazebo_ros)/launch/empty_world.launch">
+ <include file="$(eval find(simulation_package) + '/launch/spawn_simulation.launch')">
    <arg name="world_name" value="$(arg world_file)"/>
    <arg name="debug" value="$(arg debug)" />
    <arg name="paused" value="$(arg paused)" />
