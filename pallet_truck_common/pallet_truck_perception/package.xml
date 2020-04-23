@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>summit_xl_perception</name>
+  <name>pallet_truck_perception</name>
   <version>0.1.0</version>
-  <description>The summit_xl_perception package for configuration files</description>
+  <description>The pallet_truck_perception package for configuration files</description>
 
-  <maintainer email="rnavarro@robotnik.es">Román Navarro</maintainer>
+  <maintainer email="mbosch@robotnik.es">Marc Bosch</maintainer>
+  <maintainer email="rjulia@robotnik.es">Raquel Julia</maintainer>
 
   <license>BSD</license>
 
