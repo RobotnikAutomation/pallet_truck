@@ -2,7 +2,7 @@
 <launch>
 
  <!-- Simulation arguments -->
- <arg name="world" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
+ <arg name="world_name" default="$(find pallet_truck_gazebo)/worlds/pallet_truck_epal.world"/>
  <arg name="debug" default="false"/>
  <arg name="paused" default="false"/>
  <arg name="headless" default="false"/>
@@ -10,7 +10,7 @@
 
  <!-- Launch gazebo -->
  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-   <arg name="world_name" value="$(arg world)"/>
+   <arg name="world_name" value="$(arg world_name)"/>
    <arg name="debug" value="$(arg debug)" />
    <arg name="paused" value="$(arg paused)" />
    <arg name="headless" value="$(arg headless)"/>
