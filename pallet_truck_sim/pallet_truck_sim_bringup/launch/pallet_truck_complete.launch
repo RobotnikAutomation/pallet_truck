@@ -8,7 +8,7 @@
 
   <!-- What to execute -->
   <arg name="run_simulation" default="true"/>
-  <arg name="run_robot" default="true"/>  
+  <arg name="run_robot" default="true"/>
   <arg name="run_rviz" default="true"/>
 
   <!-- Simulation configuration -->
@@ -29,7 +29,7 @@
   <arg name="z_init_pose" default="0"/>
   <arg name="launch_base_hw_sim" default="false"/>
   <arg name="launch_battery_estimator" default="false"/>
-  
+
   <!-- RViz configuration -->
   <arg name="rviz_config" default="rviz/rviz.rviz"/>
   <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
@@ -38,7 +38,7 @@
   <include if="$(arg run_simulation)" file="$(find pallet_truck_sim_bringup)/launch/run_simulation.launch">
     <arg name="simulation_package" value="$(arg simulation_package)"/>
     <arg name="config_package" value="$(arg config_package)"/>
-    
+
     <arg name="world" value="$(arg world_file)"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)" />
@@ -50,7 +50,8 @@
   <include if="$(arg run_robot)" file="$(find pallet_truck_sim_bringup)/launch/run_robot.launch">
     <arg name="simulation_package" value="$(arg simulation_package)"/>
     <arg name="config_package" value="$(arg config_package)"/>
-    
+    <arg name="robot_xacro" value="$(arg robot_xacro)"/>
+
     <arg name="robot_id" value="$(arg robot_id)"/>
     <arg name="prefix" value="$(arg prefix)" />
     <arg name="x_init_pose" value="$(arg x_init_pose)"/>
@@ -65,7 +66,7 @@
   <include if="$(arg run_rviz)" file="$(find pallet_truck_sim_bringup)/launch/run_rviz.launch">
     <arg name="simulation_package" value="$(arg simulation_package)"/>
     <arg name="config_package" value="$(arg config_package)"/>
-    
+
     <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
   </include>
 
