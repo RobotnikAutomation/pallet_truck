@@ -99,8 +99,9 @@
   <!-- *************** -->
   <!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
-  <xacro:arg name="robot_id" default="$(arg robot_id)"/>
-  <xacro:arg name="prefix" default="$(arg prefix)_"/>
+  <xacro:arg name="robot_id" default="robot"/>
+  <xacro:arg name="prefix" default="$(arg robot_id)_"/>
+  <xacro:arg name="use_gpu_for_simulation" default="false" />
   <xacro:property name="robot_id" value="$(arg robot_id)" />
   <xacro:property name="prefix" value="$(arg prefix)" />
   <xacro:property name="gpu" value="$(arg use_gpu_for_simulation)" />
