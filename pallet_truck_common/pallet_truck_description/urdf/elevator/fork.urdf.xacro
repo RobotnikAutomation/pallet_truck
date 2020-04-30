@@ -29,6 +29,9 @@
          <geometry>
            <mesh filename="package://pallet_truck_description/meshes/elevator/single_fork.stl"/>
          </geometry>
+         <material name="dark_grey">
+           <color rgba="0.2 0.2 0.2 1.0"/>
+         </material>
        </visual>
        <collision>
          <origin xyz="0 0 0" rpy="0 0 0" />
@@ -63,7 +66,6 @@
      <gazebo reference="${prefix}fork_link">
        <mu1>100</mu1>
        <mu2>100</mu2>
-       <material>Gazebo/Black</material>
      </gazebo>
     
     <joint name="${prefix}fork_sensor_joint" type="fixed">

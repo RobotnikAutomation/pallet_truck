@@ -76,6 +76,9 @@
           <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl"/>
           <!--cylinder length="${wheel_width}" radius="${0.12675}"/-->
         </geometry>
+        <material name="black">
+          <color rgba="0.0 0.0 0.0 1.0"/>
+        </material>
       </visual>
       <collision>
         <!--origin xyz="0 0 0" rpy="0 0 0" /-->
@@ -103,7 +106,6 @@
       <mu2>1</mu2>
       <kp>100000000</kp>
       <kd>10</kd>
-      <material>Gazebo/Black</material>
     </gazebo>
 
     <!-- ************* -->
