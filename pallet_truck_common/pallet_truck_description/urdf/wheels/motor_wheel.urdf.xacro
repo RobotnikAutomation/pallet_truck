@@ -76,8 +76,8 @@
           <mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel.stl"/>
           <!--cylinder length="${wheel_width}" radius="${0.12675}"/-->
         </geometry>
-        <material name="black">
-          <color rgba="0.0 0.0 0.0 1.0"/>
+        <material name="dark_grey">
+          <color rgba="0.4 0.4 0.4 1.0"/>
         </material>
       </visual>
       <collision>

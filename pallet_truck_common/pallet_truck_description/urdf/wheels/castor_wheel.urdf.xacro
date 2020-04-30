@@ -33,8 +33,8 @@
 		  <!--mesh filename="package://pallet_truck_description/meshes/wheels/pallet_truck_wheel_fake.dae"/-->
           <sphere radius="${castor_wheel_radius}"/>
         </geometry>
-        <material name="black">
-          <color rgba="0.0 0.0 0.0 1.0"/>
+        <material name="dark_grey">
+          <color rgba="0.4 0.4 0.4 1.0"/>
         </material>
       </visual>
       <collision>

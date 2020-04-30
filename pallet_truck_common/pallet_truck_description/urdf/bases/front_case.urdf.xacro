@@ -38,8 +38,8 @@
          <geometry>
            <mesh filename="package://pallet_truck_description/meshes/bases/front_case.stl"/>
          </geometry>
-         <material name="black">
-           <color rgba="0.0 0.0 0.0 1.0"/>
+         <material name="dark_grey">
+           <color rgba="0.4 0.4 0.4 1.0"/>
          </material>
        </visual>
        <collision>
