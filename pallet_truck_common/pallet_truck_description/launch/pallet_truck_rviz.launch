@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="version" default="pallet_truck_std.urdf.xacro" />
+  <arg name="robot_xacro" default="pallet_truck_std.urdf.xacro" />
   <arg name="prefix" default="pallet_truck_"/>
 
   <!-- run state -->
   <include file="$(find pallet_truck_description)/launch/pallet_truck_state.launch" >
-    <arg name="version" value="$(arg version)" />
+    <arg name="robot_xacro" value="$(arg robot_xacro)" />
     <arg name="prefix" value="$(arg prefix)" />
   </include>
 
