@@ -129,11 +129,11 @@
   </xacro:front_case>
 
   <xacro:support_wheel prefix="${prefix}front_left_" parent="${prefix}front_case_link">
-      <origin xyz="${front_support_wheel_offset_x} ${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+      <origin xyz="${front_support_wheel_offset_x} ${front_support_wheel_offset_y} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
   </xacro:support_wheel>
 
   <xacro:support_wheel prefix="${prefix}front_right_" parent="${prefix}front_case_link">
-      <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_x} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+      <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_y} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
   </xacro:support_wheel>
 
   <xacro:sensor_rslidar_16 prefix="${prefix}top_lidar" parent="${prefix}front_case_link" prefix_topic="top_lidar" gpu="${gpu}">
