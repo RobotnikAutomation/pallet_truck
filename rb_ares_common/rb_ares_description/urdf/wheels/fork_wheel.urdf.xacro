@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot name="fork_wheel" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <!-- Wheels -->
+  <xacro:property name="fork_wheel_radius" value="0.040" />
+  <xacro:property name="fork_wheel_length" value="0.080" />
+  <xacro:property name="fork_wheel_mass" value="0.5" />
+
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+              iyy="${m*r*r/2}" iyz = "0"
+              izz="${m*(3*r*r+h*h)/12}"
+     />
+  </xacro:macro>
+
+  <xacro:macro name="fork_wheel" params="prefix parent *origin">
+
+    <!--WHEEL TIRE -->
+    <joint name="${prefix}wheel_joint" type="revolute">
+      <parent link="${parent}"/>
+      <child link="${prefix}wheel_link"/>
+      <xacro:insert_block name="origin" />
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <limit effort="100" velocity="100" lower="0" upper="0"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="${prefix}wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+				  <!--mesh filename="package://rb_ares_description/meshes/wheels/rb_ares_fork_wheel_fake.dae"/-->
+          <sphere radius="${fork_wheel_radius}"/>
+        </geometry>
+        <material name="dark_grey">
+          <color rgba="0.4 0.4 0.4 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+        <geometry>
+          <sphere radius="${fork_wheel_radius}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${fork_wheel_mass}" />
+        <origin xyz="0 0 0" />
+        <cylinder_inertia  m="${fork_wheel_mass}" r="${fork_wheel_radius}" h="${fork_wheel_length}" />
+      </inertial>
+    </link>
+
+    <transmission name="${prefix}wheel_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}wheel_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}wheel_motor">
+        <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
+        <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <gazebo reference="${prefix}wheel_link">
+		    <mu1 value="0.5"/>
+		    <mu2 value="0.5"/>
+		    <fdir1 value="1 0 0"/>
+        <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

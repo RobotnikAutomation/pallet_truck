@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<robot name="rb_ares"
+  xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!-- ***************** -->
+  <!-- Imported elements -->
+  <!-- ***************** -->
+
+  <!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
+
+  <!-- Import PALLET-TRUCK base elements -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/bases/rb_ares.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK wheels -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/wheels/motor_wheel.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK additional wheels -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/wheels/castor_wheel.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK additional wheels -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/wheels/fork_wheel.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK elevator -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/bases/front_case.urdf.xacro" />
+
+  <!-- Import PALLET-TRUCK battery_case -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/bases/battery_case.urdf.xacro" />
+
+  <!-- Import sensors -->
+  <xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
+
+  <!-- Import Gazebo Stuff -->
+  <xacro:include filename="$(find rb_ares_description)/urdf/common.gazebo.xacro" />
+
+  <!-- Global parameters -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+  <!-- Wheel parameters -->
+  <!-- x,y,z in translation from base_link to the center of the wheel -->
+  <xacro:property name="wheel_offset_x" value="0.077"/>
+  <xacro:property name="wheel_offset_y" value="0.0"/>
+  <xacro:property name="wheel_offset_z" value="-0.59"/>
+
+  <!-- Fork wheel -->
+  <xacro:property name="fork_wheel_offset_x" value="0.0"/>
+  <xacro:property name="fork_wheel_offset_y" value="0.201"/>
+  <xacro:property name="fork_wheel_offset_z" value="0.0"/>
+
+  <!-- Battery_case -->
+  <xacro:property name="battery_case_offset_x" value="1.2975"/>
+  <xacro:property name="battery_case_offset_y" value="0.0"/>
+  <xacro:property name="battery_case_offset_z" value="0.674"/>
+
+  <!-- Front_case -->
+  <xacro:property name="front_case_offset_x" value="1.2982"/>
+  <xacro:property name="front_case_offset_y" value="0.0"/>
+  <xacro:property name="front_case_offset_z" value="0.671"/>
+
+  <!-- Front support wheel -->
+  <xacro:property name="front_support_wheel_offset_x" value="0.340"/>
+  <xacro:property name="front_support_wheel_offset_y" value="0.180"/>
+  <xacro:property name="front_support_wheel_offset_z" value="-0.675"/>
+
+  <!--  FORK CAMERAS  -->
+  <xacro:property name="fork_camera_x" value="1.545" />
+  <xacro:property name="fork_camera_y" value="0.195" />
+  <xacro:property name="fork_camera_z" value="0.375" />
+
+  <!-- FRONT LASER -->
+  <xacro:property name="front_laser_x" value="0.391" />
+  <xacro:property name="front_laser_y" value="0.0" />
+  <xacro:property name="front_laser_z" value="-0.38735" />
+
+  <!-- RS_lIDAR -->
+  <xacro:property name="top_lidar_offset_x" value="0.085" />
+  <xacro:property name="top_lidar_offset_y" value="0.0" />
+  <xacro:property name="top_lidar_offset_z" value="0.205" />
+
+  <!-- REGISTERS -->
+  <xacro:property name="front_register_offset_x" value="0.452" />
+  <xacro:property name="front_register_offset_y" value="0.0" />
+  <xacro:property name="front_register_offset_z" value="-0.228" />
+
+  <xacro:property name="rear_register_offset_x" value="-0.452" />
+  <xacro:property name="rear_register_offset_y" value="0.0" />
+  <xacro:property name="rear_register_offset_z" value="-0.228" />
+
+  <xacro:property name="side_register_offset_x" value="0.1855" />
+  <xacro:property name="side_register_offset_y" value="0.276" />
+  <xacro:property name="side_register_offset_z" value="-0.228" />
+
+  <!-- IMU -->
+  <xacro:property name="imu_offset_x" value="1.2982" />
+  <xacro:property name="imu_offset_y" value="0.0" />
+  <xacro:property name="imu_offset_z" value="0.671" />
+
+  <!-- *************** -->
+  <!-- Robots Elements -->
+  <!-- *************** -->
+  <!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
+
+  <xacro:arg name="robot_id" default="robot"/>
+  <xacro:arg name="prefix" default="$(arg robot_id)_"/>
+  <xacro:arg name="use_gpu_for_simulation" default="false" />
+  <xacro:property name="robot_id" value="$(arg robot_id)" />
+  <xacro:property name="prefix" value="$(arg prefix)" />
+  <xacro:property name="gpu" value="$(arg use_gpu_for_simulation)" />
+
+  <xacro:rb_ares prefix="${prefix}" publish_bf="true"/> <!-- BASE -->
+
+  <xacro:motor_wheel prefix="${prefix}" parent="${prefix}front_case_link">
+      <origin xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:motor_wheel>
+
+  <xacro:fork_wheel prefix="${prefix}left_fork_" parent="${prefix}base_link">
+      <origin xyz="${fork_wheel_offset_x} ${fork_wheel_offset_y} ${fork_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:fork_wheel>
+
+  <xacro:fork_wheel prefix="${prefix}right_fork_" parent="${prefix}base_link">
+      <origin xyz="${fork_wheel_offset_x} -${fork_wheel_offset_y} ${fork_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:fork_wheel>
+
+  <xacro:battery_case prefix="${prefix}" parent="${prefix}base_link">
+      <origin xyz="${battery_case_offset_x} -${battery_case_offset_y} ${battery_case_offset_z}" rpy="0 0 0"/>
+  </xacro:battery_case>
+
+  <xacro:front_case prefix="${prefix}" parent="${prefix}base_link">
+    <origin xyz="${front_case_offset_x} -${front_case_offset_y} ${front_case_offset_z}" rpy="0 0 0"/>
+  </xacro:front_case>
+
+  <xacro:support_wheel prefix="${prefix}front_left_" parent="${prefix}front_case_link">
+      <origin xyz="${front_support_wheel_offset_x} ${front_support_wheel_offset_y} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:support_wheel>
+
+  <xacro:support_wheel prefix="${prefix}front_right_" parent="${prefix}front_case_link">
+      <origin xyz="${front_support_wheel_offset_x} -${front_support_wheel_offset_y} ${front_support_wheel_offset_z}" rpy="0 0 0"/>
+  </xacro:support_wheel>
+
+  <xacro:sensor_rslidar_16 prefix="${prefix}top_lidar" parent="${prefix}front_case_link" prefix_topic="top_lidar" gpu="${gpu}">
+      <origin xyz="${top_lidar_offset_x} ${top_lidar_offset_y} ${top_lidar_offset_z}" rpy="0 0 0"/>
+  </xacro:sensor_rslidar_16>
+
+  <xacro:sensor_sick_s300 prefix="${prefix}front_laser" parent="${prefix}front_case_link" prefix_topic="front_laser" min_angle="-2.35" max_angle="2.35" gpu="${gpu}" >
+      <origin xyz="${front_laser_x} ${front_laser_y} ${front_laser_z}" rpy="${PI} 0 0"/>
+  </xacro:sensor_sick_s300>
+
+  <xacro:sensor_intel_d435 prefix="${prefix}left_fork_camera" parent="${prefix}left_fork_sensor_link" prefix_topic="${robot_id}/left_fork_camera" use_nominal_extrinsics="true" >
+        <origin xyz="0 0 0" rpy="0 -${5.0*PI/180.0} 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_intel_d435 prefix="${prefix}right_fork_camera" parent="${prefix}right_fork_sensor_link" prefix_topic="${robot_id}/right_fork_camera" use_nominal_extrinsics="true" >
+        <origin xyz="0 0 0" rpy="0 -${5.0*PI/180.0} 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_intel_d435 prefix="${prefix}rear_camera" parent="${prefix}rear_register_link" prefix_topic="${robot_id}/rear_camera" use_nominal_extrinsics="true" >
+        <origin xyz="0 0 0" rpy="0 ${5.0*PI/180.0} 0"/>
+  </xacro:sensor_intel_d435>
+
+  <xacro:sensor_imu_hector prefix="${prefix}imu" parent="${prefix}base_link">
+    <origin xyz="${imu_offset_x} -${imu_offset_y} ${imu_offset_z}" rpy="0 0 0"/>
+  </xacro:sensor_imu_hector>
+
+  <!-- REGISTERS -->
+  <!-- Front -->
+  <joint name="${prefix}front_register_joint" type="fixed">
+    <origin xyz="${front_register_offset_x} ${front_register_offset_y} ${front_register_offset_z}" rpy="0 0 0"/>
+    <parent link="${prefix}front_case_link"/>
+    <child link="${prefix}front_register_link" />
+  </joint>
+
+  <link name="${prefix}front_register_link">
+  </link>
+
+  <!-- Rear -->
+  <joint name="${prefix}rear_register_joint" type="fixed">
+    <origin xyz="${rear_register_offset_x} ${rear_register_offset_y} ${rear_register_offset_z}" rpy="0 0 -${PI}"/>
+    <parent link="${prefix}front_case_link"/>
+    <child link="${prefix}rear_register_link" />
+  </joint>
+
+  <link name="${prefix}rear_register_link">
+  </link>
+
+  <!-- Right side -->
+  <joint name="${prefix}right_register_joint" type="fixed">
+    <origin xyz="${side_register_offset_x} -${side_register_offset_y} ${side_register_offset_z}" rpy="0 0 -${PI/2.0}"/>
+     <parent link="${prefix}front_case_link"/>
+     <child link="${prefix}right_register_link" />
+  </joint>
+
+  <link name="${prefix}right_register_link">
+  </link>
+
+  <!-- Left side -->
+  <joint name="${prefix}left_register_joint" type="fixed">
+     <origin xyz="${side_register_offset_x} ${side_register_offset_y} ${side_register_offset_z}" rpy="0 0 ${PI/2.0}"/>
+     <parent link="${prefix}front_case_link"/>
+     <child link="${prefix}left_register_link" />
+  </joint>
+
+  <link name="${prefix}left_register_link">
+  </link>
+
+  <!-- Gazebo ros control pluggins -->
+  <xacro:ros_control />
+
+  <gazebo>
+    <plugin name="ground_truth_controller" filename="librobotnik_gazebo_ground_truth_odom.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>rb_ares_base_link</bodyName> <!-- robot body to track, in gazebo -->
+      <frameName>rb_ares_base_link_gt</frameName> <!-- frame name of robot body to be published in ros -->
+      <worldBodyName>world</worldBodyName> <!-- fixed body where body is tracked, in gazebo -->
+      <worldFrameName>rb_ares_odom</worldFrameName> <!-- frame name of fixed body to be published in ros -->
+      <topicName>odom_gt</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <broadcastTF>True</broadcastTF>
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot name="battery_case" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:include filename="$(find rb_ares_description)/urdf/inertia.urdf.xacro" />
+
+  <xacro:include filename="$(find rb_ares_description)/urdf/elevator/fork.urdf.xacro" />
+
+  <xacro:include filename="$(find rb_ares_description)/urdf/bases/protection.urdf.xacro" />
+
+      <!-- Robot mechanical and motor parameters -->
+  <xacro:property name="battery_case_mass" value="10"/>
+
+  <xacro:property name="battery_case_size_x" value="0.38"/>
+  <xacro:property name="battery_case_size_y" value="0.57"/>
+  <xacro:property name="battery_case_size_z" value="0.68"/>
+
+  <xacro:property name="fork_offset_x" value="-0.4325"/>
+  <xacro:property name="fork_offset_y" value="0.201"/>
+  <xacro:property name="fork_offset_z" value="-0.662"/>
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:macro name="solid_cuboid_inertia" params="m h d w">
+    <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
+              iyy="${(m*(w*w+d*d))/12}" iyz = "0"
+              izz="${(m*(w*w+h*h))/12}"
+     />
+  </xacro:macro>
+
+ <xacro:macro name="battery_case" params="prefix parent *origin">
+
+  <joint name="${prefix}elevator_joint" type="prismatic">
+    <xacro:insert_block name="origin" />
+    <parent link="${parent}"/>
+    <child link="${prefix}battery_case_link" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0" upper="0.106" velocity="0.1"/>
+  </joint>
+
+  <link name="${prefix}battery_case_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://rb_ares_description/meshes/bases/battery_case.stl"/>
+      </geometry>
+      <material name="dark_grey">
+        <color rgba="0.4 0.4 0.4 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://rb_ares_description/meshes/bases/battery_case.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${battery_case_mass}" />
+      <origin xyz="-0.2 0.0 -0.35"/>
+      <solid_cuboid_inertia m="${battery_case_mass}" h="${battery_case_size_y}" d="${battery_case_size_z}" w="${battery_case_size_x}"/>
+    </inertial>
+  </link>
+
+  <xacro:fork prefix="${prefix}left_" parent="${prefix}battery_case_link">
+     <origin xyz="${fork_offset_x} ${fork_offset_y} ${fork_offset_z}" rpy="0 0 0" />
+  </xacro:fork>
+
+  <xacro:fork prefix="${prefix}right_" parent="${prefix}battery_case_link">
+     <origin xyz="${fork_offset_x} -${fork_offset_y} ${fork_offset_z}" rpy="0 0 0" />
+  </xacro:fork>
+
+  <xacro:protection prefix="${prefix}battery_case_" parent="${prefix}battery_case_link" measurement="0.001 0.52 0.5204">
+     <origin xyz="-0.439 0 -0.42" rpy="0 0 0" />
+  </xacro:protection>
+
+
+  		<!--joint name="${prefix}right_projector_joint" type="fixed">
+  			<origin xyz="1 -1 1" rpy="0 0 0"/>
+  			<parent link="${prefix}battery_case_link"/>
+  			<child link="${prefix}right_line_projector"/>
+  		</joint>
+
+  		<link name="${prefix}right_line_projector">
+  		</link>
+
+  		<gazebo reference="${prefix}right_line_projector">
+  			<projector name="projector_test_right">
+  	    	<pose>0 0 0 1.57 0 0</pose>
+  	    	<texture>red1.png</texture>
+  	    	<fov>0.95</fov>
+  	    	<near_clip>0.1</near_clip>
+        	<far_clip>10.0</far_clip>
+  			</projector>
+  		</gazebo-->
+
+  <!--gazebo reference="${prefix}battery_case_link">
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <!- -kp>100000000.0</kp- ->
+    <!- -kd value="10.0"/- ->
+    <material>Gazebo/Black</material>
+  </gazebo-->
+
+  <transmission name="${prefix}elevator_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${prefix}elevator_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${prefix}elevator_motor">
+      <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
+      <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rb_ares_control</name>
+  <version>0.0.0</version>
+  <description>The rb_ares_control package</description>
+
+ <maintainer email="asoriano@robotnik.es">Angel Soriano</maintainer>
+  <maintainer email="avillena@robotnik.es">Álvaro Villena</maintainer>
+  <maintainer email="dredo@robotnik.es">David Redó</maintainer>
+  <maintainer email="aarnal@robotnik.es">Alejandro Arnal</maintainer>
+  <maintainer email="mbosch@robotnik.es">Marc Bosch</maintainer>
+  <maintainer email="rnavarro@robotnik.es">Román Navarro</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://wiki.ros.org/rb_ares_control</url>
+  <url type="repository">https://github.com/RobotnikAutomation/rb_ares_common.git</url>
+  <url type="bugtracker">https://github.com/RobotnikAutomation/rb_ares_common/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>twist_mux</exec_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

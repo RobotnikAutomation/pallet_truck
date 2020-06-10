@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot_xacro" default="rb_ares_std.urdf.xacro" />
+  <arg name="prefix" default="rb_ares_"/>
+
+  <!-- run state -->
+  <include file="$(find rb_ares_description)/launch/rb_ares_state.launch" >
+    <arg name="robot_xacro" value="$(arg robot_xacro)" />
+    <arg name="prefix" value="$(arg prefix)" />
+  </include>
+
+  <!-- send fake joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="TRUE"/>
+  </node>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz"/>
+
+</launch>

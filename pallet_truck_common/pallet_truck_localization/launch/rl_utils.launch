@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-   <node pkg="pallet_truck_localization" type="rl_utils" name="rl_utils"/>
-
-</launch>

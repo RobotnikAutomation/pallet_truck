@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rb_ares_sim</name>
+  <version>0.0.0</version>
+  <description>The rb_ares_sim metapackage</description>
+
+  <maintainer email="asoriano@robotnik.es">Angel Soriano</maintainer>
+  <maintainer email="avillena@robotnik.es">Álvaro Villena</maintainer>
+  <maintainer email="dredo@robotnik.es">David Redó</maintainer>
+  <maintainer email="aarnal@robotnik.es">Alejandro Arnal</maintainer>
+  <maintainer email="mbosch@robotnik.es">Marc Bosch</maintainer>
+  <maintainer email="rnavarro@robotnik.es">Román Navarro</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>rb_ares_gazebo</exec_depend>
+  <exec_depend>rb_ares_sim_bringup</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

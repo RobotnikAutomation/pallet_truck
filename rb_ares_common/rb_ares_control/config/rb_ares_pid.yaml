@@ -1,0 +1,13 @@
+gazebo_ros_control:
+  pid_gains:
+#    rb_ares_backwheel_steer_joint:
+#      p: 100
+#      i: 0.01
+#      d: 10.0
+
+#    rb_ares_both_forks_prismatic_both_forks_joint:
+#      p: 100.0
+#      i: 0.01
+#      d: 10.0
+
+

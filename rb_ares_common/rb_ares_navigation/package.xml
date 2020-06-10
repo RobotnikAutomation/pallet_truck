@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>rb_ares_navigation</name>
+  <version>1.0.0</version>
+  <description> Navigation launch and config files for Pallet Truck robot. </description>
+
+  <url type="website">http://ros.org/wiki/rb_ares_navigation</url>
+  <url type="repository">https://github.com/RobotnikAutomation/rb_ares_common.git</url>
+  <url type="bugtracker">https://github.com/RobotnikAutomation/rb_ares_common/issues</url>
+
+  <author email="rguzman@robotnik.es">Roberto Guzmán</author>
+
+  <maintainer email="asoriano@robotnik.es">Angel Soriano</maintainer>
+  <maintainer email="avillena@robotnik.es">Álvaro Villena</maintainer>
+  <maintainer email="dredo@robotnik.es">David Redó</maintainer>
+  <maintainer email="aarnal@robotnik.es">Alejandro Arnal</maintainer>
+  <maintainer email="mbosch@robotnik.es">Marc Bosch</maintainer>
+  <maintainer email="rnavarro@robotnik.es">Román Navarro</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>teb_local_planner</build_depend>
+  <build_depend>move_base</build_depend>
+
+  <run_depend>teb_local_planner</run_depend>
+  <run_depend>eband_local_planner</run_depend>
+  <run_depend>move_base</run_depend>
+
+</package>

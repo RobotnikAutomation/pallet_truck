@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- What simulator config package to use -->
+  <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE rb_ares_gazebo)"/>
+  <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE rb_ares_gazebo)"/>
+  <arg name="use_gpu_for_simulation" default="$(optenv SIMULATION_USE_GPU true)"/>
+
+  <!-- What to execute -->
+  <arg name="run_simulation" default="true"/>
+  <arg name="run_robot" default="true"/>
+  <arg name="run_rviz" default="true"/>
+
+  <!-- Simulation configuration -->
+  <arg name="world" default="worlds/rb_ares_epal.world" /> <!-- relative path to config_package -->
+  <arg name="world_file" default="$(eval find(config_package) + '/' + world)"/> <!-- absolute path -->
+  <arg name="debug" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="gui" default="true"/>
+
+  <!-- Robot configuration -->
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="robot_model" default="$(optenv ROBOT_MODEL rb_ares)"/>
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO rb_ares_std.urdf.xacro)"/>
+  <arg name="x_init_pose" default="0"/>
+  <arg name="y_init_pose" default="0"/>
+  <arg name="z_init_pose" default="0"/>
+  <arg name="launch_base_hw_sim" default="false"/>
+  <arg name="launch_battery_estimator" default="false"/>
+
+  <!-- RViz configuration -->
+  <arg name="rviz_config" default="rviz/rviz.rviz"/>
+  <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
+
+  <!-- launch simulation -->
+  <include if="$(arg run_simulation)" file="$(find rb_ares_sim_bringup)/launch/run_simulation.launch">
+    <arg name="simulation_package" value="$(arg simulation_package)"/>
+    <arg name="config_package" value="$(arg config_package)"/>
+
+    <arg name="world" value="$(arg world_file)"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- launch robot -->
+  <include if="$(arg run_robot)" file="$(find rb_ares_sim_bringup)/launch/run_robot.launch">
+    <arg name="simulation_package" value="$(arg simulation_package)"/>
+    <arg name="config_package" value="$(arg config_package)"/>
+    <arg name="robot_xacro" value="$(arg robot_xacro)"/>
+
+    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="prefix" value="$(arg prefix)" />
+    <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+    <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+    <arg name="z_init_pose" value="$(arg z_init_pose)"/>
+    <arg name="launch_base_hw_sim" value="$(arg launch_base_hw_sim)"/>
+    <arg name="launch_battery_estimator" value="$(arg launch_battery_estimator)"/>
+    <arg name="use_gpu_for_simulation" default="$(arg use_gpu_for_simulation)" />
+  </include>
+
+  <!-- launch rviz -->
+  <include if="$(arg run_rviz)" file="$(find rb_ares_sim_bringup)/launch/run_rviz.launch">
+    <arg name="simulation_package" value="$(arg simulation_package)"/>
+    <arg name="config_package" value="$(arg config_package)"/>
+
+    <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
+  </include>
+
+</launch>

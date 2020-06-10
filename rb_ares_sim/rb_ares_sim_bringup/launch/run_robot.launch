@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- What simulator to use -->
+  <arg name="simulation_package" default="$(optenv SIMULATION_PACKAGE rb_ares_gazebo)"/>
+  <arg name="config_package" default="$(optenv SIMULATION_CONFIG_PACKAGE rb_ares_gazebo)"/>
+  <arg name="use_gpu_for_simulation" default="$(optenv SIMULATION_USE_GPU true)"/>
+
+  <!-- arg to config the launch file-->
+  <arg name="robot_id" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg robot_id)_"/>
+  <arg name="robot_model" default="$(optenv ROBOT_MODEL rb_ares)"/> <!-- If different models should exist (rb_ares, rb_ares_steel...) -->
+  <arg name="robot_xacro" default="$(optenv ROBOT_XACRO rb_ares_std.urdf.xacro)"/>
+
+  <!-- Robot configuration -->
+  <arg name="x_init_pose" default="0"/>
+  <arg name="y_init_pose" default="0"/>
+  <arg name="z_init_pose" default="0"/>
+  <arg name="launch_base_hw_sim" default="false"/>
+  <arg name="launch_battery_estimator" default="false"/>
+
+  <!-- If Rviz should be spawned here -->
+  <arg name="run_rviz" default="false"/>
+
+  <!-- RViz configuration -->
+  <arg name="rviz_config" default="rviz/rviz.rviz"/>
+  <arg name="rviz_config_file" default="$(eval find(config_package) + '/' + rviz_config)"/>
+
+  <!-- Launch robot (simulation specific software) -->
+  <group ns="$(arg robot_id)">
+    <!-- spawn robot in simulator -->
+    <include file="$(eval find(simulation_package) + '/launch/spawn_robot.launch')">
+      <arg name="robot_id" value="$(arg robot_id)"/>
+      <arg name="x_init_pose" value="$(arg x_init_pose)"/>
+      <arg name="y_init_pose" value="$(arg y_init_pose)"/>
+      <arg name="z_init_pose" value="$(arg z_init_pose)"/>
+    </include>
+  </group>
+
+  <!-- Launch robot (simulation independent software) -->
+  <group ns="$(arg robot_id)">
+
+    <!-- Load the URDF into the ROS Parameter Server -->
+    <include file="$(find rb_ares_description)/launch/rb_ares_state.launch" >
+      <arg name="robot_id" value="$(arg robot_id)" />
+      <arg name="prefix" value="$(arg prefix)" />
+      <arg name="robot_xacro" value="$(arg robot_xacro)" />
+      <arg name="use_gpu_for_simulation" default="$(arg use_gpu_for_simulation)" />
+    </include>
+
+    <!-- Start control nodes -->
+    <include file="$(find rb_ares_control)/launch/rb_ares_control.launch">
+      <arg name="robot_id" value="$(arg robot_id)"/>
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+
+    <!-- base_hw_sim -->
+    <include if="$(arg launch_base_hw_sim)" file="$(find robotnik_base_hw_sim)/launch/rb_ares_hw_sim.launch">
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+
+    <group if="$(arg launch_battery_estimator)">
+      <!-- start dock_manager node -->
+      <include file="$(find charge_manager)/launch/charge_manager.launch">
+        <arg name="docker_mode" value="manual_sw"/>
+        <arg name="inverted_contact_relay_input" value="false"/>
+        <arg name="contact_relay_input_number" value="2"/>
+        <arg name="charger_relay_output_number" value="1"/>
+      </include>
+
+      <!-- start battery_estimation node -->
+      <include file="$(find battery_estimation)/launch/table_battery.launch">
+        <arg name="battery_voltage" value="48"/>
+        <arg name="read_voltage_from_analog_input" value="true"/>
+        <arg name="voltage_analog_input_number" value="1" />
+        <arg name="current_analog_input_number" value="2" />
+      </include>
+    </group>
+  </group>
+
+  <!-- launch rviz -->
+  <include if="$(arg run_rviz)" ns="$(arg robot_id)" file="$(find rb_ares_sim_bringup)/launch/run_rviz.launch">
+    <arg name="rviz_config_file" value="$(arg rviz_config_file)" />
+  </include>
+
+</launch>

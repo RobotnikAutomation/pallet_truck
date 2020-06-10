@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:include filename="$(find rb_ares_description)/urdf/wheels/castor_wheel.urdf.xacro" />
+
+  <!-- Fork measurements -->
+  <xacro:property name="fork_length" value="1.05" />
+	<xacro:property name="fork_width" value="0.157" />
+	<xacro:property name="fork_height" value="0.037" />
+	<xacro:property name="fork_mass" value="1" />
+
+  <xacro:macro name="fork" params="prefix parent *origin">
+
+    <joint name="${prefix}fork_joint" type="prismatic">
+       <xacro:insert_block name="origin" />
+       <parent link="${parent}"/>
+       <child link="${prefix}fork_link" />
+       <limit effort="1000.0" lower="0" upper="0" velocity="1"/>
+     </joint>
+
+     <link name="${prefix}fork_link">
+       <inertial>
+         <origin xyz="-0.581270 0.00000 0.012941" />
+         <mass value="${fork_mass}" />
+         <solid_cuboid_inertia m="${fork_mass}" h="${fork_width}" d="${fork_height}" w="${fork_length}"/>
+       </inertial>
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://rb_ares_description/meshes/elevator/single_fork.stl"/>
+         </geometry>
+         <material name="dark_grey">
+           <color rgba="0.4 0.4 0.4 1.0"/>
+         </material>
+       </visual>
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <mesh filename="package://rb_ares_description/meshes/elevator/single_fork.stl"/>
+         </geometry>
+         <friction>
+           <ode>
+             <mu>100</mu>
+             <mu2>100</mu2>
+           </ode>
+         </friction>
+       </collision>
+     </link>
+
+     <transmission name="${prefix}fork_transmission">
+       <type>transmission_interface/SimpleTransmission</type>
+       <joint name="${prefix}fork_joint">
+         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+       </joint>
+       <actuator name="${prefix}fork_motor">
+         <hardwareInterface>hardware_interface/PositionActuatorInterface</hardwareInterface>
+         <mechanicalReduction>${traction_mechanical_reduction}</mechanicalReduction>
+       </actuator>
+     </transmission>
+
+     <!-- ***************** -->
+     <!-- GAZEBO PROPERTIES -->
+     <!-- ***************** -->
+
+     <!-- FORK LINK -->
+     <gazebo reference="${prefix}fork_link">
+       <mu1>100</mu1>
+       <mu2>100</mu2>
+     </gazebo>
+
+    <joint name="${prefix}fork_sensor_joint" type="fixed">
+       <!-- xyz is estimated, not from cad -->
+       <origin xyz="-1.05 0.00000 0.012941" rpy="0 0 3.14159" />
+       <parent link="${prefix}fork_link"/>
+       <child link="${prefix}fork_sensor_link" />
+     </joint>
+    <link name="${prefix}fork_sensor_link" />
+
+  </xacro:macro>
+</robot>
