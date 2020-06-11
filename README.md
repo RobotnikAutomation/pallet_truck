@@ -10,16 +10,19 @@ See [pallet_truck_sim/README.md](pallet_truck_sim/README.md) for simulation pack
 
 Install external dependencies, located at [pallet_truck_common/external](pallet_truck_common/external).
 Install external dependencies, located at [pallet_truck/binaries](pallet_truck/binaries).
+` sudo dpkg -i binaries/ros-melodic-robotnik-navigation-msgs_0.0.0-0bionic_amd64.deb `
 
-` sudo dpkg -i binaries/ros-kinetic-ackermann-drive-controller_0.0.0-0xenial_amd64.deb `
+` sudo dpkg -i binaries/ros-melodic-robotnik-msgs_1.0.0-0bionic_amd64.deb `
 
-` sudo dpkg -i binaries/ros-kinetic-rcomponent_1.1.0-0xenial_amd64.deb `
+` sudo dpkg -i binaries/ros-melodic-joint-read-command-controller_0.13.2-0bionic_amd64.deb `
 
-` sudo dpkg -i binaries/ros-kinetic-robotnik-docker_1.0.0-0xenial_amd64.deb `
+` sudo dpkg -i binaries/ros-melodic-ackermann-drive-controller_0.0.0-0bionic_amd64.deb `
 
-` sudo dpkg -i binaries/ros-kinetic-robotnik-move_1.0.0-0xenial_amd64.deb `
+` sudo dpkg -i binaries/ros-melodic-rcomponent_1.1.0-0bionic_amd64.deb `
 
-` sudo dpkg -i binaries/ros-kinetic-robotnik-navigation-msgs_0.0.0-0xenial_amd64.deb `
+` sudo dpkg -i binaries/ros-melodic-robotnik-docker_1.0.0-0bionic_amd64.deb `
+
+` sudo dpkg -i binaries/ros-melodic-robotnik-move_1.0.0-0bionic_amd64.deb `
 
 Install with submodules.
 
